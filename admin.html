@@ -12,7 +12,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body class="admin-page">
     <script>
       if (!sessionStorage.getItem('admin-authorized')) {
         window.location.href = 'admin-login.html';
@@ -85,8 +85,77 @@
         </label>
       </div>
 
+      <div class="admin-filters" aria-label="문의 세부 필터">
+        <label class="admin-filter">
+          <span>상태</span>
+          <select id="admin-status-filter">
+            <option value="pending">미답변</option>
+            <option value="answered">답변완료</option>
+            <option value="all">전체</option>
+          </select>
+        </label>
+        <label class="admin-filter">
+          <span>카테고리</span>
+          <select id="admin-category-filter">
+            <option value="all">전체 카테고리</option>
+          </select>
+        </label>
+        <label class="admin-filter">
+          <span>정렬</span>
+          <select id="admin-sort-filter">
+            <option value="latest">최신순</option>
+            <option value="oldest">오래된순</option>
+            <option value="name">이름순</option>
+          </select>
+        </label>
+      </div>
+
       <div id="admin-questions" class="recent-list"></div>
     </main>
+
+    <div id="question-modal" class="question-modal" hidden>
+      <div class="question-modal__backdrop" data-modal-close></div>
+      <section class="question-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="question-modal-title">
+        <button class="question-modal__close" type="button" data-modal-close aria-label="모달 닫기">×</button>
+        <div class="question-modal__topline">
+          <span id="question-modal-category" class="chip"></span>
+          <span id="question-modal-status" class="status-pill"></span>
+        </div>
+        <h3 id="question-modal-title"></h3>
+        <p id="question-modal-meta" class="question-modal__meta"></p>
+        <div class="question-modal__grid">
+          <article class="question-modal__panel">
+            <p class="question-modal__label">문의 내용</p>
+            <p id="question-modal-question" class="question-modal__question"></p>
+          </article>
+          <article class="question-modal__panel question-modal__panel--soft">
+            <p class="question-modal__label">상세 정보</p>
+            <dl class="question-modal__details">
+              <div><dt>연락 방식</dt><dd id="question-modal-contact-type"></dd></div>
+              <div><dt>연락처</dt><dd id="question-modal-contact-value"></dd></div>
+              <div><dt>언어</dt><dd id="question-modal-language"></dd></div>
+              <div><dt>등록 시각</dt><dd id="question-modal-created-at"></dd></div>
+            </dl>
+          </article>
+        </div>
+        <article class="question-modal__panel question-modal__reply">
+          <div class="question-modal__reply-head">
+            <div>
+              <p class="question-modal__label">답변 작성</p>
+              <p class="question-modal__hint">저장 후 이메일 또는 WhatsApp으로 바로 열 수 있습니다.</p>
+            </div>
+            <button id="question-modal-open-channel" class="button button--secondary" type="button">회신 채널 열기</button>
+          </div>
+          <label class="question-modal__reply-field">
+            <span class="sr-only">답변 내용</span>
+            <textarea id="question-modal-reply" rows="6" placeholder="답변 내용을 입력하세요"></textarea>
+          </label>
+          <div class="question-modal__actions">
+            <button id="question-modal-send" class="button" type="button">답변 저장 후 발송</button>
+          </div>
+        </article>
+      </section>
+    </div>
 
     <script src="dataStore.js"></script>
     <script src="admin.js"></script>
