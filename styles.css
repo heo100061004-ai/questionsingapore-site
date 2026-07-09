@@ -1196,6 +1196,10 @@ textarea {
   gap: 8px;
 }
 
+.sync-guide[hidden] {
+  display: none !important;
+}
+
 .sync-guide__message {
   margin: 0;
   font-size: 0.9rem;
