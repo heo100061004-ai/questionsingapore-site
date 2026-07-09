@@ -1,46 +1,77 @@
-const KV_KEY = 'home-video-url';
+const EC_KEY = 'home-video-url';
 
-async function kvGet() {
-  const kvUrl = process.env.KV_REST_API_URL;
-  const kvToken = process.env.KV_REST_API_TOKEN;
-  if (!kvUrl || !kvToken) {
+function parseEdgeConfig(connectionString) {
+  try {
+    const url = new URL(connectionString);
+    const id = url.pathname.replace(/^\//, '').split('?')[0];
+    const token = url.searchParams.get('token') || '';
+    return { id, token };
+  } catch {
     return null;
   }
-
-  const response = await fetch(`${kvUrl}/get/${KV_KEY}`, {
-    headers: { Authorization: `Bearer ${kvToken}` }
-  });
-
-  if (!response.ok) {
-    return null;
-  }
-
-  const data = await response.json();
-  return data.result || null;
 }
 
-async function kvSet(value) {
-  const kvUrl = process.env.KV_REST_API_URL;
-  const kvToken = process.env.KV_REST_API_TOKEN;
-  if (!kvUrl || !kvToken) {
+async function ecGet() {
+  const connectionString = process.env.EDGE_CONFIG;
+  if (!connectionString) {
+    return null;
+  }
+
+  const parsed = parseEdgeConfig(connectionString);
+  if (!parsed) {
+    return null;
+  }
+
+  const response = await fetch(
+    `https://edge-config.vercel.com/${parsed.id}/item/${EC_KEY}`,
+    { headers: { Authorization: `Bearer ${parsed.token}` } }
+  );
+
+  if (response.status === 404) {
+    return null;
+  }
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const data = await response.json();
+  return typeof data === 'string' ? data : null;
+}
+
+async function ecSet(value) {
+  const connectionString = process.env.EDGE_CONFIG;
+  const vercelToken = process.env.VERCEL_ACCESS_TOKEN;
+
+  if (!connectionString || !vercelToken) {
     return false;
   }
 
-  const response = await fetch(`${kvUrl}/set/${KV_KEY}`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${kvToken}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify([value || ''])
-  });
+  const parsed = parseEdgeConfig(connectionString);
+  if (!parsed) {
+    return false;
+  }
+
+  const response = await fetch(
+    `https://api.vercel.com/v1/edge-config/${parsed.id}/items`,
+    {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${vercelToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        items: [{ operation: 'upsert', key: EC_KEY, value: value || '' }]
+      })
+    }
+  );
 
   if (!response.ok) {
     return false;
   }
 
   const data = await response.json();
-  return data.result === 'OK';
+  return data.status === 'ok';
 }
 
 module.exports = async function handler(req, res) {
@@ -55,7 +86,7 @@ module.exports = async function handler(req, res) {
 
   if (req.method === 'GET') {
     try {
-      const url = await kvGet();
+      const url = await ecGet();
       res.status(200).json({ ok: true, url: url || '' });
     } catch (error) {
       res.status(200).json({ ok: false, url: '', error: 'storage_unavailable' });
@@ -72,8 +103,13 @@ module.exports = async function handler(req, res) {
       return;
     }
 
+    if (!process.env.VERCEL_ACCESS_TOKEN) {
+      res.status(503).json({ ok: false, error: 'missing_vercel_token' });
+      return;
+    }
+
     try {
-      const saved = await kvSet(url);
+      const saved = await ecSet(url);
       if (saved) {
         res.status(200).json({ ok: true });
       } else {
