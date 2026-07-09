@@ -1,5 +1,8 @@
 :root {
   color-scheme: light;
+  --font-ko: 'Noto Sans KR', sans-serif;
+  --font-en: 'Source Sans 3', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-zh: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   --bg: #e8eef9;
   --surface: #ffffff;
   --primary: #112548;
@@ -17,10 +20,18 @@
 
 body {
   margin: 0;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-ko);
   color: var(--text);
   background: linear-gradient(180deg, #eef2fb 0%, #e8eef9 100%);
   line-height: 1.6;
+}
+
+body.lang-en {
+  font-family: var(--font-en);
+}
+
+body.lang-zh {
+  font-family: var(--font-zh);
 }
 
 body.admin-page {

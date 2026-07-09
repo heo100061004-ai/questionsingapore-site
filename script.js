@@ -35,6 +35,8 @@ const translations = {
     heroFlow2: '관리자가 답변을 준비합니다.',
     heroFlow3: '이메일 또는 WhatsApp으로 회신합니다.',
     heroFlow4: '언어별 맞춤 안내를 제공합니다.',
+    homeVideoCta: '소개 영상 보기',
+    homeVideoEmpty: '관리자에서 소개 영상을 설정하면 이 영역에 표시됩니다.',
     categoriesCaption: '핵심 카테고리',
     categoriesTitle: '가장 많이 묻는 3가지 주제',
     catEmpTitle: '고용',
@@ -116,6 +118,8 @@ const translations = {
     heroFlow2: 'An admin prepares the response.',
     heroFlow3: 'You receive a direct reply by email or WhatsApp.',
     heroFlow4: 'Guidance is provided in your selected language.',
+    homeVideoCta: 'Watch Intro Video',
+    homeVideoEmpty: 'Set an intro video in admin to display it here.',
     categoriesCaption: 'Core Categories',
     categoriesTitle: 'Top 3 Most Asked Topics',
     catEmpTitle: 'Employment',
@@ -194,6 +198,8 @@ const translations = {
     heroFlow2: '管理员准备答复。',
     heroFlow3: '通过电子邮件或WhatsApp回复您。',
     heroFlow4: '按您选择的语言提供个性化说明。',
+    homeVideoCta: '观看介绍视频',
+    homeVideoEmpty: '在管理员页面设置介绍视频后，此区域将显示视频。',
     categoriesCaption: '核心分类',
     categoriesTitle: '最常被咨询的 3 个主题',
     catEmpTitle: '就业',
@@ -367,6 +373,12 @@ if (homeVideoPlayButton && homeTopVideo) {
 
 function updateLanguage(lang) {
   const translation = translations[lang] || translations.ko;
+
+  document.documentElement.lang = lang;
+  if (document.body) {
+    document.body.classList.remove('lang-ko', 'lang-en', 'lang-zh');
+    document.body.classList.add(`lang-${lang}`);
+  }
 
   document.querySelectorAll('[data-i18n]').forEach((element) => {
     const key = element.dataset.i18n;

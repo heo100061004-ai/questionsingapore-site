@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Source+Sans+3:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
@@ -60,12 +60,12 @@
           <div class="hero__video-slot">
             <button id="home-video-play" class="hero__video-play" type="button">
               <span class="hero__video-play-icon" aria-hidden="true">▶</span>
-              <span>소개 영상 보기</span>
+              <span data-i18n="homeVideoCta">소개 영상 보기</span>
             </button>
             <video id="home-top-video" class="hero__video" playsinline controls preload="metadata" hidden>
               <source id="home-top-video-source" src="" type="video/mp4" />
             </video>
-            <p id="home-top-video-empty" class="hero__video-empty">관리자에서 소개 영상을 설정하면 이 영역에 표시됩니다.</p>
+            <p id="home-top-video-empty" class="hero__video-empty" data-i18n="homeVideoEmpty">관리자에서 소개 영상을 설정하면 이 영역에 표시됩니다.</p>
           </div>
         </div>
       </div>
