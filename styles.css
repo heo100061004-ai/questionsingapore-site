@@ -287,16 +287,94 @@ img {
 
 .admin-page .hero {
   background: transparent;
-  padding-top: 36px;
-  padding-bottom: 34px;
+  padding-top: 18px;
+  padding-bottom: 24px;
 }
 
 .admin-page .hero__content {
   background: linear-gradient(130deg, rgba(255, 255, 255, 0.92) 0%, rgba(244, 249, 255, 0.88) 100%);
   border: 1px solid rgba(17, 37, 72, 0.1);
   border-radius: 30px;
-  padding: 34px;
+  padding: 26px;
   box-shadow: 0 24px 46px rgba(17, 37, 72, 0.12);
+}
+
+.admin-banner {
+  position: relative;
+  max-width: 1180px;
+  height: clamp(120px, 16vw, 190px);
+  margin: 0 auto 14px;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(17, 37, 72, 0.16);
+  background-image: url("hero-bg.svg");
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 18px 32px rgba(17, 37, 72, 0.2);
+}
+
+.admin-banner__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(130deg, rgba(8, 20, 45, 0.64) 0%, rgba(8, 20, 45, 0.22) 56%, rgba(8, 20, 45, 0.18) 100%);
+}
+
+.admin-banner__controls {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 12px;
+  z-index: 1;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 10px 24px rgba(8, 20, 45, 0.18);
+}
+
+.admin-banner__title {
+  margin: 0 0 8px;
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 0.9rem;
+}
+
+.admin-banner__controls label {
+  gap: 6px;
+}
+
+.admin-banner__controls label span {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #2a446e;
+}
+
+.admin-banner__actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-banner__actions .button {
+  padding: 8px 12px;
+  font-size: 0.82rem;
+}
+
+.admin-banner__upload {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.admin-banner__upload input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .eyebrow {
@@ -991,6 +1069,22 @@ textarea {
     grid-template-columns: 1fr;
   }
 
+  .admin-banner {
+    height: 150px;
+    border-radius: 20px;
+  }
+
+  .admin-banner__controls {
+    left: 10px;
+    right: 10px;
+    bottom: 8px;
+    padding: 8px 10px;
+  }
+
+  .admin-banner__actions {
+    gap: 6px;
+  }
+
   .admin-search input {
     width: 100%;
     min-width: 0;
@@ -1094,7 +1188,15 @@ textarea {
   }
 
   .admin-page .hero__content {
-    padding: 20px;
+    padding: 18px;
+  }
+
+  .admin-banner {
+    height: 136px;
+  }
+
+  .admin-banner__actions .button {
+    width: 100%;
   }
 
   .admin-card__actions {

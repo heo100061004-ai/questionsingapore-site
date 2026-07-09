@@ -24,9 +24,16 @@ const modalReply = document.getElementById('question-modal-reply');
 const modalSendButton = document.getElementById('question-modal-send');
 const modalOpenChannelButton = document.getElementById('question-modal-open-channel');
 const modalCloseTargets = Array.from(document.querySelectorAll('[data-modal-close]'));
+const adminBanner = document.getElementById('admin-banner');
+const adminBannerUrlInput = document.getElementById('admin-banner-url');
+const adminBannerApplyButton = document.getElementById('admin-banner-apply');
+const adminBannerFileInput = document.getElementById('admin-banner-file');
+const adminBannerResetButton = document.getElementById('admin-banner-reset');
 const store = window.QuestionSingaporeStore;
 const ADMIN_EMAIL = 'hello@questionsingapore.com';
 const ADMIN_WHATSAPP_NUMBER = '6592218254';
+const ADMIN_BANNER_STORAGE_KEY = 'question-singapore-admin-banner-url';
+const ADMIN_DEFAULT_BANNER_URL = 'hero-bg.svg';
 
 let currentView = 'recent';
 let searchTerm = '';
@@ -91,6 +98,40 @@ function excerptText(value, max = 120) {
   }
 
   return `${text.slice(0, max).trimEnd()}…`;
+}
+
+function setAdminBannerImage(url) {
+  if (!adminBanner) {
+    return;
+  }
+
+  const imageUrl = (url || ADMIN_DEFAULT_BANNER_URL).trim();
+  adminBanner.style.backgroundImage = `url('${imageUrl}')`;
+  if (adminBannerUrlInput) {
+    adminBannerUrlInput.value = imageUrl === ADMIN_DEFAULT_BANNER_URL ? '' : imageUrl;
+  }
+}
+
+function saveAdminBannerImage(url) {
+  const imageUrl = (url || '').trim();
+
+  if (!imageUrl) {
+    window.localStorage.removeItem(ADMIN_BANNER_STORAGE_KEY);
+    setAdminBannerImage(ADMIN_DEFAULT_BANNER_URL);
+    return;
+  }
+
+  window.localStorage.setItem(ADMIN_BANNER_STORAGE_KEY, imageUrl);
+  setAdminBannerImage(imageUrl);
+}
+
+function initAdminBannerImage() {
+  if (!adminBanner) {
+    return;
+  }
+
+  const savedUrl = window.localStorage.getItem(ADMIN_BANNER_STORAGE_KEY);
+  setAdminBannerImage(savedUrl || ADMIN_DEFAULT_BANNER_URL);
 }
 
 function countBy(items, mapper) {
@@ -616,6 +657,47 @@ if (modalOpenChannelButton) {
   });
 }
 
+if (adminBannerApplyButton) {
+  adminBannerApplyButton.addEventListener('click', () => {
+    const imageUrl = adminBannerUrlInput ? adminBannerUrlInput.value.trim() : '';
+    if (!imageUrl) {
+      window.alert('배너 이미지 URL을 입력해주세요.');
+      return;
+    }
+
+    saveAdminBannerImage(imageUrl);
+  });
+}
+
+if (adminBannerFileInput) {
+  adminBannerFileInput.addEventListener('change', () => {
+    const file = adminBannerFileInput.files && adminBannerFileInput.files[0];
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      window.alert('이미지 파일만 업로드할 수 있습니다.');
+      adminBannerFileInput.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        saveAdminBannerImage(reader.result);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+if (adminBannerResetButton) {
+  adminBannerResetButton.addEventListener('click', () => {
+    saveAdminBannerImage('');
+  });
+}
+
 modalCloseTargets.forEach((target) => {
   target.addEventListener('click', closeQuestionModal);
 });
@@ -648,3 +730,4 @@ populateCategoryFilter(initialQuestions);
 syncFilterControls();
 renderQuestions();
 renderDashboard();
+initAdminBannerImage();

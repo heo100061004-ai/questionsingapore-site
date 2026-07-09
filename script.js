@@ -261,6 +261,24 @@ const contactMap = {
   whatsapp: 'WhatsApp'
 };
 
+async function notifyAdminOfInquiry(payload) {
+  try {
+    const response = await fetch('/api/notify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      console.error('Admin notify failed:', response.status);
+    }
+  } catch (error) {
+    console.error('Admin notify error:', error);
+  }
+}
+
 function updateLanguage(lang) {
   const translation = translations[lang] || translations.ko;
 
@@ -420,9 +438,21 @@ if (form) {
       return;
     }
 
+    let savedEntry = null;
     if (store) {
-      store.addQuestion({ name, category, question, contactType, contactValue, language });
+      savedEntry = store.addQuestion({ name, category, question, contactType, contactValue, language });
     }
+
+    notifyAdminOfInquiry({
+      id: savedEntry?.id || '',
+      name,
+      category,
+      question,
+      contactType,
+      contactValue,
+      language,
+      createdAt: savedEntry?.createdAt || new Date().toISOString()
+    });
 
     message.textContent = translation.alertSuccess;
     renderRecentQuestions();

@@ -30,6 +30,25 @@
     </script>
 
     <header class="hero hero--compact">
+      <div class="admin-banner" id="admin-banner" role="img" aria-label="관리자 배너 이미지">
+        <div class="admin-banner__overlay"></div>
+        <div class="admin-banner__controls panel panel--soft">
+          <p class="admin-banner__title">관리자 배너 설정</p>
+          <label>
+            <span>배너 이미지 URL</span>
+            <input id="admin-banner-url" type="url" placeholder="https://example.com/banner.jpg" />
+          </label>
+          <div class="admin-banner__actions">
+            <button class="button button--secondary" id="admin-banner-apply" type="button">URL 적용</button>
+            <label class="button button--secondary admin-banner__upload">
+              <span>파일 업로드</span>
+              <input id="admin-banner-file" type="file" accept="image/*" />
+            </label>
+            <button class="button button--secondary" id="admin-banner-reset" type="button">기본 배너</button>
+          </div>
+        </div>
+      </div>
+
       <div class="hero__content">
         <div class="admin-hero-copy">
           <p class="eyebrow">Admin Panel</p>
