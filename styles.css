@@ -41,72 +41,40 @@ img {
 
 .top-banner {
   position: relative;
-  padding: 10px 24px 0;
+  padding: 14px 24px 0;
 }
 
 .top-banner__media-shell {
   width: 100%;
-  max-width: 1120px;
+  max-width: 1040px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 12px;
 }
 
 .top-banner__image,
 .top-banner__video-wrap {
-  height: clamp(150px, 17.5vw, 195px);
-  border-radius: 18px;
+  height: clamp(170px, 20vw, 220px);
+  border-radius: 22px;
   border: 1px solid #d9e2f2;
   overflow: hidden;
-  box-shadow: 0 8px 22px rgba(17, 31, 59, 0.1);
+  box-shadow: 0 12px 28px rgba(17, 31, 59, 0.08);
   background: #ffffff;
 }
 
 .top-banner__image {
-  position: relative;
   background-image: url("sample-home-banner.svg");
   background-size: cover;
   background-position: center;
 }
 
-.top-banner__image::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(100deg, rgba(11, 29, 62, 0.62) 0%, rgba(11, 29, 62, 0.24) 52%, rgba(11, 29, 62, 0) 100%);
-}
-
-.top-banner__intro {
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: 14px;
+.top-banner__content {
+  position: relative;
   z-index: 1;
-  color: #ffffff;
-}
-
-.top-banner__logo {
-  width: 170px;
-  max-width: 64%;
-  height: auto;
-  display: block;
-  margin-bottom: 8px;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.22));
-}
-
-.top-banner__intro-title {
-  margin: 0;
-  font-size: clamp(0.98rem, 1.25vw, 1.16rem);
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.top-banner__intro-text {
-  margin: 3px 0 0;
-  font-size: clamp(0.8rem, 1.05vw, 0.9rem);
-  color: rgba(239, 246, 255, 0.96);
-  line-height: 1.35;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
 }
 
 .top-banner__video-wrap {
@@ -114,7 +82,7 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(130deg, #102650 0%, #274f92 100%);
+  background: #0f2144;
 }
 
 .top-banner__video {
@@ -123,39 +91,44 @@ img {
   object-fit: cover;
 }
 
-.top-banner__video-play {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.58);
-  background: rgba(5, 18, 43, 0.5);
-  color: #ffffff;
-  border-radius: 999px;
-  padding: 8px 14px;
-  font-weight: 700;
-  font-size: 0.86rem;
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-}
-
-.top-banner__video-play:hover {
-  background: rgba(5, 18, 43, 0.7);
-}
-
 .top-banner__video-empty {
   margin: 0;
-  color: #ebf2ff;
-  font-size: 0.88rem;
+  color: #dce7ff;
+  font-size: 0.92rem;
   text-align: center;
-  padding: 0 20px;
+  padding: 0 18px;
+}
+
+.top-banner__left {
+  max-width: 680px;
+}
+
+.top-banner .eyebrow {
+  margin-bottom: 12px;
+  color: var(--primary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.85rem;
+}
+
+.top-banner h1 {
+  margin: 0 0 16px;
+  font-size: clamp(2.2rem, 3.5vw, 3rem);
+  line-height: 1.15;
+  color: var(--primary);
+}
+
+.top-banner__text {
+  max-width: 640px;
+  color: rgba(17, 31, 59, 0.88);
+  font-size: 1rem;
 }
 
 .top-banner__actions {
   position: absolute;
-  top: 16px;
-  right: calc(max(18px, (100vw - 1120px) / 2 + 10px));
+  top: 20px;
+  right: calc(max(24px, 50% - 520px + 12px));
   z-index: 3;
 }
 
@@ -282,7 +255,7 @@ img {
 }
 
 .hero {
-  padding: 34px 24px 56px;
+  padding: 44px 24px 56px;
   background: #ffffff;
   position: relative;
   overflow: hidden;
@@ -1206,11 +1179,11 @@ textarea {
   }
 
   .hero {
-    padding: 40px 18px 40px;
+    padding: 56px 18px 40px;
   }
 
   .top-banner {
-    padding: 8px 14px 0;
+    padding: 10px 14px 0;
   }
 
   .top-banner__media-shell {
@@ -1220,23 +1193,8 @@ textarea {
 
   .top-banner__image,
   .top-banner__video-wrap {
-    height: 160px;
+    height: 170px;
     border-radius: 16px;
-  }
-
-  .top-banner__intro {
-    left: 12px;
-    right: 12px;
-    bottom: 10px;
-  }
-
-  .top-banner__logo {
-    width: 142px;
-    margin-bottom: 6px;
-  }
-
-  .top-banner__intro-text {
-    max-width: 95%;
   }
 
   .floating-admin-link {
@@ -1254,6 +1212,10 @@ textarea {
 }
 
 @media (max-width: 800px) {
+  .top-banner {
+    background-position: left top;
+  }
+
   .hero h1 {
     font-size: clamp(1.45rem, 7vw, 1.95rem);
     line-height: 1.16;
@@ -1299,7 +1261,7 @@ textarea {
   }
 
   .top-banner__actions {
-    top: 12px;
+    top: 14px;
     right: 8px;
   }
 

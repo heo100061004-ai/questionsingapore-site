@@ -12,7 +12,6 @@ const homeTopImage = document.getElementById('home-top-image');
 const homeTopVideo = document.getElementById('home-top-video');
 const homeTopVideoSource = document.getElementById('home-top-video-source');
 const homeTopVideoEmpty = document.getElementById('home-top-video-empty');
-const homeTopVideoPlayButton = document.getElementById('home-top-video-play');
 const store = window.QuestionSingaporeStore;
 const HOME_TOP_IMAGE_STORAGE_KEY = 'question-singapore-home-top-image-url';
 const HOME_TOP_VIDEO_STORAGE_KEY = 'question-singapore-home-top-video-url';
@@ -300,9 +299,6 @@ function initHomeTopMedia() {
   const videoUrl = window.localStorage.getItem(HOME_TOP_VIDEO_STORAGE_KEY) || '';
   if (!videoUrl) {
     homeTopVideo.hidden = true;
-    if (homeTopVideoPlayButton) {
-      homeTopVideoPlayButton.hidden = true;
-    }
     if (homeTopVideoEmpty) {
       homeTopVideoEmpty.hidden = false;
     }
@@ -311,25 +307,10 @@ function initHomeTopMedia() {
 
   homeTopVideoSource.src = videoUrl;
   homeTopVideo.load();
-  homeTopVideo.hidden = true;
-  if (homeTopVideoPlayButton) {
-    homeTopVideoPlayButton.hidden = false;
-  }
+  homeTopVideo.hidden = false;
   if (homeTopVideoEmpty) {
     homeTopVideoEmpty.hidden = true;
   }
-}
-
-if (homeTopVideoPlayButton && homeTopVideo) {
-  homeTopVideoPlayButton.addEventListener('click', async () => {
-    homeTopVideo.hidden = false;
-    homeTopVideoPlayButton.hidden = true;
-    try {
-      await homeTopVideo.play();
-    } catch (error) {
-      console.error('Video play failed:', error);
-    }
-  });
 }
 
 function updateLanguage(lang) {
