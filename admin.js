@@ -30,11 +30,17 @@ const adminBannerApplyButton = document.getElementById('admin-banner-apply');
 const adminBannerFileInput = document.getElementById('admin-banner-file');
 const adminBannerResetButton = document.getElementById('admin-banner-reset');
 const adminBannerSizeInfo = document.getElementById('admin-banner-size');
+const homeVideoUrlInput = document.getElementById('home-video-url');
+const homeVideoApplyButton = document.getElementById('home-video-apply');
+const homeVideoFileInput = document.getElementById('home-video-file');
+const homeVideoResetButton = document.getElementById('home-video-reset');
+const homeVideoSizeInfo = document.getElementById('home-video-size');
 const store = window.QuestionSingaporeStore;
 const ADMIN_EMAIL = 'hello@questionsingapore.com';
 const ADMIN_WHATSAPP_NUMBER = '6592218254';
 const ADMIN_BANNER_STORAGE_KEY = 'question-singapore-admin-banner-url';
 const ADMIN_DEFAULT_BANNER_URL = 'hero-bg.svg';
+const HOME_TOP_VIDEO_STORAGE_KEY = 'question-singapore-home-top-video-url';
 
 let currentView = 'recent';
 let searchTerm = '';
@@ -150,6 +156,58 @@ function initAdminBannerImage() {
 
   const savedUrl = window.localStorage.getItem(ADMIN_BANNER_STORAGE_KEY);
   setAdminBannerImage(savedUrl || ADMIN_DEFAULT_BANNER_URL);
+}
+
+function updateHomeVideoSizeInfo(videoUrl) {
+  if (!homeVideoSizeInfo) {
+    return;
+  }
+
+  if (!videoUrl) {
+    homeVideoSizeInfo.textContent = '설정 안됨';
+    return;
+  }
+
+  homeVideoSizeInfo.textContent = '확인 중...';
+  const probe = document.createElement('video');
+  probe.preload = 'metadata';
+  probe.onloadedmetadata = () => {
+    homeVideoSizeInfo.textContent = `${probe.videoWidth} x ${probe.videoHeight}px`;
+  };
+  probe.onerror = () => {
+    homeVideoSizeInfo.textContent = '크기 확인 불가';
+  };
+  probe.src = videoUrl;
+}
+
+function setHomeVideo(url) {
+  const videoUrl = (url || '').trim();
+  if (homeVideoUrlInput) {
+    homeVideoUrlInput.value = videoUrl;
+  }
+  updateHomeVideoSizeInfo(videoUrl);
+}
+
+function saveHomeVideo(url) {
+  const videoUrl = (url || '').trim();
+
+  if (!videoUrl) {
+    window.localStorage.removeItem(HOME_TOP_VIDEO_STORAGE_KEY);
+    setHomeVideo('');
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(HOME_TOP_VIDEO_STORAGE_KEY, videoUrl);
+    setHomeVideo(videoUrl);
+  } catch (error) {
+    window.alert('영상이 너무 커서 저장할 수 없습니다. URL 방식으로 등록해주세요.');
+  }
+}
+
+function initHomeVideoSettings() {
+  const savedUrl = window.localStorage.getItem(HOME_TOP_VIDEO_STORAGE_KEY);
+  setHomeVideo(savedUrl || '');
 }
 
 function countBy(items, mapper) {
@@ -716,6 +774,47 @@ if (adminBannerResetButton) {
   });
 }
 
+if (homeVideoApplyButton) {
+  homeVideoApplyButton.addEventListener('click', () => {
+    const videoUrl = homeVideoUrlInput ? homeVideoUrlInput.value.trim() : '';
+    if (!videoUrl) {
+      window.alert('소개 영상 URL을 입력해주세요.');
+      return;
+    }
+
+    saveHomeVideo(videoUrl);
+  });
+}
+
+if (homeVideoFileInput) {
+  homeVideoFileInput.addEventListener('change', () => {
+    const file = homeVideoFileInput.files && homeVideoFileInput.files[0];
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith('video/')) {
+      window.alert('영상 파일만 업로드할 수 있습니다.');
+      homeVideoFileInput.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        saveHomeVideo(reader.result);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+if (homeVideoResetButton) {
+  homeVideoResetButton.addEventListener('click', () => {
+    saveHomeVideo('');
+  });
+}
+
 modalCloseTargets.forEach((target) => {
   target.addEventListener('click', closeQuestionModal);
 });
@@ -749,3 +848,4 @@ syncFilterControls();
 renderQuestions();
 renderDashboard();
 initAdminBannerImage();
+initHomeVideoSettings();

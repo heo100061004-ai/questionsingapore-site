@@ -56,6 +56,16 @@
             <li data-i18n="heroFlow3">이메일 또는 WhatsApp으로 회신합니다.</li>
             <li data-i18n="heroFlow4">언어별 맞춤 안내를 제공합니다.</li>
           </ul>
+          <div class="hero__video-slot">
+            <button id="home-video-play" class="hero__video-play" type="button">
+              <span class="hero__video-play-icon" aria-hidden="true">▶</span>
+              <span>소개 영상 보기</span>
+            </button>
+            <video id="home-top-video" class="hero__video" playsinline controls preload="metadata" hidden>
+              <source id="home-top-video-source" src="" type="video/mp4" />
+            </video>
+            <p id="home-top-video-empty" class="hero__video-empty">관리자에서 소개 영상을 설정하면 이 영역에 표시됩니다.</p>
+          </div>
         </div>
       </div>
     </header>

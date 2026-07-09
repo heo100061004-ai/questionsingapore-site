@@ -8,7 +8,12 @@ const contactValueInput = document.getElementById('contact-value');
 const whatsappFields = document.getElementById('whatsapp-fields');
 const countryCodeInput = document.getElementById('country-code');
 const phoneNumberInput = document.getElementById('phone-number');
+const homeTopVideo = document.getElementById('home-top-video');
+const homeTopVideoSource = document.getElementById('home-top-video-source');
+const homeTopVideoEmpty = document.getElementById('home-top-video-empty');
+const homeVideoPlayButton = document.getElementById('home-video-play');
 const store = window.QuestionSingaporeStore;
+const HOME_TOP_VIDEO_STORAGE_KEY = 'question-singapore-home-top-video-url';
 
 const translations = {
   ko: {
@@ -279,6 +284,46 @@ async function notifyAdminOfInquiry(payload) {
   }
 }
 
+function initHomeVideo() {
+  if (!homeTopVideo || !homeTopVideoSource) {
+    return;
+  }
+
+  const videoUrl = window.localStorage.getItem(HOME_TOP_VIDEO_STORAGE_KEY) || '';
+  if (!videoUrl) {
+    homeTopVideo.hidden = true;
+    if (homeVideoPlayButton) {
+      homeVideoPlayButton.hidden = true;
+    }
+    if (homeTopVideoEmpty) {
+      homeTopVideoEmpty.hidden = false;
+    }
+    return;
+  }
+
+  homeTopVideoSource.src = videoUrl;
+  homeTopVideo.load();
+  homeTopVideo.hidden = true;
+  if (homeVideoPlayButton) {
+    homeVideoPlayButton.hidden = false;
+  }
+  if (homeTopVideoEmpty) {
+    homeTopVideoEmpty.hidden = true;
+  }
+}
+
+if (homeVideoPlayButton && homeTopVideo) {
+  homeVideoPlayButton.addEventListener('click', async () => {
+    homeTopVideo.hidden = false;
+    homeVideoPlayButton.hidden = true;
+    try {
+      await homeTopVideo.play();
+    } catch (error) {
+      console.error('Video play failed:', error);
+    }
+  });
+}
+
 function updateLanguage(lang) {
   const translation = translations[lang] || translations.ko;
 
@@ -464,3 +509,4 @@ if (form) {
 renderRecentQuestions();
 updateLanguage('ko');
 updateContactFields();
+initHomeVideo();

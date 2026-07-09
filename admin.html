@@ -68,6 +68,32 @@
       </div>
     </header>
 
+    <section class="section">
+      <div class="home-media-settings panel panel--soft">
+        <p class="eyebrow">Home Media</p>
+        <h2>전문가 상담 프로세스 하단 소개 영상</h2>
+        <p class="home-media-settings__caption">URL을 넣거나 파일을 올리면 홈페이지 우측 영상 영역이 바로 바뀝니다. 큰 영상은 URL 방식이 더 안정적입니다.</p>
+        <div class="home-media-settings__grid">
+          <article class="home-media-box">
+            <p class="home-media-box__title">소개 영상 교체</p>
+            <label>
+              <span>영상 URL</span>
+              <input id="home-video-url" type="url" placeholder="https://example.com/intro.mp4" />
+            </label>
+            <div class="home-media-box__actions">
+              <button class="button button--secondary" id="home-video-apply" type="button">URL 적용</button>
+              <label class="button button--secondary home-media-box__upload">
+                <span>파일 업로드</span>
+                <input id="home-video-file" type="file" accept="video/*" />
+              </label>
+              <button class="button button--secondary" id="home-video-reset" type="button">영상 초기화</button>
+            </div>
+            <p class="home-media-box__meta">현재 영상 크기: <strong id="home-video-size">확인 중...</strong></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <main class="section">
       <div class="section__intro">
         <p class="eyebrow">Analytics</p>
