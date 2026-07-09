@@ -30,11 +30,19 @@ const adminBannerApplyButton = document.getElementById('admin-banner-apply');
 const adminBannerFileInput = document.getElementById('admin-banner-file');
 const adminBannerResetButton = document.getElementById('admin-banner-reset');
 const adminBannerSizeInfo = document.getElementById('admin-banner-size');
+const bannerSyncGuide = document.getElementById('banner-sync-guide');
+const bannerSyncMessage = document.getElementById('banner-sync-message');
+const bannerSyncCommand = document.getElementById('banner-sync-command');
+const bannerSyncCopyButton = document.getElementById('banner-sync-copy');
 const homeVideoUrlInput = document.getElementById('home-video-url');
 const homeVideoApplyButton = document.getElementById('home-video-apply');
 const homeVideoFileInput = document.getElementById('home-video-file');
 const homeVideoResetButton = document.getElementById('home-video-reset');
 const homeVideoSizeInfo = document.getElementById('home-video-size');
+const videoSyncGuide = document.getElementById('video-sync-guide');
+const videoSyncMessage = document.getElementById('video-sync-message');
+const videoSyncCommand = document.getElementById('video-sync-command');
+const videoSyncCopyButton = document.getElementById('video-sync-copy');
 const store = window.QuestionSingaporeStore;
 const ADMIN_EMAIL = 'hello@questionsingapore.com';
 const ADMIN_WHATSAPP_NUMBER = '6592218254';
@@ -112,6 +120,52 @@ function excerptText(value, max = 120) {
   return `${text.slice(0, max).trimEnd()}…`;
 }
 
+function buildConfigSyncCommand(configPath, value, commitMessage) {
+  const payload = JSON.stringify({ url: value || '' }, null, 2);
+  return [
+    `cat > ${configPath} <<'EOF'`,
+    payload,
+    'EOF',
+    '',
+    `git add ${configPath} && git commit -m "${commitMessage}" && git push`
+  ].join('\n');
+}
+
+function showSyncGuide(kind, message, command) {
+  const isBanner = kind === 'banner';
+  const guide = isBanner ? bannerSyncGuide : videoSyncGuide;
+  const text = isBanner ? bannerSyncMessage : videoSyncMessage;
+  const area = isBanner ? bannerSyncCommand : videoSyncCommand;
+
+  if (!guide || !text || !area) {
+    return;
+  }
+
+  text.textContent = message;
+  area.value = command;
+  guide.hidden = false;
+}
+
+async function copyCommandToClipboard(command, button) {
+  if (!command) {
+    return;
+  }
+
+  const original = button ? button.textContent : '';
+  try {
+    await navigator.clipboard.writeText(command);
+    if (button) {
+      button.textContent = '복사 완료';
+      window.setTimeout(() => {
+        button.textContent = original;
+      }, 1200);
+    }
+  } catch (error) {
+    console.warn('Clipboard copy failed:', error);
+    window.alert('자동 복사에 실패했습니다. 아래 명령어를 직접 복사해 실행해주세요.');
+  }
+}
+
 function setAdminBannerImage(url) {
   if (!adminBanner) {
     return;
@@ -147,22 +201,18 @@ function saveAdminBannerImage(url) {
   if (!imageUrl) {
     window.localStorage.removeItem(ADMIN_BANNER_STORAGE_KEY);
     setAdminBannerImage(ADMIN_DEFAULT_BANNER_URL);
-    const clearCommand = `echo '{\"url\": \"\"}' > config/banner.json && git add config/banner.json && git commit -m "Clear banner image" && git push`;
+    const clearCommand = buildConfigSyncCommand('config/banner.json', '', 'Clear banner image');
     console.log('모든 기기 배너를 초기화하려면 터미널에서 실행:\n' + clearCommand);
-    alert('로컬 배너가 초기화되었습니다.\n\n모든 기기에 적용하려면 터미널에서:\n' + clearCommand);
+    showSyncGuide('banner', '로컬 배너가 초기화되었습니다. 모든 기기에 반영하려면 아래 명령을 실행하세요.', clearCommand);
     return;
   }
 
   window.localStorage.setItem(ADMIN_BANNER_STORAGE_KEY, imageUrl);
   setAdminBannerImage(imageUrl);
 
-  const jsonContent = JSON.stringify({ url: imageUrl }, null, 2);
-  const syncCommand = `echo '${jsonContent}' > config/banner.json && git add config/banner.json && git commit -m "Update banner image URL" && git push`;
+  const syncCommand = buildConfigSyncCommand('config/banner.json', imageUrl, 'Update banner image URL');
   console.log('모든 기기 배너 동기화를 위해 터미널에서 실행:\n' + syncCommand);
-  alert(
-    '로컬 배너가 저장되었습니다.\n\n모든 기기에 적용하려면 터미널에서 다음 명령을 실행하세요:\n\n' +
-      syncCommand
-  );
+  showSyncGuide('banner', '로컬 배너가 저장되었습니다. 모든 기기에 반영하려면 아래 명령을 실행하세요.', syncCommand);
 }
 
 async function initAdminBannerImage() {
@@ -225,9 +275,9 @@ async function saveHomeVideo(url) {
   if (!videoUrl) {
     window.localStorage.removeItem(HOME_TOP_VIDEO_STORAGE_KEY);
     setHomeVideo('');
-    const command = `echo '{"url": ""}' > config/video.json && git add config/video.json && git commit -m "Clear home video" && git push`;
+    const command = buildConfigSyncCommand('config/video.json', '', 'Clear home video');
     console.log('모든 기기에서 영상을 제거하려면 터미널에서 다음을 실행하세요:\\n' + command);
-    alert('로컬에서 영상이 제거되었습니다.\\n\\n모든 기기에서 적용하려면 터미널에서:\\necho \'{"url": ""}\' > config/video.json\\ngit add config/video.json\\ngit commit -m "Clear home video"\\ngit push');
+    showSyncGuide('video', '로컬 영상이 초기화되었습니다. 모든 기기에 반영하려면 아래 명령을 실행하세요.', command);
     return;
   }
 
@@ -236,21 +286,10 @@ async function saveHomeVideo(url) {
   setHomeVideo(videoUrl);
 
   // 2. 모든 기기에 적용하기 위한 명령어 제시
-  const jsonContent = JSON.stringify({ url: videoUrl }, null, 2);
-  const command = `echo '${jsonContent}' > config/video.json && git add config/video.json && git commit -m "Update home video URL" && git push`;
+  const command = buildConfigSyncCommand('config/video.json', videoUrl, 'Update home video URL');
   
   console.log('모든 기기에 적용하기 위해 터미널에서 다음을 실행하세요:\\n' + command);
-  alert(`로컬 저장소에 영상이 저장되었습니다! ✓
-
-모든 기기(모바일, 다른 브라우저 등)에 적용하려면 터미널에서 다음을 실행하세요:
-
-echo '${jsonContent}' > config/video.json
-git add config/video.json
-git commit -m "Update home video URL"
-git push
-
-또는 VS Code 터미널에 다음을 복사하여 실행하세요:
-echo '${jsonContent.replace(/'/g, "\\'")}' > config/video.json && git add config/video.json && git commit -m "Update home video URL" && git push`);
+  showSyncGuide('video', '로컬 영상이 저장되었습니다. 모든 기기에 반영하려면 아래 명령을 실행하세요.', command);
 }
 
 async function initHomeVideoSettings() {
@@ -945,6 +984,20 @@ if (homeVideoResetButton) {
   homeVideoResetButton.addEventListener('click', () => {
     clearHomeVideoBlob().catch(() => {});
     saveHomeVideo('');
+  });
+}
+
+if (bannerSyncCopyButton) {
+  bannerSyncCopyButton.addEventListener('click', () => {
+    const command = bannerSyncCommand ? bannerSyncCommand.value : '';
+    copyCommandToClipboard(command, bannerSyncCopyButton);
+  });
+}
+
+if (videoSyncCopyButton) {
+  videoSyncCopyButton.addEventListener('click', () => {
+    const command = videoSyncCommand ? videoSyncCommand.value : '';
+    copyCommandToClipboard(command, videoSyncCopyButton);
   });
 }
 
