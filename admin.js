@@ -146,6 +146,23 @@ function showSyncGuide(kind, message, command) {
   guide.hidden = false;
 }
 
+function initSyncGuides() {
+  [
+    [bannerSyncGuide, bannerSyncMessage, bannerSyncCommand],
+    [videoSyncGuide, videoSyncMessage, videoSyncCommand]
+  ].forEach(([guide, text, area]) => {
+    if (text) {
+      text.textContent = '';
+    }
+    if (area) {
+      area.value = '';
+    }
+    if (guide) {
+      guide.hidden = true;
+    }
+  });
+}
+
 async function copyCommandToClipboard(command, button) {
   if (!command) {
     return;
@@ -1031,6 +1048,7 @@ if (clearButton) {
 const initialQuestions = store ? store.getQuestions() : [];
 populateCategoryFilter(initialQuestions);
 syncFilterControls();
+initSyncGuides();
 renderQuestions();
 renderDashboard();
 initAdminBannerImage();
