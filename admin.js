@@ -228,17 +228,21 @@ echo '${jsonContent.replace(/'/g, "\\'")}' > config/video.json && git add config
 
 async function initHomeVideoSettings() {
   try {
-    const response = await fetch('/api/video-config');
-    const data = await response.json();
-    if (data.ok && data.url) {
-      window.localStorage.setItem(HOME_TOP_VIDEO_STORAGE_KEY, data.url);
-      setHomeVideo(data.url);
-      return;
+    // 1. 먼저 config 파일에서 로드
+    const response = await fetch('/config/video.json');
+    if (response.ok) {
+      const data = await response.json();
+      if (data && data.url) {
+        window.localStorage.setItem(HOME_TOP_VIDEO_STORAGE_KEY, data.url);
+        setHomeVideo(data.url);
+        return;
+      }
     }
   } catch (error) {
-    console.warn('서버에서 영상 설정을 불러오지 못했습니다:', error);
+    console.warn('Config 파일에서 영상 설정을 불러오지 못했습니다:', error);
   }
 
+  // 2. config 파일 로드 실패 시, localStorage 사용
   const savedUrl = window.localStorage.getItem(HOME_TOP_VIDEO_STORAGE_KEY);
   setHomeVideo(savedUrl || '');
 }
