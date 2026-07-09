@@ -192,43 +192,57 @@ function setHomeVideo(url) {
   updateHomeVideoSizeInfo(videoUrl);
 }
 
-function saveHomeVideo(url) {
+async function saveHomeVideo(url) {
   const videoUrl = (url || '').trim();
 
   if (!videoUrl) {
     window.localStorage.removeItem(HOME_TOP_VIDEO_STORAGE_KEY);
     setHomeVideo('');
+    try {
+      await fetch('/api/video-config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: '' })
+      });
+    } catch (error) {
+      console.error('Server clear failed:', error);
+    }
     return;
   }
 
+  window.localStorage.setItem(HOME_TOP_VIDEO_STORAGE_KEY, videoUrl);
+  setHomeVideo(videoUrl);
+
   try {
-    window.localStorage.setItem(HOME_TOP_VIDEO_STORAGE_KEY, videoUrl);
-    setHomeVideo(videoUrl);
+    const response = await fetch('/api/video-config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: videoUrl })
+    });
+    const data = await response.json();
+    if (!data.ok) {
+      console.warn('서버 저장 실패, 로컬만 저장됩니다:', data.error);
+    }
   } catch (error) {
-    window.alert('영상이 너무 커서 저장할 수 없습니다. URL 방식으로 등록해주세요.');
+    console.error('Server save failed:', error);
   }
 }
 
 async function initHomeVideoSettings() {
-  const savedUrl = window.localStorage.getItem(HOME_TOP_VIDEO_STORAGE_KEY);
-  if (savedUrl) {
-    setHomeVideo(savedUrl);
-    return;
-  }
-
   try {
-    const blob = await getHomeVideoBlob();
-    if (blob) {
-      const objectUrl = URL.createObjectURL(blob);
-      setHomeVideo('');
-      updateHomeVideoSizeInfo(objectUrl);
+    const response = await fetch('/api/video-config');
+    const data = await response.json();
+    if (data.ok && data.url) {
+      window.localStorage.setItem(HOME_TOP_VIDEO_STORAGE_KEY, data.url);
+      setHomeVideo(data.url);
       return;
     }
   } catch (error) {
-    console.error('Home video init failed:', error);
+    console.warn('서버에서 영상 설정을 불러오지 못했습니다:', error);
   }
 
-  setHomeVideo('');
+  const savedUrl = window.localStorage.getItem(HOME_TOP_VIDEO_STORAGE_KEY);
+  setHomeVideo(savedUrl || '');
 }
 
 function openHomeMediaDb() {
