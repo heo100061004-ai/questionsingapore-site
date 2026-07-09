@@ -58,7 +58,7 @@
           <ul>
             <li data-i18n="heroFlow1">질문과 연락처를 등록합니다.</li>
             <li data-i18n="heroFlow2">관리자가 답변을 준비합니다.</li>
-            <li data-i18n="heroFlow3">이메일 또는 WhatsApp으로 회신이 발송됩니다.</li>
+            <li data-i18n="heroFlow3">이메일 또는 WhatsApp으로 회신합니다.</li>
             <li data-i18n="heroFlow4">언어별 맞춤 안내를 제공합니다.</li>
           </ul>
         </div>
@@ -145,7 +145,7 @@
               <div class="form-grid">
                 <label>
                   <span data-i18n="nameLabel">이름</span>
-                  <input type="text" name="name" placeholder="홍길동" required />
+                  <input type="text" name="name" placeholder="이름" required data-i18n-placeholder="namePlaceholder" />
                 </label>
                 <label>
                   <span data-i18n="categoryLabel">카테고리</span>
@@ -187,13 +187,13 @@
                   </label>
                   <label>
                     <span data-i18n="phoneNumberLabel">핸드폰 번호</span>
-                    <input type="text" id="phone-number" name="phoneNumber" placeholder="92218254" inputmode="tel" data-i18n-placeholder="phoneNumberPlaceholder" />
+                    <input type="text" id="phone-number" name="phoneNumber" placeholder="핸드폰 번호" inputmode="tel" data-i18n-placeholder="phoneNumberPlaceholder" />
                   </label>
                 </div>
               </div>
               <label>
                 <span data-i18n="questionLabel">질문 내용</span>
-                <textarea name="question" rows="5" placeholder="예: 싱가포르에서 가족과 함께 거주할 수 있는 현실적인 지역 추천이 궁금합니다." required></textarea>
+                <textarea name="question" rows="5" placeholder="문의하실 질문 내용을 상세히 기입해 주세요." required data-i18n-placeholder="questionPlaceholder"></textarea>
               </label>
               <button class="button" type="submit" data-i18n="btnSubmit">질문 등록</button>
             </form>
@@ -210,6 +210,14 @@
         </div>
       </section>
     </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <p class="site-footer__label">Inquiry</p>
+        <p class="site-footer__email">hello@questionsingapore.com</p>
+        <p class="site-footer__copyright">© Copyright QuestionSingapore.com Since July 2026.</p>
+      </div>
+    </footer>
 
     <script src="dataStore.js"></script>
     <script src="script.js"></script>

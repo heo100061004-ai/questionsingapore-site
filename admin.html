@@ -31,13 +31,13 @@
 
     <header class="hero hero--compact">
       <div class="hero__content">
-        <div>
+        <div class="admin-hero-copy">
           <p class="eyebrow">Admin Panel</p>
-          <h1>전문가 답변 관리 대시보드</h1>
-          <p class="hero__text">문의 내용을 확인하고, 준비한 답변을 이메일 또는 WhatsApp으로 바로 전송할 수 있습니다.</p>
-          <div class="hero__info">
-            <span>이메일 답변 계정: hello@questionsingapore.com (Hotmail 작성창으로 연결)</span>
-            <span>WhatsApp 답변 계정: +6592218254 (Web WhatsApp 로그인 계정 기준)</span>
+          <h1>전문가 답변 운영 대시보드</h1>
+          <p class="hero__text">최근 문의를 빠르게 답변하고, 이전 문의는 아카이브에서 체계적으로 관리할 수 있습니다.</p>
+          <div class="hero__info hero__info--compact">
+            <span>Inquiry : hello@questionsingapore.com</span>
+            <span>WhatsApp : +6592218254</span>
           </div>
           <div class="admin-actions">
             <a class="button" href="index.html">홈으로</a>
@@ -70,9 +70,21 @@
       </div>
 
       <div class="section__intro">
-        <p class="eyebrow">등록된 질문</p>
-        <h2>최신 질문 목록</h2>
+        <p class="eyebrow">문의 관리</p>
+        <h2>최근 문의와 아카이브</h2>
       </div>
+
+      <div class="admin-toolbar">
+        <div class="admin-tabs" role="tablist" aria-label="문의 탭">
+          <button class="admin-tab is-active" type="button" data-view="recent">최근 문의</button>
+          <button class="admin-tab" type="button" data-view="archive">아카이브</button>
+        </div>
+        <label class="admin-search">
+          <span class="sr-only">문의 검색</span>
+          <input id="admin-search" type="search" placeholder="이름, 질문, 연락처 검색" />
+        </label>
+      </div>
+
       <div id="admin-questions" class="recent-list"></div>
     </main>
 

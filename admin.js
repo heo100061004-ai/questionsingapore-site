@@ -1,5 +1,7 @@
 const list = document.getElementById('admin-questions');
 const clearButton = document.getElementById('clear-questions');
+const searchInput = document.getElementById('admin-search');
+const tabButtons = Array.from(document.querySelectorAll('.admin-tab'));
 const kpiContainer = document.getElementById('admin-kpis');
 const categoryContainer = document.getElementById('analytics-category');
 const channelContainer = document.getElementById('analytics-channel');
@@ -8,6 +10,9 @@ const trendContainer = document.getElementById('analytics-trend');
 const store = window.QuestionSingaporeStore;
 const ADMIN_EMAIL = 'hello@questionsingapore.com';
 const ADMIN_WHATSAPP_NUMBER = '6592218254';
+
+let currentView = 'recent';
+let searchTerm = '';
 
 const languageMap = {
   ko: '한국어',
@@ -37,6 +42,40 @@ function formatMetricRows(rows) {
   return rows
     .map(([label, value]) => `<div class="analytics-row"><span>${label}</span><strong>${value}</strong></div>`)
     .join('');
+}
+
+function normalizeText(value) {
+  return (value || '').toString().toLowerCase();
+}
+
+function matchesSearch(question) {
+  if (!searchTerm) {
+    return true;
+  }
+
+  const haystack = [question.name, question.question, question.contactValue, question.category, question.status]
+    .map(normalizeText)
+    .join(' ');
+  return haystack.includes(searchTerm);
+}
+
+function getVisibleQuestions(questions) {
+  const filtered = questions.filter(matchesSearch);
+
+  if (currentView === 'archive') {
+    return filtered.filter((question) => question.status === '답변완료' || (question.answer || '').trim());
+  }
+
+  const recent = filtered.filter((question) => !(question.status === '답변완료' || (question.answer || '').trim()));
+  return recent.length ? recent : filtered.slice(0, 10);
+}
+
+function setActiveTab(view) {
+  currentView = view;
+  tabButtons.forEach((button) => {
+    button.classList.toggle('is-active', button.dataset.view === view);
+  });
+  renderQuestions();
 }
 
 function renderDashboard() {
@@ -108,20 +147,28 @@ function renderQuestions() {
   }
 
   const questions = store.getQuestions();
+  const visibleQuestions = getVisibleQuestions(questions);
 
   if (!questions.length) {
     list.innerHTML = '<p class="empty-state">아직 저장된 질문이 없습니다.</p>';
     return;
   }
 
-  list.innerHTML = questions
+  if (!visibleQuestions.length) {
+    const label = currentView === 'archive' ? '아카이브에 저장된 문의가 없습니다.' : '검색 결과가 없습니다.';
+    list.innerHTML = `<p class="empty-state">${label}</p>`;
+    return;
+  }
+
+  list.innerHTML = visibleQuestions
     .map((question) => {
       const date = new Date(question.createdAt).toLocaleString('ko-KR');
+      const isAnswered = question.status === '답변완료' || (question.answer || '').trim();
       return `
         <article class="admin-card">
           <div class="admin-card__meta">
             <span class="chip">${question.category}</span>
-            <span>${question.status || '신규'}</span>
+            <span class="status-pill ${isAnswered ? 'is-answered' : 'is-pending'}">${question.status || '신규'}</span>
           </div>
           <h3>${question.name}</h3>
           <p><strong>Q.</strong> ${question.question}</p>
@@ -188,6 +235,19 @@ if (list) {
     }
   });
 }
+
+if (searchInput) {
+  searchInput.addEventListener('input', () => {
+    searchTerm = normalizeText(searchInput.value);
+    renderQuestions();
+  });
+}
+
+tabButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    setActiveTab(button.dataset.view || 'recent');
+  });
+});
 
 if (clearButton) {
   clearButton.addEventListener('click', () => {
