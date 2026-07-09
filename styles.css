@@ -361,6 +361,16 @@ img {
   font-size: 0.82rem;
 }
 
+.admin-banner__meta {
+  margin: 6px 0 0;
+  font-size: 0.78rem;
+  color: #365077;
+}
+
+.admin-banner__meta strong {
+  color: #1d3154;
+}
+
 .admin-banner__upload {
   position: relative;
   overflow: hidden;

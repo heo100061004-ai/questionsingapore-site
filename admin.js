@@ -29,6 +29,7 @@ const adminBannerUrlInput = document.getElementById('admin-banner-url');
 const adminBannerApplyButton = document.getElementById('admin-banner-apply');
 const adminBannerFileInput = document.getElementById('admin-banner-file');
 const adminBannerResetButton = document.getElementById('admin-banner-reset');
+const adminBannerSizeInfo = document.getElementById('admin-banner-size');
 const store = window.QuestionSingaporeStore;
 const ADMIN_EMAIL = 'hello@questionsingapore.com';
 const ADMIN_WHATSAPP_NUMBER = '6592218254';
@@ -107,9 +108,26 @@ function setAdminBannerImage(url) {
 
   const imageUrl = (url || ADMIN_DEFAULT_BANNER_URL).trim();
   adminBanner.style.backgroundImage = `url('${imageUrl}')`;
+  updateAdminBannerSizeInfo(imageUrl);
   if (adminBannerUrlInput) {
     adminBannerUrlInput.value = imageUrl === ADMIN_DEFAULT_BANNER_URL ? '' : imageUrl;
   }
+}
+
+function updateAdminBannerSizeInfo(imageUrl) {
+  if (!adminBannerSizeInfo) {
+    return;
+  }
+
+  adminBannerSizeInfo.textContent = '확인 중...';
+  const probe = new Image();
+  probe.onload = () => {
+    adminBannerSizeInfo.textContent = `${probe.naturalWidth} x ${probe.naturalHeight}px`;
+  };
+  probe.onerror = () => {
+    adminBannerSizeInfo.textContent = '크기 확인 불가';
+  };
+  probe.src = imageUrl;
 }
 
 function saveAdminBannerImage(url) {
