@@ -14,6 +14,10 @@ const homeTopVideoEmpty = document.getElementById('home-top-video-empty');
 const homeVideoPlayButton = document.getElementById('home-video-play');
 const store = window.QuestionSingaporeStore;
 const HOME_TOP_VIDEO_STORAGE_KEY = 'question-singapore-home-top-video-url';
+const HOME_MEDIA_DB_NAME = 'question-singapore-media-db';
+const HOME_MEDIA_DB_VERSION = 1;
+const HOME_MEDIA_STORE_NAME = 'media';
+const HOME_TOP_VIDEO_BLOB_KEY = 'home-top-video';
 
 const translations = {
   ko: {
@@ -290,26 +294,79 @@ function initHomeVideo() {
   }
 
   const videoUrl = window.localStorage.getItem(HOME_TOP_VIDEO_STORAGE_KEY) || '';
-  if (!videoUrl) {
+  if (videoUrl) {
+    homeTopVideoSource.src = videoUrl;
+    homeTopVideo.load();
     homeTopVideo.hidden = true;
     if (homeVideoPlayButton) {
-      homeVideoPlayButton.hidden = true;
+      homeVideoPlayButton.hidden = false;
     }
     if (homeTopVideoEmpty) {
-      homeTopVideoEmpty.hidden = false;
+      homeTopVideoEmpty.hidden = true;
     }
     return;
   }
 
-  homeTopVideoSource.src = videoUrl;
-  homeTopVideo.load();
-  homeTopVideo.hidden = true;
-  if (homeVideoPlayButton) {
-    homeVideoPlayButton.hidden = false;
-  }
-  if (homeTopVideoEmpty) {
-    homeTopVideoEmpty.hidden = true;
-  }
+  openHomeMediaDb()
+    .then((db) => new Promise((resolve, reject) => {
+      const transaction = db.transaction(HOME_MEDIA_STORE_NAME, 'readonly');
+      const store = transaction.objectStore(HOME_MEDIA_STORE_NAME);
+      const request = store.get(HOME_TOP_VIDEO_BLOB_KEY);
+      request.onsuccess = () => resolve(request.result || null);
+      request.onerror = () => reject(request.error || new Error('Failed to read video blob'));
+    }))
+    .then((blob) => {
+      if (!blob) {
+        homeTopVideo.hidden = true;
+        if (homeVideoPlayButton) {
+          homeVideoPlayButton.hidden = true;
+        }
+        if (homeTopVideoEmpty) {
+          homeTopVideoEmpty.hidden = false;
+        }
+        return;
+      }
+
+      const objectUrl = URL.createObjectURL(blob);
+      homeTopVideoSource.src = objectUrl;
+      homeTopVideo.load();
+      homeTopVideo.hidden = true;
+      if (homeVideoPlayButton) {
+        homeVideoPlayButton.hidden = false;
+      }
+      if (homeTopVideoEmpty) {
+        homeTopVideoEmpty.hidden = true;
+      }
+    })
+    .catch((error) => {
+      console.error('Home video load failed:', error);
+      homeTopVideo.hidden = true;
+      if (homeVideoPlayButton) {
+        homeVideoPlayButton.hidden = true;
+      }
+      if (homeTopVideoEmpty) {
+        homeTopVideoEmpty.hidden = false;
+      }
+    });
+}
+
+function openHomeMediaDb() {
+  return new Promise((resolve, reject) => {
+    if (!window.indexedDB) {
+      reject(new Error('IndexedDB is not supported'));
+      return;
+    }
+
+    const request = window.indexedDB.open(HOME_MEDIA_DB_NAME, HOME_MEDIA_DB_VERSION);
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains(HOME_MEDIA_STORE_NAME)) {
+        db.createObjectStore(HOME_MEDIA_STORE_NAME);
+      }
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error || new Error('Failed to open media DB'));
+  });
 }
 
 if (homeVideoPlayButton && homeTopVideo) {

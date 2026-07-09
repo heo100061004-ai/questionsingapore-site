@@ -41,6 +41,10 @@ const ADMIN_WHATSAPP_NUMBER = '6592218254';
 const ADMIN_BANNER_STORAGE_KEY = 'question-singapore-admin-banner-url';
 const ADMIN_DEFAULT_BANNER_URL = 'hero-bg.svg';
 const HOME_TOP_VIDEO_STORAGE_KEY = 'question-singapore-home-top-video-url';
+const HOME_MEDIA_DB_NAME = 'question-singapore-media-db';
+const HOME_MEDIA_DB_VERSION = 1;
+const HOME_MEDIA_STORE_NAME = 'media';
+const HOME_TOP_VIDEO_BLOB_KEY = 'home-top-video';
 
 let currentView = 'recent';
 let searchTerm = '';
@@ -205,9 +209,78 @@ function saveHomeVideo(url) {
   }
 }
 
-function initHomeVideoSettings() {
+async function initHomeVideoSettings() {
   const savedUrl = window.localStorage.getItem(HOME_TOP_VIDEO_STORAGE_KEY);
-  setHomeVideo(savedUrl || '');
+  if (savedUrl) {
+    setHomeVideo(savedUrl);
+    return;
+  }
+
+  try {
+    const blob = await getHomeVideoBlob();
+    if (blob) {
+      const objectUrl = URL.createObjectURL(blob);
+      setHomeVideo('');
+      updateHomeVideoSizeInfo(objectUrl);
+      return;
+    }
+  } catch (error) {
+    console.error('Home video init failed:', error);
+  }
+
+  setHomeVideo('');
+}
+
+function openHomeMediaDb() {
+  return new Promise((resolve, reject) => {
+    if (!window.indexedDB) {
+      reject(new Error('IndexedDB is not supported'));
+      return;
+    }
+
+    const request = window.indexedDB.open(HOME_MEDIA_DB_NAME, HOME_MEDIA_DB_VERSION);
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains(HOME_MEDIA_STORE_NAME)) {
+        db.createObjectStore(HOME_MEDIA_STORE_NAME);
+      }
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error || new Error('Failed to open media DB'));
+  });
+}
+
+async function saveHomeVideoBlob(file) {
+  const db = await openHomeMediaDb();
+  await new Promise((resolve, reject) => {
+    const transaction = db.transaction(HOME_MEDIA_STORE_NAME, 'readwrite');
+    const store = transaction.objectStore(HOME_MEDIA_STORE_NAME);
+    const request = store.put(file, HOME_TOP_VIDEO_BLOB_KEY);
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject(request.error || new Error('Failed to save video blob'));
+  });
+}
+
+async function getHomeVideoBlob() {
+  const db = await openHomeMediaDb();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(HOME_MEDIA_STORE_NAME, 'readonly');
+    const store = transaction.objectStore(HOME_MEDIA_STORE_NAME);
+    const request = store.get(HOME_TOP_VIDEO_BLOB_KEY);
+    request.onsuccess = () => resolve(request.result || null);
+    request.onerror = () => reject(request.error || new Error('Failed to read video blob'));
+  });
+}
+
+async function clearHomeVideoBlob() {
+  const db = await openHomeMediaDb();
+  await new Promise((resolve, reject) => {
+    const transaction = db.transaction(HOME_MEDIA_STORE_NAME, 'readwrite');
+    const store = transaction.objectStore(HOME_MEDIA_STORE_NAME);
+    const request = store.delete(HOME_TOP_VIDEO_BLOB_KEY);
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject(request.error || new Error('Failed to clear video blob'));
+  });
 }
 
 function countBy(items, mapper) {
@@ -782,6 +855,7 @@ if (homeVideoApplyButton) {
       return;
     }
 
+    clearHomeVideoBlob().catch(() => {});
     saveHomeVideo(videoUrl);
   });
 }
@@ -799,18 +873,34 @@ if (homeVideoFileInput) {
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        saveHomeVideo(reader.result);
-      }
-    };
-    reader.readAsDataURL(file);
+    const objectUrl = URL.createObjectURL(file);
+    updateHomeVideoSizeInfo(objectUrl);
+
+    clearHomeVideoBlob().catch(() => {});
+    window.localStorage.removeItem(HOME_TOP_VIDEO_STORAGE_KEY);
+
+    saveHomeVideoBlob(file)
+      .then(() => {
+        if (homeVideoUrlInput) {
+          homeVideoUrlInput.value = '';
+        }
+      })
+      .catch((error) => {
+        console.error('Video blob save failed:', error);
+        const reader = new FileReader();
+        reader.onload = () => {
+          if (typeof reader.result === 'string') {
+            saveHomeVideo(reader.result);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
   });
 }
 
 if (homeVideoResetButton) {
   homeVideoResetButton.addEventListener('click', () => {
+    clearHomeVideoBlob().catch(() => {});
     saveHomeVideo('');
   });
 }
