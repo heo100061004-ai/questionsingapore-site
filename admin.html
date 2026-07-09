@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Question Singapore 관리자</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <script>
+      if (!sessionStorage.getItem('admin-authorized')) {
+        window.location.href = 'admin-login.html';
+      }
+    </script>
+    <nav class="top-nav">
+      <a href="index.html">홈</a>
+      <button id="logout-btn" style="background: none; border: none; color: var(--primary); font-weight: 700; cursor: pointer; text-decoration: underline;">로그아웃</button>
+    </nav>
+    <script>
+      document.getElementById('logout-btn').addEventListener('click', () => {
+        sessionStorage.removeItem('admin-authorized');
+        window.location.href = 'index.html';
+      });
+    </script>
+
+    <header class="hero hero--compact">
+      <div class="hero__content">
+        <div>
+          <p class="eyebrow">Admin Panel</p>
+          <h1>전문가 답변 관리 대시보드</h1>
+          <p class="hero__text">문의 내용을 확인하고, 준비한 답변을 이메일 또는 WhatsApp으로 바로 전송할 수 있습니다.</p>
+          <div class="hero__info">
+            <span>이메일 답변 계정: hello@questionsingapore.com (Hotmail 작성창으로 연결)</span>
+            <span>WhatsApp 답변 계정: +6592218254 (Web WhatsApp 로그인 계정 기준)</span>
+          </div>
+          <div class="admin-actions">
+            <a class="button" href="index.html">홈으로</a>
+            <button class="button button--secondary" id="clear-questions" type="button">모든 질문 삭제</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="section">
+      <div class="section__intro">
+        <p class="eyebrow">Analytics</p>
+        <h2>방문자/문의 분석 대시보드</h2>
+      </div>
+      <div id="admin-kpis" class="admin-kpi-grid"></div>
+      <div class="admin-analytics-grid">
+        <article class="panel panel--soft">
+          <h3>카테고리 분포</h3>
+          <div id="analytics-category" class="analytics-list"></div>
+        </article>
+        <article class="panel panel--soft">
+          <h3>채널/언어 분포</h3>
+          <div id="analytics-channel" class="analytics-list"></div>
+          <div id="analytics-language" class="analytics-list"></div>
+        </article>
+        <article class="panel panel--soft">
+          <h3>최근 7일 문의 추이</h3>
+          <div id="analytics-trend" class="analytics-list"></div>
+        </article>
+      </div>
+
+      <div class="section__intro">
+        <p class="eyebrow">등록된 질문</p>
+        <h2>최신 질문 목록</h2>
+      </div>
+      <div id="admin-questions" class="recent-list"></div>
+    </main>
+
+    <script src="dataStore.js"></script>
+    <script src="admin.js"></script>
+  </body>
+</html>
