@@ -198,34 +198,32 @@ async function saveHomeVideo(url) {
   if (!videoUrl) {
     window.localStorage.removeItem(HOME_TOP_VIDEO_STORAGE_KEY);
     setHomeVideo('');
-    try {
-      await fetch('/api/video-config', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: '' })
-      });
-    } catch (error) {
-      console.error('Server clear failed:', error);
-    }
+    const command = `echo '{"url": ""}' > config/video.json && git add config/video.json && git commit -m "Clear home video" && git push`;
+    console.log('모든 기기에서 영상을 제거하려면 터미널에서 다음을 실행하세요:\\n' + command);
+    alert('로컬에서 영상이 제거되었습니다.\\n\\n모든 기기에서 적용하려면 터미널에서:\\necho \'{"url": ""}\' > config/video.json\\ngit add config/video.json\\ngit commit -m "Clear home video"\\ngit push');
     return;
   }
 
+  // 1. 로컬 localStorage에 저장 (현재 기기에서 즉시 표시)
   window.localStorage.setItem(HOME_TOP_VIDEO_STORAGE_KEY, videoUrl);
   setHomeVideo(videoUrl);
 
-  try {
-    const response = await fetch('/api/video-config', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: videoUrl })
-    });
-    const data = await response.json();
-    if (!data.ok) {
-      console.warn('서버 저장 실패, 로컬만 저장됩니다:', data.error);
-    }
-  } catch (error) {
-    console.error('Server save failed:', error);
-  }
+  // 2. 모든 기기에 적용하기 위한 명령어 제시
+  const jsonContent = JSON.stringify({ url: videoUrl }, null, 2);
+  const command = `echo '${jsonContent}' > config/video.json && git add config/video.json && git commit -m "Update home video URL" && git push`;
+  
+  console.log('모든 기기에 적용하기 위해 터미널에서 다음을 실행하세요:\\n' + command);
+  alert(`로컬 저장소에 영상이 저장되었습니다! ✓
+
+모든 기기(모바일, 다른 브라우저 등)에 적용하려면 터미널에서 다음을 실행하세요:
+
+echo '${jsonContent}' > config/video.json
+git add config/video.json
+git commit -m "Update home video URL"
+git push
+
+또는 VS Code 터미널에 다음을 복사하여 실행하세요:
+echo '${jsonContent.replace(/'/g, "\\'")}' > config/video.json && git add config/video.json && git commit -m "Update home video URL" && git push`);
 }
 
 async function initHomeVideoSettings() {

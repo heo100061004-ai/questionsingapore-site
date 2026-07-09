@@ -303,10 +303,11 @@ function initHomeVideo() {
     if (homeTopVideoEmpty) homeTopVideoEmpty.hidden = true;
   }
 
-  fetch('/api/video-config')
-    .then((res) => res.json())
+  // 1. 먼저 config 파일에서 로드 (모든 기기에서 동일)
+  fetch('/config/video.json')
+    .then((res) => res.ok ? res.json() : Promise.reject('config not found'))
     .then((data) => {
-      if (data.ok && data.url) {
+      if (data && data.url) {
         window.localStorage.setItem(HOME_TOP_VIDEO_STORAGE_KEY, data.url);
         applyVideoUrl(data.url);
       } else {
@@ -315,6 +316,7 @@ function initHomeVideo() {
       }
     })
     .catch(() => {
+      // 2. config 파일 로드 실패 시, localStorage 사용
       const cached = window.localStorage.getItem(HOME_TOP_VIDEO_STORAGE_KEY) || '';
       applyVideoUrl(cached);
     });
