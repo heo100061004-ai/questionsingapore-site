@@ -14,6 +14,8 @@ const homeTopVideoEmpty = document.getElementById('home-top-video-empty');
 const homeVideoPlayButton = document.getElementById('home-video-play');
 const store = window.QuestionSingaporeStore;
 const HOME_TOP_VIDEO_STORAGE_KEY = 'question-singapore-home-top-video-url';
+const ADMIN_BANNER_STORAGE_KEY = 'question-singapore-admin-banner-url';
+const ADMIN_DEFAULT_BANNER_URL = 'hero-bg.svg';
 
 const translations = {
   ko: {
@@ -322,6 +324,35 @@ function initHomeVideo() {
     });
 }
 
+function initSharedTopBanner() {
+  const topBanner = document.querySelector('.top-banner');
+  if (!topBanner) {
+    return;
+  }
+
+  function applyBanner(url) {
+    const imageUrl = (url || ADMIN_DEFAULT_BANNER_URL).trim() || ADMIN_DEFAULT_BANNER_URL;
+    topBanner.style.backgroundImage = `url('${imageUrl}')`;
+  }
+
+  fetch('/config/banner.json')
+    .then((res) => (res.ok ? res.json() : Promise.reject(new Error('config not found'))))
+    .then((data) => {
+      const sharedUrl = (data && data.url ? String(data.url) : '').trim();
+      if (sharedUrl) {
+        window.localStorage.setItem(ADMIN_BANNER_STORAGE_KEY, sharedUrl);
+        applyBanner(sharedUrl);
+        return;
+      }
+      const cached = window.localStorage.getItem(ADMIN_BANNER_STORAGE_KEY) || '';
+      applyBanner(cached || ADMIN_DEFAULT_BANNER_URL);
+    })
+    .catch(() => {
+      const cached = window.localStorage.getItem(ADMIN_BANNER_STORAGE_KEY) || '';
+      applyBanner(cached || ADMIN_DEFAULT_BANNER_URL);
+    });
+}
+
 if (homeVideoPlayButton && homeTopVideo) {
   homeVideoPlayButton.addEventListener('click', async () => {
     homeTopVideo.hidden = false;
@@ -520,3 +551,4 @@ renderRecentQuestions();
 updateLanguage('ko');
 updateContactFields();
 initHomeVideo();
+initSharedTopBanner();

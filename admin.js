@@ -40,6 +40,7 @@ const ADMIN_EMAIL = 'hello@questionsingapore.com';
 const ADMIN_WHATSAPP_NUMBER = '6592218254';
 const ADMIN_BANNER_STORAGE_KEY = 'question-singapore-admin-banner-url';
 const ADMIN_DEFAULT_BANNER_URL = 'hero-bg.svg';
+const BANNER_CONFIG_PATH = '/config/banner.json';
 const HOME_TOP_VIDEO_STORAGE_KEY = 'question-singapore-home-top-video-url';
 const HOME_MEDIA_DB_NAME = 'question-singapore-media-db';
 const HOME_MEDIA_DB_VERSION = 1;
@@ -146,16 +147,42 @@ function saveAdminBannerImage(url) {
   if (!imageUrl) {
     window.localStorage.removeItem(ADMIN_BANNER_STORAGE_KEY);
     setAdminBannerImage(ADMIN_DEFAULT_BANNER_URL);
+    const clearCommand = `echo '{\"url\": \"\"}' > config/banner.json && git add config/banner.json && git commit -m "Clear banner image" && git push`;
+    console.log('모든 기기 배너를 초기화하려면 터미널에서 실행:\n' + clearCommand);
+    alert('로컬 배너가 초기화되었습니다.\n\n모든 기기에 적용하려면 터미널에서:\n' + clearCommand);
     return;
   }
 
   window.localStorage.setItem(ADMIN_BANNER_STORAGE_KEY, imageUrl);
   setAdminBannerImage(imageUrl);
+
+  const jsonContent = JSON.stringify({ url: imageUrl }, null, 2);
+  const syncCommand = `echo '${jsonContent}' > config/banner.json && git add config/banner.json && git commit -m "Update banner image URL" && git push`;
+  console.log('모든 기기 배너 동기화를 위해 터미널에서 실행:\n' + syncCommand);
+  alert(
+    '로컬 배너가 저장되었습니다.\n\n모든 기기에 적용하려면 터미널에서 다음 명령을 실행하세요:\n\n' +
+      syncCommand
+  );
 }
 
-function initAdminBannerImage() {
+async function initAdminBannerImage() {
   if (!adminBanner) {
     return;
+  }
+
+  try {
+    const response = await fetch(BANNER_CONFIG_PATH);
+    if (response.ok) {
+      const data = await response.json();
+      const sharedUrl = (data && data.url ? String(data.url) : '').trim();
+      if (sharedUrl) {
+        window.localStorage.setItem(ADMIN_BANNER_STORAGE_KEY, sharedUrl);
+        setAdminBannerImage(sharedUrl);
+        return;
+      }
+    }
+  } catch (error) {
+    console.warn('Config 파일에서 배너를 불러오지 못했습니다:', error);
   }
 
   const savedUrl = window.localStorage.getItem(ADMIN_BANNER_STORAGE_KEY);
