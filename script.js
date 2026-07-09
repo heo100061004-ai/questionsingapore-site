@@ -8,7 +8,14 @@ const contactValueInput = document.getElementById('contact-value');
 const whatsappFields = document.getElementById('whatsapp-fields');
 const countryCodeInput = document.getElementById('country-code');
 const phoneNumberInput = document.getElementById('phone-number');
+const homeTopImage = document.getElementById('home-top-image');
+const homeTopVideo = document.getElementById('home-top-video');
+const homeTopVideoSource = document.getElementById('home-top-video-source');
+const homeTopVideoEmpty = document.getElementById('home-top-video-empty');
 const store = window.QuestionSingaporeStore;
+const HOME_TOP_IMAGE_STORAGE_KEY = 'question-singapore-home-top-image-url';
+const HOME_TOP_VIDEO_STORAGE_KEY = 'question-singapore-home-top-video-url';
+const HOME_DEFAULT_IMAGE_URL = 'sample-home-banner.svg';
 
 const translations = {
   ko: {
@@ -279,6 +286,33 @@ async function notifyAdminOfInquiry(payload) {
   }
 }
 
+function initHomeTopMedia() {
+  if (homeTopImage) {
+    const imageUrl = window.localStorage.getItem(HOME_TOP_IMAGE_STORAGE_KEY) || HOME_DEFAULT_IMAGE_URL;
+    homeTopImage.style.backgroundImage = `url('${imageUrl}')`;
+  }
+
+  if (!homeTopVideo || !homeTopVideoSource) {
+    return;
+  }
+
+  const videoUrl = window.localStorage.getItem(HOME_TOP_VIDEO_STORAGE_KEY) || '';
+  if (!videoUrl) {
+    homeTopVideo.hidden = true;
+    if (homeTopVideoEmpty) {
+      homeTopVideoEmpty.hidden = false;
+    }
+    return;
+  }
+
+  homeTopVideoSource.src = videoUrl;
+  homeTopVideo.load();
+  homeTopVideo.hidden = false;
+  if (homeTopVideoEmpty) {
+    homeTopVideoEmpty.hidden = true;
+  }
+}
+
 function updateLanguage(lang) {
   const translation = translations[lang] || translations.ko;
 
@@ -464,3 +498,4 @@ if (form) {
 renderRecentQuestions();
 updateLanguage('ko');
 updateContactFields();
+initHomeTopMedia();

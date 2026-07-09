@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f2754" />
+      <stop offset="100%" stop-color="#2e5fa5" />
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.05" />
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.04" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#base)" />
+  <circle cx="1280" cy="190" r="240" fill="#6f9de0" opacity="0.22" />
+  <circle cx="260" cy="780" r="300" fill="#88afe8" opacity="0.2" />
+  <rect x="140" y="130" width="1080" height="2" fill="#d5e6ff" opacity="0.35" />
+  <rect x="140" y="760" width="1210" height="2" fill="#d5e6ff" opacity="0.2" />
+  <path d="M0 640 C250 560 420 760 720 660 C980 570 1220 650 1600 520 L1600 900 L0 900 Z" fill="#0b1f44" opacity="0.56" />
+  <rect width="1600" height="900" fill="url(#shine)" />
+
+  <g fill="#ffffff" font-family="Noto Sans KR, Arial, sans-serif">
+    <text x="160" y="300" font-size="64" font-weight="700" letter-spacing="1">Question Singapore</text>
+    <text x="160" y="380" font-size="38" font-weight="500" opacity="0.92">Trusted Guidance by Licensed Local Experts</text>
+    <text x="160" y="450" font-size="30" font-weight="400" opacity="0.86">Employment • Real Estate • Relocation</text>
+  </g>
+</svg>

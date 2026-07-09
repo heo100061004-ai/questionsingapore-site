@@ -51,6 +51,49 @@
         </div>
       </div>
 
+      <section class="panel panel--soft home-media-settings">
+        <h3>홈페이지 상단 미디어 설정</h3>
+        <p class="home-media-settings__caption">좌측 이미지와 우측 소개 영상을 각각 교체할 수 있습니다.</p>
+
+        <div class="home-media-settings__grid">
+          <article class="home-media-box">
+            <p class="home-media-box__title">좌측 이미지 배너</p>
+            <label>
+              <span>이미지 URL</span>
+              <input id="home-image-url" type="url" placeholder="https://example.com/home-banner.jpg" />
+            </label>
+            <div class="home-media-box__actions">
+              <button class="button button--secondary" id="home-image-apply" type="button">URL 적용</button>
+              <label class="button button--secondary admin-banner__upload">
+                <span>이미지 업로드</span>
+                <input id="home-image-file" type="file" accept="image/*" />
+              </label>
+              <button class="button button--secondary" id="home-image-reset" type="button">기본 이미지</button>
+            </div>
+            <p class="admin-banner__meta">현재 원본 크기: <strong id="home-image-size">확인 중...</strong></p>
+            <p class="admin-banner__meta">권장 원본: 1600x900px 이상, 표시 영역(데스크톱): 약 520x220px</p>
+          </article>
+
+          <article class="home-media-box">
+            <p class="home-media-box__title">우측 소개 영상</p>
+            <label>
+              <span>영상 URL (mp4/webm)</span>
+              <input id="home-video-url" type="url" placeholder="https://example.com/intro-video.mp4" />
+            </label>
+            <div class="home-media-box__actions">
+              <button class="button button--secondary" id="home-video-apply" type="button">URL 적용</button>
+              <label class="button button--secondary admin-banner__upload">
+                <span>영상 업로드</span>
+                <input id="home-video-file" type="file" accept="video/mp4,video/webm" />
+              </label>
+              <button class="button button--secondary" id="home-video-reset" type="button">영상 제거</button>
+            </div>
+            <p class="admin-banner__meta">현재 영상 크기: <strong id="home-video-size">확인 중...</strong></p>
+            <p class="admin-banner__meta">권장 원본: 1920x1080px, 표시 영역(데스크톱): 약 520x220px</p>
+          </article>
+        </div>
+      </section>
+
       <div class="hero__content">
         <div class="admin-hero-copy">
           <p class="eyebrow">Admin Panel</p>
