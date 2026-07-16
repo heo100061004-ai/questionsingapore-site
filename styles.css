@@ -296,6 +296,7 @@ img {
   box-shadow: 0 18px 35px rgba(31, 79, 139, 0.08);
   display: flex;
   flex-direction: column;
+  gap: 14px;
 }
 
 .hero__panel-card ul {
@@ -303,8 +304,8 @@ img {
 }
 
 .hero__video-slot {
-  margin-top: auto;
-  padding-top: 16px;
+  margin-top: 0;
+  padding-top: 0;
   display: grid;
   gap: 10px;
 }
@@ -812,6 +813,64 @@ h1 {
   margin: 8px 0 0;
   color: var(--muted);
   font-size: 0.92rem;
+}
+
+.site-footer__social {
+  margin-top: 14px;
+}
+
+.site-footer__social-title {
+  margin: 0 0 10px;
+  color: #193462;
+  font-weight: 700;
+  font-size: 0.96rem;
+}
+
+.site-footer__social-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.site-footer__social-card {
+  text-decoration: none;
+  border: 1px solid #d5deef;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  color: #17315d;
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.site-footer__social-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(17, 37, 72, 0.12);
+}
+
+.site-footer__social-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.86rem;
+}
+
+.site-footer__social-head span {
+  font-size: 0.78rem;
+  color: #55709b;
+}
+
+.site-footer__qr {
+  width: 100%;
+  max-width: 130px;
+  margin: 0 auto;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #f5f8ff;
+  border: 1px solid #e1e8f5;
 }
 
 .admin-toolbar {
@@ -1761,6 +1820,26 @@ textarea {
 
   .site-footer__inner {
     padding: 18px 16px;
+  }
+
+  .site-footer__social-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .site-footer__social-card {
+    grid-template-columns: auto 96px;
+    align-items: center;
+    padding: 10px 12px;
+  }
+
+  .site-footer__social-head {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .site-footer__qr {
+    max-width: 92px;
   }
 
   .top-banner__actions {

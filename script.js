@@ -18,10 +18,21 @@ const chatbotMessages = document.getElementById('chatbot-messages');
 const chatbotCategorySelect = document.getElementById('chatbot-category');
 const chatbotQuickList = document.getElementById('chatbot-quick-list');
 const askSection = document.getElementById('ask');
+const socialLinkedinCard = document.getElementById('social-linkedin-card');
+const socialWhatsappCard = document.getElementById('social-whatsapp-card');
+const socialKakaoCard = document.getElementById('social-kakao-card');
+const socialLinkedinQr = document.getElementById('social-linkedin-qr');
+const socialWhatsappQr = document.getElementById('social-whatsapp-qr');
+const socialKakaoQr = document.getElementById('social-kakao-qr');
 const store = window.QuestionSingaporeStore;
 const HOME_TOP_VIDEO_STORAGE_KEY = 'question-singapore-home-top-video-url';
 const ADMIN_BANNER_STORAGE_KEY = 'question-singapore-admin-banner-url';
 const ADMIN_DEFAULT_BANNER_URL = 'hero-bg.svg';
+const SOCIAL_LINKS = {
+  linkedin: 'https://www.linkedin.com/company/questionsingapore/',
+  whatsapp: 'https://wa.me/6592218254',
+  kakao: 'https://open.kakao.com/'
+};
 
 const translations = {
   ko: {
@@ -119,6 +130,8 @@ const translations = {
     alertIncomplete: '질문 내용과 연락처를 모두 입력해주세요.',
     alertSuccess: '님의 질문이 접수되었습니다. 관리자 페이지에서 답변을 준비해 바로 보내드릴 수 있습니다.',
     thankYou: '님, 문의가 접수되었습니다.'
+    ,socialQrTitle: 'Community & Network'
+    ,socialOpenLabel: '열기'
   },
   en: {
     heroEyebrow: 'Singapore Advisory Studio',
@@ -212,6 +225,8 @@ const translations = {
     alertIncomplete: 'Please fill in both the question and contact information.',
     alertSuccess: 'Your inquiry has been received. The admin will prepare a reply and send it shortly.',
     thankYou: 'Your inquiry has been received.'
+    ,socialQrTitle: 'Community & Network'
+    ,socialOpenLabel: 'Open'
   },
   zh: {
     heroEyebrow: '新加坡咨询工作室',
@@ -305,6 +320,8 @@ const translations = {
     alertIncomplete: '请填写问题内容和联系方式。',
     alertSuccess: '您的咨询已收到。管理员将尽快准备回复。',
     thankYou: '您的咨询已收到。'
+    ,socialQrTitle: '社群与网络'
+    ,socialOpenLabel: '打开'
   }
 };
 
@@ -553,6 +570,25 @@ function initSharedTopBanner() {
       const cached = window.localStorage.getItem(ADMIN_BANNER_STORAGE_KEY) || '';
       applyBanner(cached || ADMIN_DEFAULT_BANNER_URL);
     });
+}
+
+function buildQrImageUrl(targetUrl) {
+  const encoded = encodeURIComponent(targetUrl || '');
+  return `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=${encoded}`;
+}
+
+function applySocialCard(card, qrImage, url) {
+  if (!card || !qrImage || !url) {
+    return;
+  }
+  card.href = url;
+  qrImage.src = buildQrImageUrl(url);
+}
+
+function initFooterSocialLinks() {
+  applySocialCard(socialLinkedinCard, socialLinkedinQr, SOCIAL_LINKS.linkedin);
+  applySocialCard(socialWhatsappCard, socialWhatsappQr, SOCIAL_LINKS.whatsapp);
+  applySocialCard(socialKakaoCard, socialKakaoQr, SOCIAL_LINKS.kakao);
 }
 
 if (homeVideoPlayButton && homeTopVideo) {
@@ -1066,3 +1102,4 @@ updateContactFields();
 initHomeVideo();
 initSharedTopBanner();
 initChatbot();
+initFooterSocialLinks();
