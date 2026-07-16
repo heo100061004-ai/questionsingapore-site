@@ -1,0 +1,36 @@
+{
+  "domain": "relocation",
+  "english": {
+    "internalCategory": "First 7 Days Basics",
+    "question": "What should I prioritize in the first 7 days after moving to Singapore?",
+    "shortAnswer": "Prioritize identity documents, connectivity setup, transport routes, and essential healthcare orientation.",
+    "detailedAnswer": "In the first week, focus on high-impact basics: confirm key IDs and contact channels, activate phone and internet, map daily transport routes, and identify nearby clinics or hospitals. Keep a short checklist and complete urgent setup first before non-essential tasks.",
+    "thingsToNote": "Priorities differ by work start date and family situation, so adjust sequence to your timeline.",
+    "relatedTopics": ["First Week Checklist", "Transport", "Healthcare"],
+    "keywords": ["first week singapore", "newcomer checklist", "relocation first 7 days"],
+    "riskLevel": "low",
+    "sourceRefs": ["ICA", "MOH", "LTA"]
+  },
+  "korean": {
+    "internalCategory": "입국 첫 7일 기초",
+    "question": "싱가포르 입국 후 첫 7일에는 무엇부터 우선해야 하나요?",
+    "shortAnswer": "신분/연락 체계 확인, 통신 개통, 이동 동선, 기본 의료 접근 순으로 우선 정리하는 것이 좋습니다.",
+    "detailedAnswer": "첫 주에는 영향도가 큰 항목부터 처리하는 것이 효율적입니다. 주요 신분서류와 연락 채널 점검, 휴대폰/인터넷 개통, 일상 이동 동선 파악, 근처 의료기관 확인을 우선하세요. 비핵심 일정은 뒤로 미루고 필수 체크리스트부터 완료하는 방식이 안정적입니다.",
+    "thingsToNote": "근무 시작일과 가족 동반 여부에 따라 우선순위가 달라질 수 있습니다.",
+    "relatedTopics": ["첫주 체크리스트", "교통", "의료"],
+    "keywords": ["싱가포르 첫주", "이주 체크리스트", "입국 초기 준비"],
+    "riskLevel": "low",
+    "sourceRefs": ["ICA", "MOH", "LTA"]
+  },
+  "chinese": {
+    "internalCategory": "入境首周基础",
+    "question": "搬到新加坡后的前 7 天应优先处理什么？",
+    "shortAnswer": "建议优先完成证件与联系方式确认、通信开通、通勤路线和基本医疗点位了解。",
+    "detailedAnswer": "首周应先完成影响最大的基础事项：核对关键证件与联系方式、开通手机与网络、熟悉日常通勤路线、确认附近诊所/医院。建议先完成必要清单，再安排非紧急事项。",
+    "thingsToNote": "优先顺序应结合入职日期和家庭情况动态调整。",
+    "relatedTopics": ["首周清单", "交通", "医疗"],
+    "keywords": ["新加坡首周", "搬迁清单", "入境初期准备"],
+    "riskLevel": "low",
+    "sourceRefs": ["ICA", "MOH", "LTA"]
+  }
+}

@@ -1,0 +1,279 @@
+{
+  "meta": {
+    "language": "en",
+    "domain": "relocation",
+    "version": "2026-07-11",
+    "sourceOfTruth": "English master",
+    "entryCount": 10
+  },
+  "items": [
+    {
+      "id": "REL-0001",
+      "category": "relocation",
+      "internalCategory": "Before Moving",
+      "question": "What should I prepare before moving to Singapore for work or family reasons?",
+      "shortAnswer": "Prepare document validity, entry pathway checks, temporary stay plans, and first-month essentials.",
+      "detailedAnswer": "A practical pre-move plan includes checking travel and identity documents, confirming relevant pass pathways, arranging temporary accommodation, and preparing first-30-day setup tasks such as banking, transport, and healthcare orientation.",
+      "thingsToNote": "Requirements differ by nationality and pass route.",
+      "relatedTopics": [
+        "Visa",
+        "Immigration",
+        "First 30 Days Checklist"
+      ],
+      "keywords": [
+        "move to singapore checklist",
+        "before relocation singapore",
+        "expat preparation singapore"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "ICA"
+      ]
+    },
+    {
+      "id": "REL-0002",
+      "category": "relocation",
+      "internalCategory": "Immigration",
+      "question": "Where can I check official residence and long-term stay pathways in Singapore?",
+      "shortAnswer": "Use ICA official residence and long-term stay pages as the primary reference.",
+      "detailedAnswer": "ICA provides structured pathways for residence-related matters including long-term stay categories and related services. Applicants should rely on ICA channels for current process flow and documentary requirements.",
+      "thingsToNote": "Do not rely on unofficial summaries for critical immigration decisions.",
+      "relatedTopics": [
+        "ICA",
+        "Long-Term Visit Pass",
+        "Permanent Residence"
+      ],
+      "keywords": [
+        "ica reside singapore",
+        "long term stay singapore",
+        "singapore residence pathways"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "ICA"
+      ]
+    },
+    {
+      "id": "REL-0003",
+      "category": "relocation",
+      "internalCategory": "Healthcare",
+      "question": "How can newcomers navigate healthcare services in Singapore?",
+      "shortAnswer": "Start with MOH guidance on healthcare journey, access points, and expense management resources.",
+      "detailedAnswer": "Newcomers can map their healthcare plan by understanding where to seek care, what support channels exist, and how healthcare expenses are managed. MOH resources provide baseline navigation information suitable for first-stage orientation.",
+      "thingsToNote": "Coverage and payment arrangements can vary by residency and insurance profile.",
+      "relatedTopics": [
+        "MOH",
+        "Insurance",
+        "Managing Expenses"
+      ],
+      "keywords": [
+        "healthcare singapore newcomer",
+        "moh healthcare journey",
+        "medical support singapore"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "MOH"
+      ]
+    },
+    {
+      "id": "REL-0004",
+      "category": "relocation",
+      "internalCategory": "Transportation",
+      "question": "How do new residents quickly understand public transport in Singapore?",
+      "shortAnswer": "Use LTA transport tools for train, bus, route, and fare references.",
+      "detailedAnswer": "LTA channels provide route maps, service information, and fare tools that help newcomers plan daily commuting. A useful first step is to map home-to-work or home-to-school routes and compare travel options.",
+      "thingsToNote": "Travel times can differ significantly by peak hours.",
+      "relatedTopics": [
+        "LTA",
+        "MRT",
+        "Bus Services"
+      ],
+      "keywords": [
+        "public transport singapore",
+        "lta fare calculator",
+        "mrt bus route singapore"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "LTA"
+      ]
+    },
+    {
+      "id": "REL-0005",
+      "category": "relocation",
+      "internalCategory": "Digital Setup",
+      "question": "What digital accounts are important in the first month after moving to Singapore?",
+      "shortAnswer": "Prioritize identity-linked and service-linked accounts used for government and daily tasks.",
+      "detailedAnswer": "In early settlement, newcomers commonly set up core digital access used for official interactions and day-to-day services. Account setup requirements differ by profile and available identity pathways, so users should verify the latest onboarding route.",
+      "thingsToNote": "Use only official portals for account setup and credential management.",
+      "relatedTopics": [
+        "Singpass",
+        "Government Services",
+        "First 30 Days"
+      ],
+      "keywords": [
+        "singpass setup foreigner",
+        "new resident digital setup",
+        "gov account singapore"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "ICA"
+      ]
+    },
+    {
+      "id": "REL-0006",
+      "category": "relocation",
+      "internalCategory": "Schools and Family",
+      "question": "How should relocating families shortlist schools in Singapore?",
+      "shortAnswer": "Start with commute radius, program fit, budget, and enrollment timing windows.",
+      "detailedAnswer": "A practical school shortlist is usually based on home-work-school commute, curriculum preference, fees, and admission cycle timelines. Families should confirm official school and authority information before making commitments.",
+      "thingsToNote": "Seat availability and timelines can shift by school and intake cycle.",
+      "relatedTopics": [
+        "Schools",
+        "International Schools",
+        "Daily Commute"
+      ],
+      "keywords": [
+        "school selection singapore relocation",
+        "international school singapore checklist",
+        "family relocation singapore"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "LTA"
+      ]
+    },
+    {
+      "id": "REL-0007",
+      "category": "relocation",
+      "internalCategory": "Medication and Customs",
+      "question": "Can I bring medication when relocating to Singapore?",
+      "shortAnswer": "Some medication may be allowed, but rules and declarations depend on product type and current regulations.",
+      "detailedAnswer": "Medication transport requirements can vary based on classification and quantity. Before travel, users should verify official guidance and keep required documentation where applicable.",
+      "thingsToNote": "Always verify current import and declaration requirements before departure.",
+      "relatedTopics": [
+        "Customs",
+        "Healthcare",
+        "Travel Documents"
+      ],
+      "keywords": [
+        "bring medication singapore",
+        "relocation medicine rules",
+        "singapore customs medication"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "ICA",
+        "MOH"
+      ]
+    },
+    {
+      "id": "REL-0008",
+      "category": "relocation",
+      "internalCategory": "First 30 Days",
+      "question": "What is a realistic first-30-days relocation checklist for Singapore?",
+      "shortAnswer": "Focus on housing setup, transport routines, healthcare orientation, and key admin tasks.",
+      "detailedAnswer": "A practical first-month checklist usually covers temporary-to-stable housing transition, route planning, essential account setup, and core healthcare and schooling orientation for households. The sequence can be adjusted based on work start date and family composition.",
+      "thingsToNote": "Plan buffer time for account approvals and appointment waiting times.",
+      "relatedTopics": [
+        "Relocation Checklist",
+        "Transport",
+        "Healthcare",
+        "Housing"
+      ],
+      "keywords": [
+        "first 30 days singapore",
+        "new expat checklist singapore",
+        "relocation onboarding singapore"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "ICA",
+        "MOH",
+        "LTA"
+      ]
+    },
+    {
+      "id": "REL-0009",
+      "category": "relocation",
+      "internalCategory": "First 30 Days",
+      "question": "What is a realistic first-week relocation plan after arriving in Singapore?",
+      "shortAnswer": "Use a practical sequence: documents, connectivity, transport routes, and medical access basics.",
+      "detailedAnswer": "A realistic first-week plan is to verify key documents and contact details, activate mobile and internet essentials, map daily transport routes, and identify nearby healthcare options. Keep a simple checklist and complete only critical setup tasks first.",
+      "thingsToNote": "Exact priorities differ by work start date and family situation.",
+      "relatedTopics": [
+        "First 30 Days",
+        "Transport",
+        "Healthcare"
+      ],
+      "keywords": [
+        "first week singapore relocation",
+        "newcomer checklist singapore",
+        "expat first week singapore"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "ICA",
+        "MOH",
+        "LTA"
+      ]
+    },
+    {
+      "id": "REL-0010",
+      "category": "relocation",
+      "internalCategory": "First 7 Days Basics",
+      "question": "What should I prioritize in the first 7 days after moving to Singapore?",
+      "shortAnswer": "Prioritize identity documents, connectivity setup, transport routes, and essential healthcare orientation.",
+      "detailedAnswer": "In the first week, focus on high-impact basics: confirm key IDs and contact channels, activate phone and internet, map daily transport routes, and identify nearby clinics or hospitals. Keep a short checklist and complete urgent setup first before non-essential tasks.",
+      "thingsToNote": "Priorities differ by work start date and family situation, so adjust sequence to your timeline.",
+      "relatedTopics": [
+        "First Week Checklist",
+        "Transport",
+        "Healthcare"
+      ],
+      "keywords": [
+        "first week singapore",
+        "newcomer checklist",
+        "relocation first 7 days"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "ICA",
+        "MOH",
+        "LTA"
+      ]
+    }
+  ]
+}

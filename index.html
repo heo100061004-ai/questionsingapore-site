@@ -49,14 +49,6 @@
           </div>
         </div>
         <div class="hero__panel-card">
-          <h3 data-i18n="heroFlowTitle">상담 흐름</h3>
-          <!-- Home intro video slot is rendered below the consultation steps. -->
-          <ul>
-            <li data-i18n="heroFlow1">질문과 연락처를 등록합니다.</li>
-            <li data-i18n="heroFlow2">관리자가 답변을 준비합니다.</li>
-            <li data-i18n="heroFlow3">이메일 또는 WhatsApp으로 회신합니다.</li>
-            <li data-i18n="heroFlow4">언어별 맞춤 안내를 제공합니다.</li>
-          </ul>
           <div class="hero__video-slot">
             <button id="home-video-play" class="hero__video-play" type="button">
               <span class="hero__video-play-icon" aria-hidden="true">▶</span>
@@ -67,6 +59,12 @@
             </video>
             <p id="home-top-video-empty" class="hero__video-empty" data-i18n="homeVideoEmpty">관리자에서 소개 영상을 설정하면 이 영역에 표시됩니다.</p>
           </div>
+          <h3 data-i18n="heroFlowTitle">서비스 이용 안내</h3>
+          <ul>
+            <li data-i18n="heroFlow1">일반 정보는 AI 스마트 안내를 이용해서 검색합니다.</li>
+            <li data-i18n="heroFlow2">전문가 상담 필요시 질문과 연락처를 입력합니다.</li>
+            <li data-i18n="heroFlow3">관리자와 이메일/와츠앱으로 추가 상담을 진행합니다.</li>
+          </ul>
         </div>
       </div>
     </header>
@@ -140,7 +138,39 @@
         </div>
       </section>
 
-      <section id="ask" class="section">
+      <section id="chatbot" class="section">
+        <div class="section__intro">
+          <p class="eyebrow" data-i18n="chatCaption">AI 스마트 안내</p>
+          <h2 data-i18n="chatTitle">문의 내용에 대한 정보를 실시간으로 확인할수 있습니다.</h2>
+        </div>
+        <div class="chatbot-shell">
+          <div class="chatbot-head">
+            <div class="chatbot-head__badge">LIVE FAQ</div>
+            <div class="chatbot-head__badge chatbot-head__badge--soft">AI Fallback</div>
+          </div>
+          <div id="chatbot-messages" class="chatbot-messages" aria-live="polite"></div>
+          <div class="chatbot-quick">
+            <p class="chatbot-quick__title" data-i18n="chatQuickLabel">최근/주요 검색 키워드</p>
+            <div id="chatbot-quick-list" class="chatbot-quick__list"></div>
+          </div>
+          <form id="chatbot-form" class="chatbot-form">
+            <label class="chatbot-category" for="chatbot-category" data-i18n="chatCategoryLabel">카테고리</label>
+            <select id="chatbot-category" name="chatbotCategory" class="chatbot-category-select" aria-label="챗봇 카테고리">
+              <option value="recruitment" data-i18n="categoryRecruitment">채용/고용</option>
+              <option value="property" data-i18n="categoryRealty">부동산</option>
+              <option value="relocation" data-i18n="categoryRelocation">리로케이션</option>
+            </select>
+            <label class="sr-only" for="chatbot-input" data-i18n="chatInputLabel">챗봇 질문</label>
+            <input id="chatbot-input" name="chatbotQuestion" type="text" data-i18n-placeholder="chatInputPlaceholder" placeholder="예: Employment Pass 이직 준비 체크리스트 알려줘" required />
+            <button class="button" type="submit" data-i18n="chatSend">보내기</button>
+          </form>
+          <div class="chatbot-cta-wrap">
+            <a class="button button--secondary chatbot-cta" href="#ask" data-i18n="chatCta">문의 신청으로 이동</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="ask" class="section ask-section ask-section--collapsed" hidden>
         <div class="section__intro">
           <p class="eyebrow" data-i18n="askCaption">문의 신청</p>
           <h2 data-i18n="askTitle">답변이 필요한 상황을 알려주세요</h2>
@@ -157,9 +187,9 @@
                   <span data-i18n="categoryLabel">카테고리</span>
                   <select name="category" required>
                     <option value="" data-i18n="selectOption">선택해주세요</option>
-                    <option value="고용" data-i18n="categoryEmployment">고용</option>
-                    <option value="부동산" data-i18n="categoryRealty">부동산</option>
-                    <option value="리로케이션" data-i18n="categoryRelocation">리로케이션</option>
+                    <option value="recruitment" data-i18n="categoryRecruitment">채용/고용</option>
+                    <option value="property" data-i18n="categoryRealty">부동산</option>
+                    <option value="relocation" data-i18n="categoryRelocation">리로케이션</option>
                   </select>
                 </label>
                 <label>

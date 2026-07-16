@@ -1,0 +1,279 @@
+{
+  "meta": {
+    "language": "zh",
+    "domain": "relocation",
+    "version": "2026-07-11",
+    "sourceOfTruth": "English master",
+    "entryCount": 10
+  },
+  "items": [
+    {
+      "id": "REL-0001",
+      "category": "relocation",
+      "internalCategory": "Before Moving",
+      "question": "因工作或家庭搬到新加坡前应先准备什么？",
+      "shortAnswer": "建议先准备证件有效性、入境路径、临时住宿和首月基础事项。",
+      "detailedAnswer": "实用的行前清单通常包括证件核对、长期停留路径确认、临时住宿安排，以及首 30 天所需的银行、交通、医疗等基础设置。",
+      "thingsToNote": "具体要求会因国籍和停留路径而不同。",
+      "relatedTopics": [
+        "Visa",
+        "Immigration",
+        "First 30 Days Checklist"
+      ],
+      "keywords": [
+        "搬到新加坡清单",
+        "行前准备",
+        "expat 准备"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "ICA"
+      ]
+    },
+    {
+      "id": "REL-0002",
+      "category": "relocation",
+      "internalCategory": "Immigration",
+      "question": "在哪里可以查到新加坡官方长期居留路径？",
+      "shortAnswer": "建议以 ICA 官方居留页面作为主要依据。",
+      "detailedAnswer": "ICA 提供长期居留相关路径与服务入口。申请流程与所需文件应以 ICA 官方信息为准。",
+      "thingsToNote": "涉及身份安排的关键决定不应仅依赖非官方摘要。",
+      "relatedTopics": [
+        "ICA",
+        "Long-Term Visit Pass",
+        "Permanent Residence"
+      ],
+      "keywords": [
+        "ICA 居留",
+        "长期停留 新加坡",
+        "居留路径"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "ICA"
+      ]
+    },
+    {
+      "id": "REL-0003",
+      "category": "relocation",
+      "internalCategory": "Healthcare",
+      "question": "新移居者如何快速了解新加坡医疗体系？",
+      "shortAnswer": "可先参考 MOH 关于就医路径与费用管理的官方说明。",
+      "detailedAnswer": "新移居者可先了解何时何地就医、可用支持渠道以及费用管理方式。MOH 资料可作为初期导航基础。",
+      "thingsToNote": "医疗保障与支付安排可能因身份和保险而不同。",
+      "relatedTopics": [
+        "MOH",
+        "Insurance",
+        "Managing Expenses"
+      ],
+      "keywords": [
+        "新加坡医疗 新移民",
+        "MOH 指南",
+        "医疗费用"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "MOH"
+      ]
+    },
+    {
+      "id": "REL-0004",
+      "category": "relocation",
+      "internalCategory": "Transportation",
+      "question": "新居民如何尽快熟悉新加坡公共交通？",
+      "shortAnswer": "建议使用 LTA 工具查看地铁、巴士、路线与票价信息。",
+      "detailedAnswer": "LTA 提供路线图、服务信息和票价工具。先建立家到公司或学校的日常路线，能更快适应通勤。",
+      "thingsToNote": "高峰时段通勤时间可能明显增加。",
+      "relatedTopics": [
+        "LTA",
+        "MRT",
+        "Bus Services"
+      ],
+      "keywords": [
+        "新加坡公共交通",
+        "LTA 票价",
+        "MRT 巴士路线"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "LTA"
+      ]
+    },
+    {
+      "id": "REL-0005",
+      "category": "relocation",
+      "internalCategory": "Digital Setup",
+      "question": "搬到新加坡后首月应优先建立哪些数字账户？",
+      "shortAnswer": "应优先处理与官方服务和日常事务相关的核心账户。",
+      "detailedAnswer": "初期安顿通常需要建立关键线上身份与服务账户。可用路径和条件会因个人身份而异，应以官方开通流程为准。",
+      "thingsToNote": "仅在官方门户完成账号申请与认证。",
+      "relatedTopics": [
+        "Singpass",
+        "Government Services",
+        "First 30 Days"
+      ],
+      "keywords": [
+        "singpass 开通",
+        "数字安顿",
+        "政府服务账号"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "ICA"
+      ]
+    },
+    {
+      "id": "REL-0006",
+      "category": "relocation",
+      "internalCategory": "Schools and Family",
+      "question": "家庭搬迁到新加坡时应如何筛选学校？",
+      "shortAnswer": "建议从通勤半径、课程适配、预算和招生时间窗口开始。",
+      "detailedAnswer": "学校初筛通常依据居住与通勤动线、课程体系、费用与招生周期。做出最终决定前应再次核对学校与官方信息。",
+      "thingsToNote": "学位与时间安排可能按招生周期变化。",
+      "relatedTopics": [
+        "Schools",
+        "International Schools",
+        "Daily Commute"
+      ],
+      "keywords": [
+        "新加坡学校筛选",
+        "家庭搬迁",
+        "国际学校清单"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "LTA"
+      ]
+    },
+    {
+      "id": "REL-0007",
+      "category": "relocation",
+      "internalCategory": "Medication and Customs",
+      "question": "搬迁到新加坡时可以携带药品入境吗？",
+      "shortAnswer": "部分药品可携带，但具体要求取决于药品类型、数量与现行规定。",
+      "detailedAnswer": "药品携带规则会因类别和用途不同而变化。出发前应核对最新官方要求，并准备可能需要的证明文件。",
+      "thingsToNote": "请务必在出行前确认最新申报与携带规则。",
+      "relatedTopics": [
+        "Customs",
+        "Healthcare",
+        "Travel Documents"
+      ],
+      "keywords": [
+        "携带药品 新加坡",
+        "海关药品",
+        "搬迁药品规则"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "ICA",
+        "MOH"
+      ]
+    },
+    {
+      "id": "REL-0008",
+      "category": "relocation",
+      "internalCategory": "First 30 Days",
+      "question": "新加坡落地前 30 天的实用清单应该怎么排？",
+      "shortAnswer": "建议优先处理住房稳定、交通路线、医疗与关键行政事项。",
+      "detailedAnswer": "首月可按从临时住宿到稳定居住、固定通勤路线、配置关键账户和医疗学校事项的顺序推进。具体优先级可按工作起始日和家庭结构调整。",
+      "thingsToNote": "建议预留审批与预约等待时间。",
+      "relatedTopics": [
+        "Relocation Checklist",
+        "Transport",
+        "Healthcare",
+        "Housing"
+      ],
+      "keywords": [
+        "新加坡 首月清单",
+        "安顿流程",
+        "expat onboarding"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "ICA",
+        "MOH",
+        "LTA"
+      ]
+    },
+    {
+      "id": "REL-0009",
+      "category": "relocation",
+      "internalCategory": "First 30 Days",
+      "question": "抵达新加坡后的第一周应如何安排安顿计划？",
+      "shortAnswer": "建议按证件核对、通信开通、通勤路线、医疗基础的顺序推进。",
+      "detailedAnswer": "第一周可先确认核心证件与联系方式，完成手机与网络基础开通，再建立日常通勤路线并了解附近医疗资源。先完成关键任务，再逐步扩展到次要事项。",
+      "thingsToNote": "优先级会因工作开始时间和家庭情况而变化。",
+      "relatedTopics": [
+        "First 30 Days",
+        "Transport",
+        "Healthcare"
+      ],
+      "keywords": [
+        "新加坡 第一周 安顿",
+        "新移居者清单",
+        "expat first week"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "ICA",
+        "MOH",
+        "LTA"
+      ]
+    },
+    {
+      "id": "REL-0010",
+      "category": "relocation",
+      "internalCategory": "入境首周基础",
+      "question": "搬到新加坡后的前 7 天应优先处理什么？",
+      "shortAnswer": "建议优先完成证件与联系方式确认、通信开通、通勤路线和基本医疗点位了解。",
+      "detailedAnswer": "首周应先完成影响最大的基础事项：核对关键证件与联系方式、开通手机与网络、熟悉日常通勤路线、确认附近诊所/医院。建议先完成必要清单，再安排非紧急事项。",
+      "thingsToNote": "优先顺序应结合入职日期和家庭情况动态调整。",
+      "relatedTopics": [
+        "首周清单",
+        "交通",
+        "医疗"
+      ],
+      "keywords": [
+        "新加坡首周",
+        "搬迁清单",
+        "入境初期准备"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "ICA",
+        "MOH",
+        "LTA"
+      ]
+    }
+  ]
+}

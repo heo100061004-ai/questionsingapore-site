@@ -43,6 +43,30 @@ const videoSyncGuide = document.getElementById('video-sync-guide');
 const videoSyncMessage = document.getElementById('video-sync-message');
 const videoSyncCommand = document.getElementById('video-sync-command');
 const videoSyncCopyButton = document.getElementById('video-sync-copy');
+const docSuggestRefreshButton = document.getElementById('doc-suggest-refresh');
+const docSuggestCopyButton = document.getElementById('doc-suggest-copy');
+const docSuggestRunButton = document.getElementById('doc-suggest-run');
+const docSuggestStatus = document.getElementById('doc-suggest-status');
+const docSuggestCommand = document.getElementById('doc-suggest-command');
+const docSuggestList = document.getElementById('doc-suggest-list');
+const expertForm = document.getElementById('expert-form');
+const expertNameInput = document.getElementById('expert-name');
+const expertContactInput = document.getElementById('expert-contact');
+const expertCategoryInput = document.getElementById('expert-category');
+const expertServicesInput = document.getElementById('expert-services');
+const expertNotesInput = document.getElementById('expert-notes');
+const expertFormMessage = document.getElementById('expert-form-message');
+const expertList = document.getElementById('expert-list');
+const rawDocUploadForm = document.getElementById('raw-doc-upload-form');
+const rawDocFilesInput = document.getElementById('raw-doc-files');
+const rawDocLanguageInput = document.getElementById('raw-doc-language');
+const rawDocCategoryInput = document.getElementById('raw-doc-category');
+const rawDocSourceInput = document.getElementById('raw-doc-source');
+const rawDocUrlInput = document.getElementById('raw-doc-url');
+const rawDocKeywordsInput = document.getElementById('raw-doc-keywords');
+const rawDocUploadButton = document.getElementById('raw-doc-upload-button');
+const rawDocUploadStatus = document.getElementById('raw-doc-upload-status');
+const modalExperts = document.getElementById('question-modal-experts');
 const store = window.QuestionSingaporeStore;
 const ADMIN_EMAIL = 'hello@questionsingapore.com';
 const ADMIN_WHATSAPP_NUMBER = '6592218254';
@@ -61,6 +85,7 @@ let statusFilter = 'pending';
 let categoryFilter = 'all';
 let sortOrder = 'latest';
 let selectedQuestionId = null;
+let docSuggestions = [];
 
 const languageMap = {
   ko: '한국어',
@@ -75,6 +100,45 @@ const contactMap = {
 
 function normalizeText(value) {
   return (value || '').toString().toLowerCase();
+}
+
+function normalizeExpertCategory(value) {
+  const text = normalizeText(value);
+  if (text.includes('recruitment') || text.includes('employment') || text.includes('고용')) {
+    return 'employment';
+  }
+  if (text.includes('property') || text.includes('부동산')) {
+    return 'property';
+  }
+  if (text.includes('relocation') || text.includes('리로케이션')) {
+    return 'relocation';
+  }
+  return 'employment';
+}
+
+function convertFileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = typeof reader.result === 'string' ? reader.result : '';
+      const commaIndex = result.indexOf(',');
+      const base64 = commaIndex >= 0 ? result.slice(commaIndex + 1) : result;
+      resolve(base64);
+    };
+    reader.onerror = () => reject(reader.error || new Error('Failed to read file'));
+    reader.readAsDataURL(file);
+  });
+}
+
+function getAdminApiHeaders() {
+  const token = window.localStorage.getItem('question-singapore-admin-api-token') || '';
+  const headers = {
+    'Content-Type': 'application/json'
+  };
+  if (token) {
+    headers['x-admin-token'] = token;
+  }
+  return headers;
 }
 
 function escapeHtml(value) {
@@ -421,6 +485,286 @@ function getCategories(questions) {
   return [...new Set(questions.map((question) => question.category).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ko'));
 }
 
+function getSelectedSuggestionFiles() {
+  if (!docSuggestList) {
+    return [];
+  }
+
+  const selected = Array.from(docSuggestList.querySelectorAll('input[type="checkbox"][data-doc-file]:checked'));
+  return [...new Set(selected.map((node) => String(node.getAttribute('data-doc-file') || '').trim()).filter(Boolean))];
+}
+
+function updateSuggestionCommand() {
+  if (!docSuggestCommand) {
+    return;
+  }
+
+  const files = getSelectedSuggestionFiles();
+  const commandBase = 'node tools/sync-doc-index-to-faq.js';
+  if (!files.length) {
+    docSuggestCommand.value = `${commandBase} --dry-run`;
+    return;
+  }
+
+  docSuggestCommand.value = `${commandBase} --files ${files.join(',')}`;
+}
+
+async function runDocSuggestionSync() {
+  if (!docSuggestRunButton || !docSuggestStatus) {
+    return;
+  }
+
+  const files = getSelectedSuggestionFiles();
+  if (!files.length) {
+    window.alert('먼저 승인할 문서 제안을 1개 이상 선택해주세요.');
+    return;
+  }
+
+  const originalText = docSuggestRunButton.textContent;
+  docSuggestRunButton.disabled = true;
+  docSuggestRunButton.textContent = '반영 실행 중...';
+  docSuggestStatus.textContent = `선택 ${files.length}개 문서를 FAQ DB에 반영 중...`;
+
+  try {
+    const response = await fetch('/api/doc-sync-run', {
+      method: 'POST',
+      headers: getAdminApiHeaders(),
+      body: JSON.stringify({
+        files,
+        threshold: 0.72,
+        dryRun: false,
+        syncLocales: true
+      })
+    });
+
+    const data = await response.json();
+    if (!response.ok || !data || !data.ok) {
+      throw new Error((data && data.message) || `Failed: ${response.status}`);
+    }
+
+    const summary = data.summary || {};
+    const inserted = Array.isArray(summary.inserted) ? summary.inserted.length : 0;
+    const skipped = Array.isArray(summary.skipped) ? summary.skipped.length : 0;
+    const localized = Array.isArray(summary.localizedInserted) ? summary.localizedInserted.length : 0;
+
+    docSuggestStatus.textContent = `반영 완료: 신규 ${inserted}개, 중복 스킵 ${skipped}개, 다국어 동기화 ${localized}개`;
+    await fetchDocSuggestions();
+  } catch (error) {
+    docSuggestStatus.textContent = '자동 반영에 실패했습니다. API 권한/배포 환경을 확인해주세요.';
+    window.alert(`자동 반영 실패: ${error.message || 'unknown error'}`);
+  } finally {
+    docSuggestRunButton.disabled = false;
+    docSuggestRunButton.textContent = originalText;
+  }
+}
+
+function renderDocSuggestions() {
+  if (!docSuggestList || !docSuggestStatus) {
+    return;
+  }
+
+  if (!docSuggestions.length) {
+    docSuggestStatus.textContent = '승인 대기 제안이 없습니다.';
+    docSuggestList.innerHTML = '<p class="empty-state">문서 제안 데이터가 없습니다.</p>';
+    updateSuggestionCommand();
+    return;
+  }
+
+  const pending = docSuggestions.filter((item) => !item.duplicate);
+  docSuggestStatus.textContent = `총 ${docSuggestions.length}개 제안 중 승인 후보 ${pending.length}개`;
+
+  docSuggestList.innerHTML = docSuggestions
+    .slice(0, 120)
+    .map((item) => {
+      const pendingClass = item.duplicate ? 'is-duplicate' : 'is-pending';
+      const duplicateLabel = item.duplicate
+        ? `중복(${item.duplicateType || 'similar'}${item.duplicateScore ? ` ${item.duplicateScore}` : ''})`
+        : '승인 가능';
+
+      return `
+        <label class="doc-suggest-item ${pendingClass}">
+          <input type="checkbox" data-doc-file="${escapeHtml(item.file || '')}" ${item.duplicate ? 'disabled' : 'checked'} />
+          <div class="doc-suggest-item__body">
+            <p class="doc-suggest-item__title">${escapeHtml(item.title || item.file || 'Untitled')}</p>
+            <p class="doc-suggest-item__meta">${escapeHtml(item.domain || 'unknown')} · ${escapeHtml(item.file || '')} · ${escapeHtml(duplicateLabel)}</p>
+            <p class="doc-suggest-item__question">${escapeHtml(item.question || '')}</p>
+          </div>
+        </label>
+      `;
+    })
+    .join('');
+
+  updateSuggestionCommand();
+}
+
+async function fetchDocSuggestions() {
+  if (!docSuggestStatus) {
+    return;
+  }
+
+  docSuggestStatus.textContent = '문서 제안을 불러오는 중...';
+
+  try {
+    const response = await fetch('/api/doc-suggestions?threshold=0.72&limit=500');
+    if (!response.ok) {
+      throw new Error(`Failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    docSuggestions = Array.isArray(data && data.items) ? data.items : [];
+    renderDocSuggestions();
+  } catch (error) {
+    docSuggestions = [];
+    if (docSuggestList) {
+      docSuggestList.innerHTML = '<p class="empty-state">제안을 불러오지 못했습니다.</p>';
+    }
+    docSuggestStatus.textContent = '문서 제안을 불러오지 못했습니다. 배포/API 상태를 확인해주세요.';
+    updateSuggestionCommand();
+  }
+}
+
+function renderExperts() {
+  if (!expertList || !store || typeof store.getExperts !== 'function') {
+    return;
+  }
+
+  const experts = store.getExperts();
+  if (!experts.length) {
+    expertList.innerHTML = '<p class="empty-state">등록된 전문가가 없습니다.</p>';
+    return;
+  }
+
+  expertList.innerHTML = experts
+    .map((expert) => {
+      return `
+        <article class="expert-item" data-expert-id="${escapeHtml(expert.id || '')}">
+          <div class="expert-item__topline">
+            <span class="chip">${escapeHtml(expert.category || '기타')}</span>
+            <button class="button button--secondary" type="button" data-action="remove-expert" data-expert-id="${escapeHtml(expert.id || '')}">삭제</button>
+          </div>
+          <h3>${escapeHtml(expert.name || '-')}</h3>
+          <p class="expert-item__line"><strong>연락처:</strong> ${escapeHtml(expert.contact || '-')}</p>
+          <p class="expert-item__line"><strong>주요 서비스:</strong> ${escapeHtml(expert.services || '-')}</p>
+          <p class="expert-item__line"><strong>메모:</strong> ${escapeHtml(expert.notes || '-')}</p>
+        </article>
+      `;
+    })
+    .join('');
+}
+
+function addExpertFromForm() {
+  if (!expertForm || !store || typeof store.addExpert !== 'function') {
+    return;
+  }
+
+  const name = (expertNameInput && expertNameInput.value ? expertNameInput.value : '').trim();
+  const contact = (expertContactInput && expertContactInput.value ? expertContactInput.value : '').trim();
+  const category = (expertCategoryInput && expertCategoryInput.value ? expertCategoryInput.value : '고용').trim();
+  const services = (expertServicesInput && expertServicesInput.value ? expertServicesInput.value : '').trim();
+  const notes = (expertNotesInput && expertNotesInput.value ? expertNotesInput.value : '').trim();
+
+  if (!name || !contact || !services) {
+    if (expertFormMessage) {
+      expertFormMessage.textContent = '이름, 연락처, 주요 서비스는 필수입니다.';
+    }
+    return;
+  }
+
+  store.addExpert({ name, contact, category, services, notes });
+  if (expertFormMessage) {
+    expertFormMessage.textContent = '전문가가 등록되었습니다.';
+  }
+
+  expertForm.reset();
+  if (expertCategoryInput) {
+    expertCategoryInput.value = '고용';
+  }
+  renderExperts();
+}
+
+function removeExpert(expertId) {
+  if (!expertId || !store || typeof store.removeExpert !== 'function') {
+    return;
+  }
+
+  const confirmed = window.confirm('해당 전문가를 삭제하시겠습니까?');
+  if (!confirmed) {
+    return;
+  }
+
+  store.removeExpert(expertId);
+  if (expertFormMessage) {
+    expertFormMessage.textContent = '전문가가 삭제되었습니다.';
+  }
+  renderExperts();
+}
+
+async function uploadRawDocs() {
+  if (!rawDocFilesInput || !rawDocUploadStatus) {
+    return;
+  }
+
+  const files = Array.from(rawDocFilesInput.files || []);
+  if (!files.length) {
+    rawDocUploadStatus.textContent = '업로드할 파일을 선택해주세요.';
+    return;
+  }
+
+  const language = rawDocLanguageInput ? rawDocLanguageInput.value : 'en';
+  const category = rawDocCategoryInput ? rawDocCategoryInput.value : 'employment';
+  const source = rawDocSourceInput ? rawDocSourceInput.value.trim() : '';
+  const url = rawDocUrlInput ? rawDocUrlInput.value.trim() : '';
+  const keywords = rawDocKeywordsInput
+    ? rawDocKeywordsInput.value.split(',').map((item) => item.trim()).filter(Boolean)
+    : [];
+
+  if (rawDocUploadButton) {
+    rawDocUploadButton.disabled = true;
+  }
+  rawDocUploadStatus.textContent = `파일 ${files.length}개 인코딩 및 업로드 중...`;
+
+  try {
+    const encodedFiles = await Promise.all(
+      files.map(async (file) => {
+        const base64 = await convertFileToBase64(file);
+        return {
+          fileName: file.name,
+          contentBase64: base64,
+          title: file.name,
+          language,
+          category,
+          source,
+          url,
+          keywords
+        };
+      })
+    );
+
+    const response = await fetch('/api/raw-doc-upload', {
+      method: 'POST',
+      headers: getAdminApiHeaders(),
+      body: JSON.stringify({ files: encodedFiles })
+    });
+
+    const data = await response.json();
+    if (!response.ok || !data || !data.ok) {
+      throw new Error((data && data.message) || `Failed: ${response.status}`);
+    }
+
+    rawDocUploadStatus.textContent = `업로드 완료: ${data.savedCount || encodedFiles.length}개 파일 저장됨. 문서 제안을 새로고침합니다.`;
+    if (rawDocUploadForm) {
+      rawDocUploadForm.reset();
+    }
+    await fetchDocSuggestions();
+  } catch (error) {
+    rawDocUploadStatus.textContent = `업로드 실패: ${error.message || 'unknown error'}`;
+  } finally {
+    if (rawDocUploadButton) {
+      rawDocUploadButton.disabled = false;
+    }
+  }
+}
+
 function syncFilterControls() {
   if (statusFilterSelect) {
     statusFilterSelect.value = statusFilter;
@@ -727,6 +1071,63 @@ function renderModal(question) {
   if (modalOpenChannelButton) {
     modalOpenChannelButton.disabled = !modalReply || !modalReply.value.trim();
   }
+
+  renderModalExpertSuggestions(question);
+}
+
+function buildExpertInsertTemplate(expert) {
+  return [
+    `[추천 전문가] ${expert.name || '-'}`,
+    `- 카테고리: ${expert.category || '-'}`,
+    `- 연락처: ${expert.contact || '-'}`,
+    `- 주요 서비스: ${expert.services || '-'}`,
+    expert.notes ? `- 메모: ${expert.notes}` : ''
+  ].filter(Boolean).join('\n');
+}
+
+function renderModalExpertSuggestions(question) {
+  if (!modalExperts || !store || typeof store.getExperts !== 'function' || !question) {
+    return;
+  }
+
+  const questionCategory = normalizeExpertCategory(question.category || '');
+  const experts = store.getExperts();
+  const matched = experts.filter((expert) => normalizeExpertCategory(expert.category || '') === questionCategory).slice(0, 3);
+
+  if (!matched.length) {
+    modalExperts.innerHTML = '<p class="question-modal__experts-empty">이 카테고리에 등록된 추천 전문가가 없습니다.</p>';
+    return;
+  }
+
+  modalExperts.innerHTML = matched
+    .map((expert) => {
+      return `
+        <div class="question-modal__expert-item">
+          <p><strong>${escapeHtml(expert.name || '-')}</strong> · ${escapeHtml(expert.services || '-')}</p>
+          <button class="button button--secondary" type="button" data-action="insert-expert" data-expert-id="${escapeHtml(expert.id || '')}">답변에 삽입</button>
+        </div>
+      `;
+    })
+    .join('');
+}
+
+function insertExpertIntoReply(expertId) {
+  if (!expertId || !store || typeof store.getExperts !== 'function' || !modalReply) {
+    return;
+  }
+
+  const expert = store.getExperts().find((item) => item.id === expertId);
+  if (!expert) {
+    return;
+  }
+
+  const template = buildExpertInsertTemplate(expert);
+  const current = modalReply.value.trim();
+  modalReply.value = current ? `${current}\n\n${template}` : template;
+
+  if (modalOpenChannelButton) {
+    modalOpenChannelButton.disabled = !modalReply.value.trim();
+  }
 }
 
 function openQuestionModal(questionId, focusReply = false) {
@@ -785,7 +1186,7 @@ function openReplyChannel(question, replyText) {
   return true;
 }
 
-function sendModalReply() {
+async function sendModalReply() {
   const question = getSelectedQuestion();
   if (!question || !modalReply) {
     return;
@@ -799,6 +1200,25 @@ function sendModalReply() {
 
   const updated = store.updateQuestion(question.id, { answer: reply, status: '답변완료' });
   if (updated) {
+    try {
+      await fetch('/api/knowledge-event', {
+        method: 'POST',
+        headers: getAdminApiHeaders(),
+        body: JSON.stringify({
+          eventType: 'answered',
+          payload: {
+            question: updated.question || '',
+            answer: reply,
+            category: updated.category || '',
+            language: updated.language || 'ko',
+            internalCategory: 'Admin Reply'
+          }
+        })
+      });
+    } catch (error) {
+      console.warn('Failed to sync answered Q&A to knowledge DB:', error);
+    }
+
     openReplyChannel(updated, reply);
     renderDashboard();
     renderQuestions();
@@ -1018,6 +1438,73 @@ if (videoSyncCopyButton) {
   });
 }
 
+if (docSuggestRefreshButton) {
+  docSuggestRefreshButton.addEventListener('click', () => {
+    fetchDocSuggestions();
+  });
+}
+
+if (docSuggestCopyButton) {
+  docSuggestCopyButton.addEventListener('click', () => {
+    const command = docSuggestCommand ? docSuggestCommand.value : '';
+    copyCommandToClipboard(command, docSuggestCopyButton);
+  });
+}
+
+if (docSuggestRunButton) {
+  docSuggestRunButton.addEventListener('click', () => {
+    runDocSuggestionSync();
+  });
+}
+
+if (docSuggestList) {
+  docSuggestList.addEventListener('change', (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLInputElement)) {
+      return;
+    }
+    if (target.type === 'checkbox') {
+      updateSuggestionCommand();
+    }
+  });
+}
+
+if (expertForm) {
+  expertForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    addExpertFromForm();
+  });
+}
+
+if (expertList) {
+  expertList.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-action="remove-expert"]');
+    if (!trigger) {
+      return;
+    }
+    const expertId = trigger.getAttribute('data-expert-id') || '';
+    removeExpert(expertId);
+  });
+}
+
+if (rawDocUploadForm) {
+  rawDocUploadForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    await uploadRawDocs();
+  });
+}
+
+if (modalExperts) {
+  modalExperts.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-action="insert-expert"]');
+    if (!trigger) {
+      return;
+    }
+    const expertId = trigger.getAttribute('data-expert-id') || '';
+    insertExpertIntoReply(expertId);
+  });
+}
+
 modalCloseTargets.forEach((target) => {
   target.addEventListener('click', closeQuestionModal);
 });
@@ -1053,3 +1540,5 @@ renderQuestions();
 renderDashboard();
 initAdminBannerImage();
 initHomeVideoSettings();
+fetchDocSuggestions();
+renderExperts();

@@ -1,0 +1,36 @@
+{
+  "domain": "relocation",
+  "english": {
+    "internalCategory": "First 30 Days",
+    "question": "What is a realistic first-week relocation plan after arriving in Singapore?",
+    "shortAnswer": "Use a practical sequence: documents, connectivity, transport routes, and medical access basics.",
+    "detailedAnswer": "A realistic first-week plan is to verify key documents and contact details, activate mobile and internet essentials, map daily transport routes, and identify nearby healthcare options. Keep a simple checklist and complete only critical setup tasks first.",
+    "thingsToNote": "Exact priorities differ by work start date and family situation.",
+    "relatedTopics": ["First 30 Days", "Transport", "Healthcare"],
+    "keywords": ["first week singapore relocation", "newcomer checklist singapore", "expat first week singapore"],
+    "riskLevel": "low",
+    "sourceRefs": ["ICA", "MOH", "LTA"]
+  },
+  "korean": {
+    "internalCategory": "First 30 Days",
+    "question": "싱가포르 도착 후 첫 일주일 정착 플랜은 어떻게 잡는 게 현실적인가요?",
+    "shortAnswer": "서류 점검, 통신 개통, 교통 동선, 의료 접근 순으로 진행하면 실무적으로 효율적입니다.",
+    "detailedAnswer": "첫 주에는 핵심 서류와 연락처를 정리하고, 휴대폰/인터넷 등 기본 연결을 확보한 뒤, 일상 이동 경로와 가까운 의료기관 정보를 확인하는 흐름이 현실적입니다. 초기에 꼭 필요한 항목만 우선 완료하세요.",
+    "thingsToNote": "근무 시작일과 가족 구성에 따라 우선순위는 달라질 수 있습니다.",
+    "relatedTopics": ["First 30 Days", "Transport", "Healthcare"],
+    "keywords": ["싱가포르 첫주 정착", "신규 정착 체크리스트", "expat 첫주"],
+    "riskLevel": "low",
+    "sourceRefs": ["ICA", "MOH", "LTA"]
+  },
+  "chinese": {
+    "internalCategory": "First 30 Days",
+    "question": "抵达新加坡后的第一周应如何安排安顿计划？",
+    "shortAnswer": "建议按证件核对、通信开通、通勤路线、医疗基础的顺序推进。",
+    "detailedAnswer": "第一周可先确认核心证件与联系方式，完成手机与网络基础开通，再建立日常通勤路线并了解附近医疗资源。先完成关键任务，再逐步扩展到次要事项。",
+    "thingsToNote": "优先级会因工作开始时间和家庭情况而变化。",
+    "relatedTopics": ["First 30 Days", "Transport", "Healthcare"],
+    "keywords": ["新加坡 第一周 安顿", "新移居者清单", "expat first week"],
+    "riskLevel": "low",
+    "sourceRefs": ["ICA", "MOH", "LTA"]
+  }
+}

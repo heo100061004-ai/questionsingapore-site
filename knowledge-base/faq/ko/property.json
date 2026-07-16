@@ -1,0 +1,276 @@
+{
+  "meta": {
+    "language": "ko",
+    "domain": "property",
+    "version": "2026-07-11",
+    "sourceOfTruth": "English master",
+    "entryCount": 10
+  },
+  "items": [
+    {
+      "id": "PRO-0001",
+      "category": "property",
+      "internalCategory": "Condo Living",
+      "question": "싱가포르 콘도 공용시설은 누가 관리하나요?",
+      "shortAnswer": "일반적으로 관리기구와 관리사무소를 통해 공용구역 운영이 이루어집니다.",
+      "detailedAnswer": "입주자는 시설 예약, 유지보수, 단지 규정 관련해서 관리 채널과 주로 소통합니다. 단지마다 운영 규정이 다를 수 있어 입주자 안내문과 관리 규정을 함께 확인하는 것이 좋습니다.",
+      "thingsToNote": "시설 이용 규정은 단지별로 상이합니다.",
+      "relatedTopics": [
+        "MCST",
+        "Facilities Booking",
+        "Home Maintenance"
+      ],
+      "keywords": [
+        "싱가포르 콘도 관리",
+        "공용시설 예약",
+        "MCST"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "URA"
+      ]
+    },
+    {
+      "id": "PRO-0002",
+      "category": "property",
+      "internalCategory": "HDB Living",
+      "question": "HDB 거주자가 온라인으로 처리할 수 있는 서비스는 어디서 확인하나요?",
+      "shortAnswer": "HDB 공식 e-서비스 채널에서 주요 주거 관련 업무를 확인할 수 있습니다.",
+      "detailedAnswer": "HDB 공식 채널에서는 일부 거래 및 생활 서비스 항목을 온라인으로 처리할 수 있습니다. 실제 이용 가능 항목은 사용자 유형과 요청 내용에 따라 달라질 수 있습니다.",
+      "thingsToNote": "서비스 제공 범위는 계정 유형과 거래 조건에 따라 다릅니다.",
+      "relatedTopics": [
+        "HDB e-Services",
+        "Town Services",
+        "Parking"
+      ],
+      "keywords": [
+        "HDB e서비스",
+        "MyHDB",
+        "주거 서비스"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB"
+      ]
+    },
+    {
+      "id": "PRO-0003",
+      "category": "property",
+      "internalCategory": "Renovation",
+      "question": "집 수리/리노베이션 전에 규정을 확인해야 하나요?",
+      "shortAnswer": "네, 공사 범위에 따라 단지 규정과 안전/행정 요건 확인이 필요합니다.",
+      "detailedAnswer": "주택 유형과 공사 내용에 따라 승인 또는 별도 준수 절차가 요구될 수 있습니다. 공사 시작 전에 관리사무소와 공식 규정 기준을 함께 확인하는 것이 안전합니다.",
+      "thingsToNote": "무단 공사는 시정 요구나 제재로 이어질 수 있습니다.",
+      "relatedTopics": [
+        "Renovation",
+        "BCA Regulations",
+        "Fire Safety"
+      ],
+      "keywords": [
+        "싱가포르 리노베이션 규정",
+        "공사 승인",
+        "콘도 공사 가이드"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "URA",
+        "SCDF"
+      ]
+    },
+    {
+      "id": "PRO-0004",
+      "category": "property",
+      "internalCategory": "Fire Safety",
+      "question": "가정에서 기본적으로 점검해야 할 화재 안전 항목은 무엇인가요?",
+      "shortAnswer": "전기 사용 습관, 대피 동선, 기본 대응 절차를 공식 가이드에 맞춰 점검하는 것이 좋습니다.",
+      "detailedAnswer": "가정 내 화재 예방은 안전한 전기 사용, 대피 통로 확보, 비상 시 행동 요령 숙지 같은 기본 항목부터 시작합니다. 최신 기준은 SCDF 공식 자료를 참고해 주기적으로 확인하세요.",
+      "thingsToNote": "화재 안전 정보는 최신 공식 안내로 갱신해 확인해야 합니다.",
+      "relatedTopics": [
+        "SCDF",
+        "Home Safety",
+        "Emergency"
+      ],
+      "keywords": [
+        "가정 화재 예방",
+        "SCDF 화재 안전",
+        "싱가포르 안전 수칙"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "SCDF"
+      ]
+    },
+    {
+      "id": "PRO-0005",
+      "category": "property",
+      "internalCategory": "Parking",
+      "question": "시즌 주차 관련 신청/변경은 어떻게 진행하나요?",
+      "shortAnswer": "거주 형태와 운영 주체에 맞는 공식 주차 채널에서 처리해야 합니다.",
+      "detailedAnswer": "주차 신청, 갱신, 변경 절차는 HDB, URA, 민간 단지별로 다를 수 있습니다. 본인 거주지에 해당하는 공식 채널을 확인해 조건과 가능 여부를 점검하는 것이 좋습니다.",
+      "thingsToNote": "주차 조건은 단지와 공실 상황에 따라 달라질 수 있습니다.",
+      "relatedTopics": [
+        "Season Parking",
+        "Visitor Parking",
+        "Property Services"
+      ],
+      "keywords": [
+        "시즌 주차 싱가포르",
+        "HDB 주차 갱신",
+        "URA 주차"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB",
+        "URA"
+      ]
+    },
+    {
+      "id": "PRO-0006",
+      "category": "property",
+      "internalCategory": "Noise and Neighbour Issues",
+      "question": "이웃 소음 문제는 어떻게 시작해서 해결하는 게 좋을까요?",
+      "shortAnswer": "정중한 소통과 기록을 먼저 하고, 필요 시 관리 채널로 단계적으로 진행하는 것이 일반적입니다.",
+      "detailedAnswer": "보통 날짜/시간을 기록한 뒤 관리사무소 또는 관련 채널에 사실 중심으로 전달합니다. 해결되지 않으면 단지 유형과 사안에 맞는 추가 절차를 검토할 수 있습니다.",
+      "thingsToNote": "감정적 대응보다 사실 기록 중심 접근이 중요합니다.",
+      "relatedTopics": [
+        "Neighbour Disputes",
+        "MCST",
+        "Town Council"
+      ],
+      "keywords": [
+        "소음 민원",
+        "이웃 분쟁",
+        "콘도 관리 민원"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "HDB",
+        "URA"
+      ]
+    },
+    {
+      "id": "PRO-0007",
+      "category": "property",
+      "internalCategory": "Utilities and Services",
+      "question": "이사 직후 어떤 생활 인프라를 우선 개통해야 하나요?",
+      "shortAnswer": "전기, 수도, 인터넷 등 필수 인프라를 먼저 활성화하는 것이 좋습니다.",
+      "detailedAnswer": "입주 초기에는 전기/수도, 통신, 필수 생활 서비스 계정을 우선 개통하는 것이 일반적입니다. 계정 명의, 개통일, 입주일을 맞추면 초기 불편을 줄일 수 있습니다.",
+      "thingsToNote": "입주일과 개통일의 불일치를 미리 방지하세요.",
+      "relatedTopics": [
+        "Utilities",
+        "Internet",
+        "Moving House"
+      ],
+      "keywords": [
+        "입주 체크리스트",
+        "유틸리티 개통",
+        "인터넷 설치"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB"
+      ]
+    },
+    {
+      "id": "PRO-0008",
+      "category": "property",
+      "internalCategory": "Waste and Recycling",
+      "question": "재활용과 일반 쓰레기는 어떻게 올바르게 배출하나요?",
+      "shortAnswer": "단지 수거 규정과 지정 배출 방식에 따라 처리해야 합니다.",
+      "detailedAnswer": "일반 생활폐기물과 재활용품은 단지별 수거 방식과 일정에 맞추는 것이 원칙입니다. 대형 폐기물 등 특수 항목은 별도 안내 채널을 확인한 뒤 처리하세요.",
+      "thingsToNote": "규정 위반 배출은 민원이나 제재로 이어질 수 있습니다.",
+      "relatedTopics": [
+        "Waste Disposal",
+        "Recycling",
+        "Town Services"
+      ],
+      "keywords": [
+        "재활용 배출",
+        "생활폐기물",
+        "대형 폐기물 처리"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB"
+      ]
+    },
+    {
+      "id": "PRO-0009",
+      "category": "property",
+      "internalCategory": "Utilities",
+      "question": "싱가포르 새 집 입주 후 가장 먼저 설정해야 할 항목은 무엇인가요?",
+      "shortAnswer": "전기, 수도, 인터넷, 출입 관련 필수 항목을 먼저 준비하는 것이 좋습니다.",
+      "detailedAnswer": "실무적으로는 유틸리티와 인터넷 개통을 먼저 완료하고, 출입카드, 택배 수령 방식, 유지보수 연락처를 정리하면 초기 정착이 훨씬 안정적입니다. 입주일과 개통일 일치 여부를 꼭 확인하세요.",
+      "thingsToNote": "주택 유형과 관리사무소에 따라 절차가 다를 수 있습니다.",
+      "relatedTopics": [
+        "Utilities",
+        "Internet",
+        "Moving House"
+      ],
+      "keywords": [
+        "입주 초기 설정",
+        "유틸리티 개통",
+        "이사 체크리스트"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB",
+        "URA"
+      ]
+    },
+    {
+      "id": "PRO-0010",
+      "category": "property",
+      "internalCategory": "주거 유형 기초",
+      "question": "싱가포르 이주 초기에는 어떤 주거 옵션을 주로 비교하나요?",
+      "shortAnswer": "보통 예산, 출퇴근 거리, 가족 구성에 따라 HDB·콘도·단기 체류 옵션을 비교합니다.",
+      "detailedAnswer": "주거 비교는 월 예산, 통근 반경, 가구 인원, 입주 시점부터 시작하는 것이 실무적입니다. HDB, 콘도, 단기 서비스형 숙소는 비용·시설·편의성에서 장단점이 다르므로 생활 패턴에 맞춰 선택해야 합니다. 계약/관리 관련 최신 내용은 공식 채널을 확인하세요.",
+      "thingsToNote": "월세만 보지 말고 교통비, 계약 조건, 생활 동선을 함께 비교하세요.",
+      "relatedTopics": [
+        "HDB",
+        "콘도",
+        "임대 계획"
+      ],
+      "keywords": [
+        "싱가포르 집 구하기",
+        "hdb 콘도 차이",
+        "이주 주거"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB",
+        "URA"
+      ]
+    }
+  ]
+}

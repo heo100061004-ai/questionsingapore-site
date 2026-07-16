@@ -1,0 +1,36 @@
+{
+  "domain": "employment",
+  "english": {
+    "internalCategory": "Interview",
+    "question": "How should I prepare for a Singapore behavioral interview as a foreign candidate?",
+    "shortAnswer": "Use role-relevant STAR examples and show local context readiness.",
+    "detailedAnswer": "Prepare 4-6 STAR stories linked to the role, emphasize measurable outcomes, and show understanding of local communication expectations. Keep examples concise and role-specific.",
+    "thingsToNote": "Hiring preferences vary by employer and role.",
+    "relatedTopics": ["Interview", "Resume", "Employment"],
+    "keywords": ["singapore interview prep", "behavioral interview singapore", "foreign candidate interview"],
+    "riskLevel": "low",
+    "sourceRefs": ["MOM"]
+  },
+  "korean": {
+    "internalCategory": "Interview",
+    "question": "외국인 지원자가 싱가포르 행동면접을 준비할 때 핵심은 무엇인가요?",
+    "shortAnswer": "직무 연관 STAR 사례와 현지 커뮤니케이션 적응도를 보여주는 것이 중요합니다.",
+    "detailedAnswer": "직무와 직접 연결되는 STAR 사례 4~6개를 준비하고, 정량 성과와 협업 방식, 커뮤니케이션 맥락을 명확히 제시하는 것이 좋습니다.",
+    "thingsToNote": "회사와 직무별 면접 기준은 다를 수 있습니다.",
+    "relatedTopics": ["Interview", "Resume", "Employment"],
+    "keywords": ["싱가포르 면접 준비", "행동면접", "외국인 채용 면접"],
+    "riskLevel": "low",
+    "sourceRefs": ["MOM"]
+  },
+  "chinese": {
+    "internalCategory": "Interview",
+    "question": "外籍候选人如何准备新加坡行为面试？",
+    "shortAnswer": "建议使用与岗位直接相关的 STAR 案例，并体现本地协作沟通准备度。",
+    "detailedAnswer": "准备 4-6 个 STAR 例子，突出量化成果、协作方式和岗位匹配度，表达尽量清晰简洁。",
+    "thingsToNote": "不同公司和岗位的面试偏好可能不同。",
+    "relatedTopics": ["Interview", "Resume", "Employment"],
+    "keywords": ["新加坡 面试准备", "行为面试", "外籍候选人"],
+    "riskLevel": "low",
+    "sourceRefs": ["MOM"]
+  }
+}

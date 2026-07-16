@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'question-singapore-questions';
+const EXPERT_STORAGE_KEY = 'question-singapore-experts';
 
 const DEFAULT_QUESTIONS = [
   {
@@ -24,6 +25,36 @@ const DEFAULT_QUESTIONS = [
     language: 'en',
     status: '답변완료',
     createdAt: '2026-07-09T09:15:00.000Z'
+  }
+];
+
+const DEFAULT_EXPERTS = [
+  {
+    id: 'expert-1',
+    name: 'Kim HR Advisory',
+    contact: 'hello@questionsingapore.com',
+    category: '고용',
+    services: '취업 전략, 인터뷰 코칭, 이직 플랜',
+    notes: '영어/한국어 상담 가능',
+    createdAt: '2026-07-10T09:00:00.000Z'
+  },
+  {
+    id: 'expert-2',
+    name: 'SG Housing Desk',
+    contact: '+65 9221 8254',
+    category: '부동산',
+    services: '주거지 선택, 임대 계약 체크, 입주 준비',
+    notes: 'WhatsApp 우선',
+    createdAt: '2026-07-10T09:05:00.000Z'
+  },
+  {
+    id: 'expert-3',
+    name: 'Relocation Onboarding Team',
+    contact: 'relocation@questionsingapore.com',
+    category: '리로케이션',
+    services: '초기 정착 체크리스트, 생활 인프라 세팅',
+    notes: '가족 동반 이주 대응',
+    createdAt: '2026-07-10T09:10:00.000Z'
   }
 ];
 
@@ -119,14 +150,82 @@ function clearQuestions(storage = getStorage()) {
   return saveQuestions([], storage);
 }
 
+function getExperts(storage = getStorage()) {
+  if (storage) {
+    const raw = storage.getItem(EXPERT_STORAGE_KEY);
+
+    if (!raw) {
+      saveExperts(DEFAULT_EXPERTS, storage);
+      return [...DEFAULT_EXPERTS];
+    }
+
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [...DEFAULT_EXPERTS];
+    } catch (error) {
+      return [...DEFAULT_EXPERTS];
+    }
+  }
+
+  if (typeof window !== 'undefined' && window.__questionSingaporeExperts) {
+    return [...window.__questionSingaporeExperts];
+  }
+
+  return [...DEFAULT_EXPERTS];
+}
+
+function saveExperts(experts, storage = getStorage()) {
+  const normalized = Array.isArray(experts) ? experts : [];
+
+  if (storage) {
+    storage.setItem(EXPERT_STORAGE_KEY, JSON.stringify(normalized));
+    return normalized;
+  }
+
+  if (typeof window !== 'undefined') {
+    window.__questionSingaporeExperts = normalized;
+  }
+
+  return normalized;
+}
+
+function addExpert({ name, contact, category, services, notes }, storage = getStorage()) {
+  const entry = {
+    id: `expert-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    name: (name || '').trim(),
+    contact: (contact || '').trim(),
+    category: (category || '고용').trim(),
+    services: (services || '').trim(),
+    notes: (notes || '').trim(),
+    createdAt: new Date().toISOString()
+  };
+
+  const experts = [entry, ...getExperts(storage)];
+  saveExperts(experts, storage);
+  return entry;
+}
+
+function removeExpert(id, storage = getStorage()) {
+  const experts = getExperts(storage);
+  const filtered = experts.filter((expert) => expert.id !== id);
+  saveExperts(filtered, storage);
+  return filtered.length !== experts.length;
+}
+
 const api = {
   STORAGE_KEY,
+  EXPERT_STORAGE_KEY,
   DEFAULT_QUESTIONS,
+  DEFAULT_EXPERTS,
   getQuestions,
   saveQuestions,
   addQuestion,
   updateQuestion,
-  clearQuestions
+  clearQuestions,
+  getExperts,
+  saveExperts,
+  addExpert,
+  removeExpert
 };
 
 if (typeof module !== 'undefined' && module.exports) {

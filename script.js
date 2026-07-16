@@ -12,6 +12,12 @@ const homeTopVideo = document.getElementById('home-top-video');
 const homeTopVideoSource = document.getElementById('home-top-video-source');
 const homeTopVideoEmpty = document.getElementById('home-top-video-empty');
 const homeVideoPlayButton = document.getElementById('home-video-play');
+const chatbotForm = document.getElementById('chatbot-form');
+const chatbotInput = document.getElementById('chatbot-input');
+const chatbotMessages = document.getElementById('chatbot-messages');
+const chatbotCategorySelect = document.getElementById('chatbot-category');
+const chatbotQuickList = document.getElementById('chatbot-quick-list');
+const askSection = document.getElementById('ask');
 const store = window.QuestionSingaporeStore;
 const HOME_TOP_VIDEO_STORAGE_KEY = 'question-singapore-home-top-video-url';
 const ADMIN_BANNER_STORAGE_KEY = 'question-singapore-admin-banner-url';
@@ -30,11 +36,10 @@ const translations = {
     heroInfo1: '연락처: 이메일 또는 WhatsApp',
     heroInfo2: '언어: 한국어 / English / 中文',
     heroInfo3: '빠른 상담 신청으로 전문가의 답변과 네트워크를 만들어 보세요.',
-    heroFlowTitle: '상담 흐름',
-    heroFlow1: '질문과 연락처를 등록합니다.',
-    heroFlow2: '관리자가 답변을 준비합니다.',
-    heroFlow3: '이메일 또는 WhatsApp으로 회신합니다.',
-    heroFlow4: '언어별 맞춤 안내를 제공합니다.',
+    heroFlowTitle: '서비스 이용 안내',
+    heroFlow1: '일반 정보는 AI 스마트 안내를 이용해서 검색합니다.',
+    heroFlow2: '전문가 상담 필요시 질문과 연락처를 입력합니다.',
+    heroFlow3: '관리자와 이메일/와츠앱으로 추가 상담을 진행합니다.',
     homeVideoCta: '소개 영상 보기',
     homeVideoEmpty: '관리자에서 소개 영상을 설정하면 이 영역에 표시됩니다.',
     categoriesCaption: '핵심 카테고리',
@@ -62,6 +67,20 @@ const translations = {
     qa2A: 'A. 교통 접근성과 생활비의 균형을 보면, 조용한 주거 지역이 좋습니다. 이동 시간이 길어지지 않도록 지하철 접근성을 먼저 확인하세요.',
     qa3Q: 'Q. 리로케이션 시 꼭 준비해야 할 항목이 있나요?',
     qa3A: 'A. 의료, 통신, 교통, 은행 계좌 개설 순서로 준비하면 훨씬 수월합니다. 초기 2주 동안 필요한 기본 서비스부터 정리하는 것이 좋습니다.',
+    chatCaption: 'AI 스마트 안내',
+    chatTitle: '문의 내용에 대한 정보를 실시간으로 확인할수 있습니다.',
+    chatInputLabel: '챗봇 질문',
+    chatCategoryLabel: '카테고리',
+    categoryRecruitment: '채용/고용',
+    chatQuickLabel: '최근/주요 검색 키워드',
+    chatInputPlaceholder: '예: Employment Pass 이직 준비 체크리스트 알려줘',
+    chatSend: '보내기',
+    chatWelcome: '안녕하세요. Question Singapore AI 스마트 안내 서비스입니다. AI를 통해 필요한 정보를 먼저 검색해 보세요. 전문가의 상담이 필요한 경우, 아래 문의 신청 폼을 작성해 주시면 신속하게 안내해 드리겠습니다.',
+    chatError: '응답 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
+    chatTyping: '답변을 준비 중입니다...',
+    chatCta: '문의 신청으로 이동',
+    chatCtaA: '문의 신청으로 이동',
+    chatCtaB: '전문가 상담 신청하기',
     askCaption: '문의 신청',
     askTitle: '답변이 필요한 상황을 알려주세요',
     nameLabel: '이름',
@@ -113,11 +132,10 @@ const translations = {
     heroInfo1: 'Contact: Email or WhatsApp',
     heroInfo2: 'Language: Korean / English / Chinese',
     heroInfo3: 'Submit your inquiry and receive expert guidance quickly.',
-    heroFlowTitle: 'Consultation Flow',
-    heroFlow1: 'Submit your question and contact details.',
-    heroFlow2: 'An admin prepares the response.',
-    heroFlow3: 'You receive a direct reply by email or WhatsApp.',
-    heroFlow4: 'Guidance is provided in your selected language.',
+    heroFlowTitle: 'How To Use',
+    heroFlow1: 'Use AI Smart Guide first to search general information.',
+    heroFlow2: 'If expert help is needed, submit your question and contact details.',
+    heroFlow3: 'Continue follow-up consultation with admin by email or WhatsApp.',
     homeVideoCta: 'View Intro Overview',
     homeVideoEmpty: 'This area displays the intro video once it is configured in Admin.',
     categoriesCaption: 'Core Categories',
@@ -145,6 +163,20 @@ const translations = {
     qa2A: 'A. A quiet residential area with balanced transport access and living cost is usually best. Check MRT accessibility first to avoid long commute times.',
     qa3Q: 'Q. What should I prepare first for relocation?',
     qa3A: 'A. It is smoother if you prepare in this order: healthcare, telecom, transport, and bank account setup. Focus on essential services for your first two weeks.',
+    chatCaption: 'AI Smart Guide',
+    chatTitle: 'You can check information about your inquiry in real time.',
+    chatInputLabel: 'Chatbot question',
+    chatCategoryLabel: 'Category',
+    categoryRecruitment: 'Recruitment',
+    chatQuickLabel: 'Recent / Top Search Keywords',
+    chatInputPlaceholder: 'Example: Checklist for changing jobs on Employment Pass',
+    chatSend: 'Send',
+    chatWelcome: 'Hello. This is the Question Singapore AI Smart Guide. Please search for the information you need through AI first. If expert consultation is required, please complete the inquiry form below and we will guide you promptly.',
+    chatError: 'Something went wrong while generating a response. Please try again shortly.',
+    chatTyping: 'Preparing your answer...',
+    chatCta: 'Go To Inquiry Form',
+    chatCtaA: 'Go To Inquiry Form',
+    chatCtaB: 'Request Expert Consultation',
     askCaption: 'Inquiry Submission',
     askTitle: 'Tell us your situation for a tailored answer',
     nameLabel: 'Name',
@@ -193,11 +225,10 @@ const translations = {
     heroInfo1: '联系方式：电子邮件或WhatsApp',
     heroInfo2: '语言：韩语 / 英语 / 中文',
     heroInfo3: '提交咨询，快速获得专家指导。',
-    heroFlowTitle: '咨询流程',
-    heroFlow1: '提交您的问题和联系方式。',
-    heroFlow2: '管理员准备答复。',
-    heroFlow3: '通过电子邮件或WhatsApp回复您。',
-    heroFlow4: '按您选择的语言提供个性化说明。',
+    heroFlowTitle: '服务使用说明',
+    heroFlow1: '一般信息请先使用 AI 智能引导进行搜索。',
+    heroFlow2: '如需专家咨询，请填写问题与联系方式。',
+    heroFlow3: '随后通过邮件或 WhatsApp 与管理员继续咨询。',
     homeVideoCta: '查看介绍概览',
     homeVideoEmpty: '在管理员页面完成设置后，此区域将显示介绍视频。',
     categoriesCaption: '核心分类',
@@ -225,6 +256,20 @@ const translations = {
     qa2A: 'A. 建议优先选择交通便利且生活成本平衡、相对安静的居住区。请先确认地铁可达性，避免通勤过长。',
     qa3Q: 'Q. 搬迁时必须优先准备哪些事项？',
     qa3A: 'A. 按照医疗、通信、交通、银行开户的顺序准备会更顺利。建议先整理前两周必须用到的基础服务。',
+    chatCaption: 'AI 智能引导',
+    chatTitle: '可实时查看与咨询内容相关的信息。',
+    chatInputLabel: '聊天问题',
+    chatCategoryLabel: '分类',
+    categoryRecruitment: '招聘/就业',
+    chatQuickLabel: '近期/主要搜索关键词',
+    chatInputPlaceholder: '例如：Employment Pass 换工作需要准备什么？',
+    chatSend: '发送',
+    chatWelcome: '您好，这里是 Question Singapore AI 智能引导服务。建议您先通过 AI 搜索所需信息。如需专家咨询，请填写下方咨询申请表，我们将尽快为您提供指引。',
+    chatError: '生成回复时出现问题，请稍后重试。',
+    chatTyping: '正在整理回答...',
+    chatCta: '前往咨询表单',
+    chatCtaA: '前往咨询表单',
+    chatCtaB: '申请专家咨询',
     askCaption: '提交咨询',
     askTitle: '告诉我们您的情况以获得定制答案',
     nameLabel: '姓名',
@@ -274,6 +319,136 @@ const contactMap = {
   whatsapp: 'WhatsApp'
 };
 
+function sanitizeCategorySelectors() {
+  const selectors = Array.from(document.querySelectorAll('select')).filter((node) => {
+    const id = String(node.id || '').toLowerCase();
+    const name = String(node.name || '').toLowerCase();
+    return id.includes('category') || name.includes('category');
+  });
+
+  selectors.forEach((select) => {
+    const options = Array.from(select.options || []);
+    options.forEach((option) => {
+      const value = String(option.value || '').toLowerCase();
+      const text = String(option.textContent || '').toLowerCase();
+      const isRecruitmentLike = value.includes('employment') || value.includes('recruitment') || text.includes('employment') || text.includes('recruit') || text.includes('고용') || text.includes('채용');
+      const isPropertyLike = value.includes('property') || text.includes('property') || text.includes('부동산');
+      const isRelocationLike = value.includes('relocation') || text.includes('relocation') || text.includes('리로케이션') || text.includes('搬迁');
+      const isPlaceholder = value === '';
+
+      if (isPlaceholder) {
+        return;
+      }
+
+      if (isRecruitmentLike) {
+        option.value = 'recruitment';
+        return;
+      }
+
+      if (isPropertyLike) {
+        option.value = 'property';
+        return;
+      }
+
+      if (isRelocationLike) {
+        option.value = 'relocation';
+        return;
+      }
+
+      option.remove();
+    });
+
+    const hasRecruitment = Array.from(select.options || []).some((option) => String(option.value) === 'recruitment');
+    const hasProperty = Array.from(select.options || []).some((option) => String(option.value) === 'property');
+    const hasRelocation = Array.from(select.options || []).some((option) => String(option.value) === 'relocation');
+
+    if (!hasRecruitment) {
+      const opt = document.createElement('option');
+      opt.value = 'recruitment';
+      opt.textContent = 'Recruitment';
+      select.appendChild(opt);
+    }
+
+    if (!hasProperty) {
+      const opt = document.createElement('option');
+      opt.value = 'property';
+      opt.textContent = 'Property';
+      select.appendChild(opt);
+    }
+
+    if (!hasRelocation) {
+      const opt = document.createElement('option');
+      opt.value = 'relocation';
+      opt.textContent = 'Relocation';
+      select.appendChild(opt);
+    }
+
+    if (!['recruitment', 'property', 'relocation'].includes(select.value)) {
+      select.value = 'recruitment';
+    }
+  });
+}
+
+const chatbotQuickByCategory = {
+  ko: {
+    recruitment: [
+      { label: 'EP/S Pass 차이', question: 'Employment Pass와 S Pass 차이 알려줘' },
+      { label: '이직 체크리스트', question: 'Employment Pass 이직 준비 체크리스트 알려줘' },
+      { label: '인터뷰 준비', question: '싱가포르 취업 인터뷰 준비 핵심 포인트 알려줘' }
+    ],
+    property: [
+      { label: '입주 초기 설정', question: '집 입주 직후 꼭 설정할 항목 알려줘' },
+      { label: '임대 계약 체크', question: '싱가포르 임대 계약서에서 꼭 확인할 조항 알려줘' },
+      { label: '지역별 비용', question: '싱가포르 지역별 월세와 생활비 비교해줘' }
+    ],
+    relocation: [
+      { label: '첫 주 준비', question: '싱가포르 도착 후 첫 7일 체크리스트 알려줘' },
+      { label: '초기 정착 순서', question: '리로케이션 초기 정착을 어떤 순서로 하면 좋을까?' },
+      { label: '가족 동반 이주', question: '가족과 함께 이주할 때 꼭 먼저 확인할 항목 알려줘' }
+    ]
+  },
+  en: {
+    recruitment: [
+      { label: 'EP vs S Pass', question: 'What is the difference between Employment Pass and S Pass?' },
+      { label: 'Job Change Checklist', question: 'Give me a checklist for changing jobs on Employment Pass.' },
+      { label: 'Interview Prep', question: 'What are key interview prep points for jobs in Singapore?' }
+    ],
+    property: [
+      { label: 'Move-in Setup', question: 'What should I set up first right after moving into a home?' },
+      { label: 'Lease Contract', question: 'What lease clauses should I check carefully in Singapore?' },
+      { label: 'Area Cost Comparison', question: 'Compare rent and living costs by area in Singapore.' }
+    ],
+    relocation: [
+      { label: 'First Week Plan', question: 'Give me a first-week relocation checklist for Singapore.' },
+      { label: 'Setup Priority', question: 'What should I prioritize in the first 30 days after relocation?' },
+      { label: 'Family Move', question: 'What are key checkpoints when relocating with family to Singapore?' }
+    ]
+  },
+  zh: {
+    recruitment: [
+      { label: 'EP 与 S Pass 区别', question: '请说明 Employment Pass 和 S Pass 的主要区别。' },
+      { label: '跳槽清单', question: '请给我一份 Employment Pass 持有者跳槽准备清单。' },
+      { label: '面试准备', question: '在新加坡求职面试，最关键的准备点是什么？' }
+    ],
+    property: [
+      { label: '入住初期设置', question: '搬入新家后，优先要完成哪些设置？' },
+      { label: '租约重点', question: '在新加坡租房合同中需要重点确认哪些条款？' },
+      { label: '区域成本比较', question: '请比较新加坡不同区域的租金和生活成本。' }
+    ],
+    relocation: [
+      { label: '首周计划', question: '请给我一份在新加坡落地后第一周的安顿清单。' },
+      { label: '初期优先项', question: '搬迁后前 30 天应优先处理哪些事项？' },
+      { label: '家庭搬迁', question: '带家人搬迁到新加坡时的关键检查点有哪些？' }
+    ]
+  }
+};
+
+const chatbotTrendingByCategory = {
+  recruitment: [],
+  property: [],
+  relocation: []
+};
+
 async function notifyAdminOfInquiry(payload) {
   try {
     const response = await fetch('/api/notify', {
@@ -289,6 +464,27 @@ async function notifyAdminOfInquiry(payload) {
     }
   } catch (error) {
     console.error('Admin notify error:', error);
+  }
+}
+
+async function trackKnowledgeEvent(eventType, payload) {
+  try {
+    const response = await fetch('/api/knowledge-event', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        eventType,
+        payload
+      })
+    });
+
+    if (!response.ok) {
+      console.error('Knowledge event failed:', response.status);
+    }
+  } catch (error) {
+    console.error('Knowledge event error:', error);
   }
 }
 
@@ -490,11 +686,306 @@ function renderRecentQuestions() {
     .join('');
 }
 
+function sourceLabel(source) {
+  const key = (source || '').toString();
+  if (key === 'faq') {
+    return 'FAQ Match';
+  }
+  if (key === 'faq-en-fallback') {
+    return 'EN FAQ Match';
+  }
+  if (key === 'llm-fallback') {
+    return 'AI Fallback';
+  }
+  if (key === 'ai-context') {
+    return 'AI Q&A Context';
+  }
+  if (key === 'context-fallback') {
+    return 'Context Match';
+  }
+  if (key === 'fallback') {
+    return 'General Fallback';
+  }
+  return key ? `Source: ${key}` : '';
+}
+
+function normalizeChatbotCategory(value = '') {
+  const normalized = String(value || '').toLowerCase();
+  if (normalized.includes('recruitment') || normalized.includes('채용') || normalized.includes('employment') || normalized.includes('고용') || normalized.includes('就业')) {
+    return 'recruitment';
+  }
+  if (normalized.includes('property') || normalized.includes('부동산') || normalized.includes('房地产')) {
+    return 'property';
+  }
+  if (normalized.includes('relocation') || normalized.includes('리로케이션') || normalized.includes('搬迁')) {
+    return 'relocation';
+  }
+  return 'recruitment';
+}
+
+function truncateKeywordLabel(text = '', maxLen = 18) {
+  const value = String(text || '').trim();
+  if (value.length <= maxLen) {
+    return value;
+  }
+  return `${value.slice(0, maxLen)}...`;
+}
+
+function getChatbotCtaBucket() {
+  try {
+    const key = 'question-singapore-chat-cta-bucket';
+    const cached = window.localStorage.getItem(key);
+    if (cached === 'A' || cached === 'B') {
+      return cached;
+    }
+    const bucket = Math.random() < 0.5 ? 'A' : 'B';
+    window.localStorage.setItem(key, bucket);
+    return bucket;
+  } catch (error) {
+    return 'A';
+  }
+}
+
+function applyChatbotCtaVariant() {
+  const cta = document.querySelector('[data-i18n="chatCta"]');
+  if (!cta) {
+    return;
+  }
+
+  const lang = languageSelect?.value || 'ko';
+  const t = translations[lang] || translations.ko;
+  const bucket = getChatbotCtaBucket();
+  const key = bucket === 'B' ? 'chatCtaB' : 'chatCtaA';
+  cta.textContent = t[key] || t.chatCta;
+}
+
+async function loadTrendingChatbotKeywords() {
+  try {
+    const response = await fetch('/api/chatbot-keywords?limit=120');
+    if (!response.ok) {
+      return;
+    }
+
+    const data = await response.json();
+    const items = Array.isArray(data?.items) ? data.items : [];
+
+    chatbotTrendingByCategory.recruitment = [];
+    chatbotTrendingByCategory.property = [];
+    chatbotTrendingByCategory.relocation = [];
+
+    for (const item of items) {
+      const category = normalizeChatbotCategory(item?.category || '');
+      const question = String(item?.question || '').trim();
+      if (!question) {
+        continue;
+      }
+      const list = chatbotTrendingByCategory[category];
+      if (!Array.isArray(list)) {
+        continue;
+      }
+      if (list.some((entry) => entry.question === question)) {
+        continue;
+      }
+      list.push({
+        label: truncateKeywordLabel(question),
+        question,
+        category
+      });
+    }
+  } catch (error) {
+    // Ignore trending fetch failures and keep static defaults.
+  }
+}
+
+function appendChatMessage(role, text, meta = '') {
+  if (!chatbotMessages) {
+    return null;
+  }
+
+  const wrapper = document.createElement('article');
+  wrapper.className = `chatbot-message chatbot-message--${role}`;
+  wrapper.textContent = text || '';
+
+  if (meta) {
+    const metaEl = document.createElement('div');
+    const sourceKey = (meta || '').toString();
+    metaEl.className = `chatbot-meta chatbot-meta--${sourceKey}`;
+    metaEl.textContent = sourceLabel(sourceKey);
+    wrapper.appendChild(metaEl);
+  }
+
+  chatbotMessages.appendChild(wrapper);
+  chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+  return wrapper;
+}
+
+function renderChatbotQuickButtons() {
+  if (!chatbotQuickList) {
+    return;
+  }
+
+  const lang = languageSelect?.value || 'ko';
+  const category = chatbotCategorySelect?.value || 'recruitment';
+  const byLang = chatbotQuickByCategory[lang] || chatbotQuickByCategory.ko;
+  const presets = byLang[category] || byLang.recruitment || [];
+  const trending = chatbotTrendingByCategory[category] || [];
+  const merged = [...trending, ...presets]
+    .filter((item, index, arr) => {
+      const question = String(item?.question || '').trim();
+      if (!question) {
+        return false;
+      }
+      return arr.findIndex((candidate) => String(candidate?.question || '').trim() === question) === index;
+    })
+    .slice(0, 6);
+
+  chatbotQuickList.innerHTML = merged
+    .map((item) => {
+      const label = item.label || '';
+      const question = item.question || '';
+      return `<button class="chatbot-quick__btn" type="button" data-chatbot-category="${category}" data-chatbot-quick="${question.replace(/"/g, '&quot;')}">${label}</button>`;
+    })
+    .join('');
+}
+
+function revealAskSection() {
+  if (!askSection) {
+    return;
+  }
+
+  askSection.hidden = false;
+  askSection.classList.remove('ask-section--collapsed');
+  askSection.classList.add('ask-section--revealed');
+  askSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function refreshChatbotWelcomeMessage() {
+  const lang = languageSelect?.value || 'ko';
+  const translation = translations[lang] || translations.ko;
+  const welcomeEl = chatbotMessages?.querySelector('[data-chatbot-welcome="true"]');
+
+  if (!welcomeEl) {
+    return;
+  }
+
+  const metaEl = welcomeEl.querySelector('.chatbot-meta');
+  const metaClone = metaEl ? metaEl.cloneNode(true) : null;
+
+  welcomeEl.textContent = translation.chatWelcome;
+  if (metaClone) {
+    welcomeEl.appendChild(metaClone);
+  }
+}
+
+function initChatbot() {
+  if (!chatbotMessages || !chatbotForm || !chatbotInput) {
+    return;
+  }
+
+  const currentLang = languageSelect?.value || 'ko';
+  const translation = translations[currentLang] || translations.ko;
+  const welcomeMessage = appendChatMessage('bot', translation.chatWelcome);
+  if (welcomeMessage) {
+    welcomeMessage.setAttribute('data-chatbot-welcome', 'true');
+  }
+  applyChatbotCtaVariant();
+  renderChatbotQuickButtons();
+  loadTrendingChatbotKeywords().then(() => {
+    renderChatbotQuickButtons();
+  });
+
+  chatbotForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const question = chatbotInput.value.trim();
+    const lang = languageSelect?.value || 'ko';
+    const category = chatbotCategorySelect?.value || 'recruitment';
+    const t = translations[lang] || translations.ko;
+
+    if (!question) {
+      return;
+    }
+
+    appendChatMessage('user', question);
+    chatbotInput.value = '';
+    appendChatMessage('bot', t.chatTyping);
+
+    try {
+      const response = await fetch('/api/chatbot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question,
+          language: lang,
+          category
+        })
+      });
+
+      const lastTyping = chatbotMessages.lastElementChild;
+      if (lastTyping && lastTyping.classList.contains('chatbot-message--bot')) {
+        lastTyping.remove();
+      }
+
+      if (!response.ok) {
+        appendChatMessage('bot', t.chatError);
+        return;
+      }
+
+      const data = await response.json();
+      const sourceKey = data && data.source ? String(data.source) : '';
+      appendChatMessage('bot', data.answer || t.chatError, sourceKey);
+    } catch (error) {
+      const lastTyping = chatbotMessages.lastElementChild;
+      if (lastTyping && lastTyping.classList.contains('chatbot-message--bot')) {
+        lastTyping.remove();
+      }
+      appendChatMessage('bot', t.chatError);
+    }
+  });
+
+  if (chatbotQuickList) {
+    chatbotQuickList.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+      const quickButton = target.closest('[data-chatbot-quick]');
+      if (!(quickButton instanceof HTMLElement)) {
+        return;
+      }
+      const quick = quickButton.getAttribute('data-chatbot-quick') || '';
+      const quickCategory = quickButton.getAttribute('data-chatbot-category') || '';
+      if (!quick) {
+        return;
+      }
+      if (chatbotCategorySelect && quickCategory) {
+        chatbotCategorySelect.value = quickCategory;
+      }
+      chatbotInput.value = quick;
+      chatbotInput.focus();
+    });
+  }
+
+  if (chatbotCategorySelect) {
+    chatbotCategorySelect.addEventListener('change', renderChatbotQuickButtons);
+  }
+}
+
 if (languageSelect) {
   languageSelect.addEventListener('change', () => {
     updateLanguage(languageSelect.value);
+    refreshChatbotWelcomeMessage();
+    applyChatbotCtaVariant();
+    renderChatbotQuickButtons();
   });
 }
+
+document.querySelectorAll('a[href="#ask"]').forEach((link) => {
+  link.addEventListener('click', (event) => {
+    event.preventDefault();
+    revealAskSection();
+  });
+});
 
 if (contactTypeSelect) {
   contactTypeSelect.addEventListener('change', updateContactFields);
@@ -552,6 +1043,15 @@ if (form) {
       createdAt: savedEntry?.createdAt || new Date().toISOString()
     });
 
+    trackKnowledgeEvent('inquiry', {
+      id: savedEntry?.id || '',
+      category,
+      question,
+      contactType,
+      language,
+      createdAt: savedEntry?.createdAt || new Date().toISOString()
+    });
+
     message.textContent = translation.alertSuccess;
     renderRecentQuestions();
     form.reset();
@@ -560,7 +1060,9 @@ if (form) {
 }
 
 renderRecentQuestions();
+sanitizeCategorySelectors();
 updateLanguage('ko');
 updateContactFields();
 initHomeVideo();
 initSharedTopBanner();
+initChatbot();

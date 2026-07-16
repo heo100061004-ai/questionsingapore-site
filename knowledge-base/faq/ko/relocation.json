@@ -1,0 +1,279 @@
+{
+  "meta": {
+    "language": "ko",
+    "domain": "relocation",
+    "version": "2026-07-11",
+    "sourceOfTruth": "English master",
+    "entryCount": 10
+  },
+  "items": [
+    {
+      "id": "REL-0001",
+      "category": "relocation",
+      "internalCategory": "Before Moving",
+      "question": "싱가포르 이주 전에 무엇부터 준비하면 좋을까요?",
+      "shortAnswer": "서류 유효성, 입국/체류 경로, 임시 거주, 초기 정착 항목을 먼저 준비하는 것이 좋습니다.",
+      "detailedAnswer": "이주 전에는 여권 및 관련 서류 확인, 적합한 체류 경로 점검, 임시 숙소 준비, 그리고 첫 30일 생활 항목(교통, 은행, 의료 등)을 순서대로 정리하는 방식이 실무적으로 유용합니다.",
+      "thingsToNote": "국적과 체류 경로에 따라 준비 항목이 달라질 수 있습니다.",
+      "relatedTopics": [
+        "Visa",
+        "Immigration",
+        "First 30 Days Checklist"
+      ],
+      "keywords": [
+        "싱가포르 이주 준비",
+        "정착 체크리스트",
+        "expat 준비"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "ICA"
+      ]
+    },
+    {
+      "id": "REL-0002",
+      "category": "relocation",
+      "internalCategory": "Immigration",
+      "question": "싱가포르 장기 체류/거주 경로는 어디서 공식 확인하나요?",
+      "shortAnswer": "ICA 공식 거주 관련 페이지를 기준으로 확인하는 것이 가장 안전합니다.",
+      "detailedAnswer": "ICA는 장기 체류와 거주 관련 경로를 구조화해 안내합니다. 신청자별 절차와 서류 요건은 ICA 공식 채널 기준으로 확인해야 정확합니다.",
+      "thingsToNote": "중요한 체류 의사결정은 비공식 요약에만 의존하지 마세요.",
+      "relatedTopics": [
+        "ICA",
+        "Long-Term Visit Pass",
+        "Permanent Residence"
+      ],
+      "keywords": [
+        "ICA 거주",
+        "장기체류",
+        "싱가포르 이민 경로"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "ICA"
+      ]
+    },
+    {
+      "id": "REL-0003",
+      "category": "relocation",
+      "internalCategory": "Healthcare",
+      "question": "초기 정착자가 싱가포르 의료 시스템을 이해하려면 어떻게 해야 하나요?",
+      "shortAnswer": "MOH의 의료 이용 경로와 비용 관리 안내를 먼저 확인하는 것이 좋습니다.",
+      "detailedAnswer": "정착 초기에는 어디서 진료를 받아야 하는지, 어떤 비용 지원 체계가 있는지, 어떤 준비가 필요한지를 단계적으로 파악하는 것이 중요합니다. MOH 자료가 기본 방향을 잡는 데 도움이 됩니다.",
+      "thingsToNote": "의료비/보장 범위는 개인 체류 상태와 보험 조건에 따라 다를 수 있습니다.",
+      "relatedTopics": [
+        "MOH",
+        "Insurance",
+        "Managing Expenses"
+      ],
+      "keywords": [
+        "싱가포르 의료",
+        "MOH 가이드",
+        "정착 의료 준비"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "MOH"
+      ]
+    },
+    {
+      "id": "REL-0004",
+      "category": "relocation",
+      "internalCategory": "Transportation",
+      "question": "새로 이주한 사람이 대중교통을 빠르게 익히는 방법은 무엇인가요?",
+      "shortAnswer": "LTA 교통 도구에서 노선, 요금, 이동 경로를 먼저 확인하는 것이 좋습니다.",
+      "detailedAnswer": "LTA 채널에는 버스/철도 정보와 요금 계산 도구가 제공됩니다. 집-회사 또는 집-학교 기준으로 먼저 주요 이동 경로를 잡으면 적응 속도가 빨라집니다.",
+      "thingsToNote": "출퇴근 시간대에는 이동 시간이 크게 달라질 수 있습니다.",
+      "relatedTopics": [
+        "LTA",
+        "MRT",
+        "Bus Services"
+      ],
+      "keywords": [
+        "싱가포르 대중교통",
+        "LTA 요금",
+        "MRT 버스 경로"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "LTA"
+      ]
+    },
+    {
+      "id": "REL-0005",
+      "category": "relocation",
+      "internalCategory": "Digital Setup",
+      "question": "이주 후 첫 달에 어떤 디지털 계정을 우선 준비해야 하나요?",
+      "shortAnswer": "정부/생활 서비스 연동에 필요한 핵심 계정을 우선 정리하는 것이 좋습니다.",
+      "detailedAnswer": "초기 정착 단계에서는 공식 서비스 접근에 필요한 계정 설정이 중요합니다. 이용 가능한 경로와 요건은 개인 프로필에 따라 달라질 수 있으므로 최신 공식 절차를 확인하세요.",
+      "thingsToNote": "계정 생성은 반드시 공식 포털에서만 진행하세요.",
+      "relatedTopics": [
+        "Singpass",
+        "Government Services",
+        "First 30 Days"
+      ],
+      "keywords": [
+        "singpass 설정",
+        "디지털 정착",
+        "정부 서비스 계정"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "ICA"
+      ]
+    },
+    {
+      "id": "REL-0006",
+      "category": "relocation",
+      "internalCategory": "Schools and Family",
+      "question": "가족 이주 시 학교 선택은 어떤 기준으로 시작하면 좋을까요?",
+      "shortAnswer": "통학 거리, 교육 과정, 예산, 입학 일정 기준으로 1차 후보를 정리하는 것이 실용적입니다.",
+      "detailedAnswer": "학교 후보 선정은 주거지와 통학 동선, 커리큘럼 적합성, 비용, 모집 일정 확인부터 시작하는 것이 일반적입니다. 최종 결정 전에는 학교 및 공식 안내 정보를 다시 확인해야 합니다.",
+      "thingsToNote": "학기별 자리 상황과 일정은 변동될 수 있습니다.",
+      "relatedTopics": [
+        "Schools",
+        "International Schools",
+        "Daily Commute"
+      ],
+      "keywords": [
+        "싱가포르 학교 선택",
+        "가족 이주",
+        "국제학교 체크리스트"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "LTA"
+      ]
+    },
+    {
+      "id": "REL-0007",
+      "category": "relocation",
+      "internalCategory": "Medication and Customs",
+      "question": "싱가포르 이주 시 의약품을 반입할 수 있나요?",
+      "shortAnswer": "일부는 가능하지만 품목과 수량, 최신 규정에 따라 요건이 달라질 수 있습니다.",
+      "detailedAnswer": "의약품 반입은 분류와 반입 목적에 따라 절차가 달라질 수 있습니다. 출국 전 최신 공식 안내를 확인하고 필요한 서류를 준비하는 것이 안전합니다.",
+      "thingsToNote": "반드시 출발 전에 최신 반입/신고 요건을 확인하세요.",
+      "relatedTopics": [
+        "Customs",
+        "Healthcare",
+        "Travel Documents"
+      ],
+      "keywords": [
+        "의약품 반입",
+        "싱가포르 세관",
+        "이주 준비"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "ICA",
+        "MOH"
+      ]
+    },
+    {
+      "id": "REL-0008",
+      "category": "relocation",
+      "internalCategory": "First 30 Days",
+      "question": "싱가포르 정착 첫 30일 체크리스트를 어떻게 짜면 현실적인가요?",
+      "shortAnswer": "주거 안정, 교통 동선, 의료/행정 기본 세팅 순으로 구성하면 실무적으로 효율적입니다.",
+      "detailedAnswer": "첫 달은 임시 거주에서 안정 거주로 전환하고, 주요 이동 경로를 고정한 뒤, 필수 계정/의료/가족 생활 항목을 순차적으로 정리하는 구조가 일반적입니다. 근무 시작일과 가족 구성에 따라 우선순위를 조정하세요.",
+      "thingsToNote": "계정 승인이나 예약 대기 시간을 고려해 여유 일정을 잡으세요.",
+      "relatedTopics": [
+        "Relocation Checklist",
+        "Transport",
+        "Healthcare",
+        "Housing"
+      ],
+      "keywords": [
+        "싱가포르 첫달 체크리스트",
+        "정착 플랜",
+        "expat onboarding"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "ICA",
+        "MOH",
+        "LTA"
+      ]
+    },
+    {
+      "id": "REL-0009",
+      "category": "relocation",
+      "internalCategory": "First 30 Days",
+      "question": "싱가포르 도착 후 첫 일주일 정착 플랜은 어떻게 잡는 게 현실적인가요?",
+      "shortAnswer": "서류 점검, 통신 개통, 교통 동선, 의료 접근 순으로 진행하면 실무적으로 효율적입니다.",
+      "detailedAnswer": "첫 주에는 핵심 서류와 연락처를 정리하고, 휴대폰/인터넷 등 기본 연결을 확보한 뒤, 일상 이동 경로와 가까운 의료기관 정보를 확인하는 흐름이 현실적입니다. 초기에 꼭 필요한 항목만 우선 완료하세요.",
+      "thingsToNote": "근무 시작일과 가족 구성에 따라 우선순위는 달라질 수 있습니다.",
+      "relatedTopics": [
+        "First 30 Days",
+        "Transport",
+        "Healthcare"
+      ],
+      "keywords": [
+        "싱가포르 첫주 정착",
+        "신규 정착 체크리스트",
+        "expat 첫주"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "ICA",
+        "MOH",
+        "LTA"
+      ]
+    },
+    {
+      "id": "REL-0010",
+      "category": "relocation",
+      "internalCategory": "입국 첫 7일 기초",
+      "question": "싱가포르 입국 후 첫 7일에는 무엇부터 우선해야 하나요?",
+      "shortAnswer": "신분/연락 체계 확인, 통신 개통, 이동 동선, 기본 의료 접근 순으로 우선 정리하는 것이 좋습니다.",
+      "detailedAnswer": "첫 주에는 영향도가 큰 항목부터 처리하는 것이 효율적입니다. 주요 신분서류와 연락 채널 점검, 휴대폰/인터넷 개통, 일상 이동 동선 파악, 근처 의료기관 확인을 우선하세요. 비핵심 일정은 뒤로 미루고 필수 체크리스트부터 완료하는 방식이 안정적입니다.",
+      "thingsToNote": "근무 시작일과 가족 동반 여부에 따라 우선순위가 달라질 수 있습니다.",
+      "relatedTopics": [
+        "첫주 체크리스트",
+        "교통",
+        "의료"
+      ],
+      "keywords": [
+        "싱가포르 첫주",
+        "이주 체크리스트",
+        "입국 초기 준비"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "ICA",
+        "MOH",
+        "LTA"
+      ]
+    }
+  ]
+}

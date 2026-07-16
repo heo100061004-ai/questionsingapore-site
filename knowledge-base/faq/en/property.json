@@ -1,0 +1,276 @@
+{
+  "meta": {
+    "language": "en",
+    "domain": "property",
+    "version": "2026-07-11",
+    "sourceOfTruth": "English master",
+    "entryCount": 10
+  },
+  "items": [
+    {
+      "id": "PRO-0001",
+      "category": "property",
+      "internalCategory": "Condo Living",
+      "question": "Who manages common facilities in a Singapore condo?",
+      "shortAnswer": "Condo common areas are generally managed under the estate management framework, often through management bodies and appointed managing agents.",
+      "detailedAnswer": "Residents usually interact with management channels for maintenance, facility booking, and estate rules. Exact procedures vary by development, so occupants should check the resident handbook and official framework references where needed.",
+      "thingsToNote": "House rules and booking policies differ by development.",
+      "relatedTopics": [
+        "MCST",
+        "Facilities Booking",
+        "Home Maintenance"
+      ],
+      "keywords": [
+        "singapore condo management",
+        "mcst facilities",
+        "condo common area rules"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "URA"
+      ]
+    },
+    {
+      "id": "PRO-0002",
+      "category": "property",
+      "internalCategory": "HDB Living",
+      "question": "Where can HDB residents handle common home services online?",
+      "shortAnswer": "HDB provides resident-facing e-services for many housing and estate related requests.",
+      "detailedAnswer": "Residents can use official HDB channels for selected transactions and service actions. For case-specific service access, users should check current HDB portals and service pages.",
+      "thingsToNote": "Service availability can depend on user profile and transaction type.",
+      "relatedTopics": [
+        "HDB e-Services",
+        "Town Services",
+        "Parking"
+      ],
+      "keywords": [
+        "hdb eservices",
+        "myhdb page",
+        "hdb home services"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB"
+      ]
+    },
+    {
+      "id": "PRO-0003",
+      "category": "property",
+      "internalCategory": "Renovation",
+      "question": "Do I need to check renovation rules before home works in Singapore?",
+      "shortAnswer": "Yes, renovation works should follow applicable estate, safety, and authority requirements.",
+      "detailedAnswer": "Depending on property type and scope, approvals or specific compliance steps may be required. Homeowners and occupants should confirm requirements through property management channels and official regulatory references before work starts.",
+      "thingsToNote": "Unapproved works may lead to rectification orders or penalties.",
+      "relatedTopics": [
+        "Renovation",
+        "BCA Regulations",
+        "Fire Safety"
+      ],
+      "keywords": [
+        "renovation rules singapore",
+        "home renovation permit",
+        "condo renovation guidelines"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "URA",
+        "SCDF"
+      ]
+    },
+    {
+      "id": "PRO-0004",
+      "category": "property",
+      "internalCategory": "Fire Safety",
+      "question": "What basic fire safety checks should households do in Singapore?",
+      "shortAnswer": "Households should follow practical fire safety practices and refer to official SCDF guidance.",
+      "detailedAnswer": "Good baseline habits include maintaining safe electrical usage, keeping escape pathways clear, and understanding what to do during a fire incident. SCDF fire safety materials provide current guidance and references for households.",
+      "thingsToNote": "Fire safety advice should be updated against latest official guidance.",
+      "relatedTopics": [
+        "SCDF",
+        "Home Safety",
+        "Emergency"
+      ],
+      "keywords": [
+        "home fire safety singapore",
+        "scdf household fire safety",
+        "fire code singapore"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "SCDF"
+      ]
+    },
+    {
+      "id": "PRO-0005",
+      "category": "property",
+      "internalCategory": "Parking",
+      "question": "How can residents manage season parking related requests?",
+      "shortAnswer": "Residents should use the relevant official parking channels depending on estate and operator context.",
+      "detailedAnswer": "Parking administration processes can differ across HDB, URA, and private developments. Official pages typically provide renewals, transfers, and conditions, and users should confirm which channel applies to their residence.",
+      "thingsToNote": "Parking terms and eligibility vary by estate and lot availability.",
+      "relatedTopics": [
+        "Season Parking",
+        "Visitor Parking",
+        "Property Services"
+      ],
+      "keywords": [
+        "season parking singapore",
+        "hdb parking renewal",
+        "ura season parking"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB",
+        "URA"
+      ]
+    },
+    {
+      "id": "PRO-0006",
+      "category": "property",
+      "internalCategory": "Noise and Neighbour Issues",
+      "question": "What is the practical first step for neighbour noise complaints?",
+      "shortAnswer": "Start with respectful communication and documented records, then use building or official channels if needed.",
+      "detailedAnswer": "Most residents begin by documenting dates and times, then approaching neighbours or management channels in a calm and factual way. If unresolved, escalation routes may apply depending on estate type and issue severity.",
+      "thingsToNote": "Avoid confrontation and keep records objective.",
+      "relatedTopics": [
+        "Neighbour Disputes",
+        "MCST",
+        "Town Council"
+      ],
+      "keywords": [
+        "noise complaint singapore condo",
+        "neighbour dispute singapore",
+        "property management complaint"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "HDB",
+        "URA"
+      ]
+    },
+    {
+      "id": "PRO-0007",
+      "category": "property",
+      "internalCategory": "Utilities and Services",
+      "question": "What utilities setup should new residents prepare first?",
+      "shortAnswer": "Prioritize electricity, water, internet, and essential household service activation.",
+      "detailedAnswer": "A practical move-in checklist often starts with utilities activation, connectivity setup, and service account updates. Residents should confirm account ownership, effective dates, and service activation timelines to avoid early move-in disruptions.",
+      "thingsToNote": "Keep move-in dates aligned with utility activation dates.",
+      "relatedTopics": [
+        "Utilities",
+        "Internet",
+        "Moving House"
+      ],
+      "keywords": [
+        "utilities setup singapore",
+        "new home checklist singapore",
+        "internet activation singapore"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB"
+      ]
+    },
+    {
+      "id": "PRO-0008",
+      "category": "property",
+      "internalCategory": "Waste and Recycling",
+      "question": "How should residents handle recycling and waste disposal correctly?",
+      "shortAnswer": "Follow estate collection rules and designated disposal practices for household and bulky items.",
+      "detailedAnswer": "Routine waste and recycling handling is typically guided by estate-level collection and disposal instructions. For non-standard items, residents should check designated channels and schedules before disposal.",
+      "thingsToNote": "Improper disposal can lead to complaints or penalties.",
+      "relatedTopics": [
+        "Waste Disposal",
+        "Recycling",
+        "Town Services"
+      ],
+      "keywords": [
+        "recycling singapore home",
+        "waste disposal condo",
+        "bulky item disposal singapore"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB"
+      ]
+    },
+    {
+      "id": "PRO-0009",
+      "category": "property",
+      "internalCategory": "Utilities",
+      "question": "What should tenants and residents set up first after moving into a new home in Singapore?",
+      "shortAnswer": "Prioritize electricity, water, internet, and building access essentials first.",
+      "detailedAnswer": "A practical move-in setup usually starts with core utility activation and internet setup, followed by building access cards, parcel instructions, and maintenance contact points. Confirm activation dates against move-in date to avoid disruption in the first week.",
+      "thingsToNote": "Provider and process details vary by property type and management office.",
+      "relatedTopics": [
+        "Utilities",
+        "Internet",
+        "Moving House"
+      ],
+      "keywords": [
+        "new home setup singapore",
+        "utilities activation singapore",
+        "move in checklist singapore"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB",
+        "URA"
+      ]
+    },
+    {
+      "id": "PRO-0010",
+      "category": "property",
+      "internalCategory": "Housing Types Basics",
+      "question": "What are common housing options for newcomers in Singapore?",
+      "shortAnswer": "Newcomers usually compare HDB, condo, and serviced options based on budget, commute, and family needs.",
+      "detailedAnswer": "A practical housing comparison starts with commute radius, monthly budget, household size, and move-in timeline. HDB, condo, and temporary serviced stays each have different trade-offs in cost, facilities, and convenience. Use official and management channels for up-to-date tenancy and estate guidance.",
+      "thingsToNote": "Do not decide by rental price only. Include transport cost, contract terms, and daily lifestyle fit.",
+      "relatedTopics": [
+        "HDB",
+        "Condo",
+        "Rental Planning"
+      ],
+      "keywords": [
+        "housing options singapore",
+        "hdb vs condo",
+        "newcomer rent singapore"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB",
+        "URA"
+      ]
+    }
+  ]
+}

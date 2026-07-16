@@ -104,6 +104,108 @@
       </div>
     </section>
 
+    <section class="section">
+      <div class="panel panel--soft">
+        <p class="eyebrow">Raw Docs Upload</p>
+        <h2>AI 스마트 서치 원본 문서 업로드</h2>
+        <p class="home-media-settings__caption">파일 업로드 후 바로 문서 제안을 갱신하고, 선택 항목을 원클릭으로 FAQ 메인 DB에 반영할 수 있습니다.</p>
+        <form id="raw-doc-upload-form" class="raw-doc-upload-form">
+          <label>
+            <span>문서 파일 (다중 선택)</span>
+            <input id="raw-doc-files" type="file" multiple required />
+          </label>
+          <label>
+            <span>기본 언어</span>
+            <select id="raw-doc-language" required>
+              <option value="en">English</option>
+              <option value="ko">Korean</option>
+              <option value="zh">Chinese</option>
+              <option value="multi">Multi</option>
+            </select>
+          </label>
+          <label>
+            <span>기본 카테고리</span>
+            <select id="raw-doc-category" required>
+              <option value="employment">고용</option>
+              <option value="property">부동산</option>
+              <option value="relocation">리로케이션</option>
+            </select>
+          </label>
+          <label>
+            <span>출처명</span>
+            <input id="raw-doc-source" type="text" placeholder="예: MOM Official Guide" />
+          </label>
+          <label>
+            <span>출처 URL</span>
+            <input id="raw-doc-url" type="url" placeholder="https://..." />
+          </label>
+          <label>
+            <span>키워드 (쉼표 구분)</span>
+            <input id="raw-doc-keywords" type="text" placeholder="예: employment pass, checklist" />
+          </label>
+          <div class="raw-doc-upload-form__actions">
+            <button class="button" id="raw-doc-upload-button" type="submit">원본 문서 업로드</button>
+          </div>
+        </form>
+        <p id="raw-doc-upload-status" class="home-media-box__meta"></p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel panel--soft">
+        <p class="eyebrow">Doc Approval</p>
+        <h2>문서 자동추출 승인 워크플로</h2>
+        <p class="home-media-settings__caption">문서 인덱스에서 자동 제안된 항목을 검토하고, 선택한 파일만 FAQ DB로 반영하는 명령어를 생성합니다.</p>
+        <div class="home-media-box__actions">
+          <button class="button button--secondary" id="doc-suggest-refresh" type="button">제안 다시 불러오기</button>
+          <button class="button button--secondary" id="doc-suggest-copy" type="button">명령어 복사</button>
+          <button class="button" id="doc-suggest-run" type="button">선택 항목 바로 반영</button>
+        </div>
+        <p id="doc-suggest-status" class="home-media-box__meta">제안 로딩 대기 중...</p>
+        <textarea id="doc-suggest-command" class="sync-guide__command" readonly></textarea>
+        <div id="doc-suggest-list" class="doc-suggest-list"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel panel--soft">
+        <p class="eyebrow">Directory</p>
+        <h2>QuestionSingapore Expert Directory</h2>
+        <p class="home-media-settings__caption">검증된 전문가 정보를 카테고리별로 등록하고 최신 연락처를 유지합니다.</p>
+        <form id="expert-form" class="expert-form">
+          <label>
+            <span>이름</span>
+            <input id="expert-name" name="name" type="text" placeholder="예: John Tan" required />
+          </label>
+          <label>
+            <span>연락처</span>
+            <input id="expert-contact" name="contact" type="text" placeholder="예: hello@domain.com / +65 ..." required />
+          </label>
+          <label>
+            <span>서비스 카테고리</span>
+            <select id="expert-category" name="category" required>
+              <option value="고용">고용</option>
+              <option value="부동산">부동산</option>
+              <option value="리로케이션">리로케이션</option>
+            </select>
+          </label>
+          <label>
+            <span>주요 서비스</span>
+            <input id="expert-services" name="services" type="text" placeholder="예: 인터뷰 코칭, 계약 체크" required />
+          </label>
+          <label>
+            <span>메모</span>
+            <input id="expert-notes" name="notes" type="text" placeholder="예: 평일 09:00-18:00" />
+          </label>
+          <div class="expert-form__actions">
+            <button class="button" type="submit">전문가 추가</button>
+          </div>
+        </form>
+        <p id="expert-form-message" class="home-media-box__meta"></p>
+        <div id="expert-list" class="expert-list"></div>
+      </div>
+    </section>
+
     <main class="section">
       <div class="section__intro">
         <p class="eyebrow">Analytics</p>
@@ -203,6 +305,7 @@
             </div>
             <button id="question-modal-open-channel" class="button button--secondary" type="button">회신 채널 열기</button>
           </div>
+          <div id="question-modal-experts" class="question-modal__experts"></div>
           <label class="question-modal__reply-field">
             <span class="sr-only">답변 내용</span>
             <textarea id="question-modal-reply" rows="6" placeholder="답변 내용을 입력하세요"></textarea>

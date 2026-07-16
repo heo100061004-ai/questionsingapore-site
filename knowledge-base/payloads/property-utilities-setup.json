@@ -1,0 +1,36 @@
+{
+  "domain": "property",
+  "english": {
+    "internalCategory": "Utilities",
+    "question": "What should tenants and residents set up first after moving into a new home in Singapore?",
+    "shortAnswer": "Prioritize electricity, water, internet, and building access essentials first.",
+    "detailedAnswer": "A practical move-in setup usually starts with core utility activation and internet setup, followed by building access cards, parcel instructions, and maintenance contact points. Confirm activation dates against move-in date to avoid disruption in the first week.",
+    "thingsToNote": "Provider and process details vary by property type and management office.",
+    "relatedTopics": ["Utilities", "Internet", "Moving House"],
+    "keywords": ["new home setup singapore", "utilities activation singapore", "move in checklist singapore"],
+    "riskLevel": "low",
+    "sourceRefs": ["HDB", "URA"]
+  },
+  "korean": {
+    "internalCategory": "Utilities",
+    "question": "싱가포르 새 집 입주 후 가장 먼저 설정해야 할 항목은 무엇인가요?",
+    "shortAnswer": "전기, 수도, 인터넷, 출입 관련 필수 항목을 먼저 준비하는 것이 좋습니다.",
+    "detailedAnswer": "실무적으로는 유틸리티와 인터넷 개통을 먼저 완료하고, 출입카드, 택배 수령 방식, 유지보수 연락처를 정리하면 초기 정착이 훨씬 안정적입니다. 입주일과 개통일 일치 여부를 꼭 확인하세요.",
+    "thingsToNote": "주택 유형과 관리사무소에 따라 절차가 다를 수 있습니다.",
+    "relatedTopics": ["Utilities", "Internet", "Moving House"],
+    "keywords": ["입주 초기 설정", "유틸리티 개통", "이사 체크리스트"],
+    "riskLevel": "low",
+    "sourceRefs": ["HDB", "URA"]
+  },
+  "chinese": {
+    "internalCategory": "Utilities",
+    "question": "在新加坡新居入住后应优先设置哪些事项？",
+    "shortAnswer": "建议先完成电、水、网络及门禁等基础项。",
+    "detailedAnswer": "常见做法是先开通公用事业与网络，再处理门禁卡、快递投递说明和维修联系方式。请确认开通生效日与入住日一致，避免首周生活中断。",
+    "thingsToNote": "具体流程会因房屋类型和管理处而不同。",
+    "relatedTopics": ["Utilities", "Internet", "Moving House"],
+    "keywords": ["入住设置 新加坡", "公用事业开通", "搬家清单"],
+    "riskLevel": "low",
+    "sourceRefs": ["HDB", "URA"]
+  }
+}

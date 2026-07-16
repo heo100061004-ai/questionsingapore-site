@@ -1,0 +1,273 @@
+{
+  "meta": {
+    "language": "en",
+    "domain": "employment",
+    "version": "2026-07-11",
+    "sourceOfTruth": "English master",
+    "entryCount": 10
+  },
+  "items": [
+    {
+      "id": "EMP-0001",
+      "category": "employment",
+      "internalCategory": "Employment Pass",
+      "question": "Can foreigners change jobs while holding an Employment Pass in Singapore?",
+      "shortAnswer": "Usually yes, but the new employer must secure the appropriate work pass approval before work starts.",
+      "detailedAnswer": "Work pass arrangements are generally employer-sponsored. A common approach is for the incoming employer to complete the required pass process before the employee starts the new role. Timelines, eligibility, and documentary requirements can change, so applicants should verify current conditions through official channels before making resignation or start-date decisions.",
+      "thingsToNote": "Do not treat this as legal advice. Process details and eligibility can be updated by authorities.",
+      "relatedTopics": [
+        "Employment Pass",
+        "MOM",
+        "Resignation"
+      ],
+      "keywords": [
+        "employment pass singapore",
+        "change employer singapore",
+        "work pass transfer"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "MOM"
+      ]
+    },
+    {
+      "id": "EMP-0002",
+      "category": "employment",
+      "internalCategory": "S Pass",
+      "question": "What is the difference between Employment Pass and S Pass in Singapore?",
+      "shortAnswer": "They are different work pass tracks with distinct eligibility and employer obligations.",
+      "detailedAnswer": "Employment Pass and S Pass are separate pass types for foreign professionals and skilled staff respectively, with different qualifying conditions and employer-side rules. Exact criteria and compliance obligations should always be checked against current official guidance because frameworks may be adjusted over time.",
+      "thingsToNote": "Use official pass pages as the source of truth for latest thresholds and requirements.",
+      "relatedTopics": [
+        "Employment Pass",
+        "S Pass",
+        "MOM Regulations"
+      ],
+      "keywords": [
+        "employment pass vs s pass",
+        "work visa singapore",
+        "mom pass types"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "MOM"
+      ]
+    },
+    {
+      "id": "EMP-0003",
+      "category": "employment",
+      "internalCategory": "CPF",
+      "question": "Do all employees in Singapore receive CPF contributions?",
+      "shortAnswer": "CPF treatment depends on employment profile and prevailing CPF rules.",
+      "detailedAnswer": "CPF contributions are governed by CPF frameworks and can differ by worker profile and status under current rules. Employers and employees should verify contribution treatment and rates through CPF official resources, especially when policies are updated.",
+      "thingsToNote": "Contribution rates and criteria can change periodically.",
+      "relatedTopics": [
+        "CPF",
+        "Salary",
+        "Employer Payroll"
+      ],
+      "keywords": [
+        "cpf contributions singapore",
+        "employee cpf",
+        "payroll singapore"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "CPF"
+      ]
+    },
+    {
+      "id": "EMP-0004",
+      "category": "employment",
+      "internalCategory": "Income Tax",
+      "question": "How do foreign employees file individual income tax in Singapore?",
+      "shortAnswer": "Tax filing depends on residency profile and IRAS filing obligations.",
+      "detailedAnswer": "Individuals should first identify tax residency context and filing requirements, then use the official IRAS pathways for filing, payment, and account management. Non-resident and resident tax treatment may differ, so users should avoid assumptions and rely on official profile-based guidance.",
+      "thingsToNote": "Tax outcomes are fact-specific and may require professional review.",
+      "relatedTopics": [
+        "IRAS",
+        "Tax Residency",
+        "myTax Portal"
+      ],
+      "keywords": [
+        "singapore income tax foreigner",
+        "iras filing",
+        "tax residency singapore"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "IRAS"
+      ]
+    },
+    {
+      "id": "EMP-0005",
+      "category": "employment",
+      "internalCategory": "Leave and Benefits",
+      "question": "What leave types should employees check before accepting a job offer in Singapore?",
+      "shortAnswer": "Review contractual leave terms and statutory baseline protections under current regulations.",
+      "detailedAnswer": "Before accepting an offer, employees commonly review annual leave, medical leave, hospitalization coverage arrangements, and any role-specific policies. Contract terms should be read together with official employment regulation guidance, as rights and obligations may vary by profile and contract structure.",
+      "thingsToNote": "Always keep a written copy of contract terms and policy handbooks.",
+      "relatedTopics": [
+        "Employment Contract",
+        "Medical Benefits",
+        "MOM Regulations"
+      ],
+      "keywords": [
+        "annual leave singapore",
+        "medical leave singapore",
+        "job offer checklist singapore"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "MOM"
+      ]
+    },
+    {
+      "id": "EMP-0006",
+      "category": "employment",
+      "internalCategory": "Termination",
+      "question": "What should I prepare before resigning from a job in Singapore?",
+      "shortAnswer": "Prepare notice timeline, handover records, and pass or tax implications relevant to your profile.",
+      "detailedAnswer": "A practical resignation checklist typically includes notice obligations, final salary timing, leave balance handling, and documentation for handover. Foreign workers should also confirm pass-related consequences and transition timing with official sources and, where needed, professional advisors.",
+      "thingsToNote": "Do not assume pass continuity after employment ends.",
+      "relatedTopics": [
+        "Resignation",
+        "Work Pass",
+        "Final Salary"
+      ],
+      "keywords": [
+        "resign job singapore",
+        "notice period singapore",
+        "foreign employee resignation"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "MOM",
+        "IRAS"
+      ]
+    },
+    {
+      "id": "EMP-0007",
+      "category": "employment",
+      "internalCategory": "Workplace Rights",
+      "question": "Where can employees seek help for workplace harassment issues in Singapore?",
+      "shortAnswer": "Start with internal reporting channels, then escalate to the relevant official and support channels where appropriate.",
+      "detailedAnswer": "Employees often document incidents, review internal grievance procedures, and use formal reporting routes where needed. Depending on severity and context, official agencies or professional advisors may be relevant. Keep records factual and dated to support follow-up actions.",
+      "thingsToNote": "Urgent safety situations should be escalated immediately through appropriate emergency or official channels.",
+      "relatedTopics": [
+        "Harassment",
+        "Workplace Rights",
+        "Dispute Handling"
+      ],
+      "keywords": [
+        "workplace harassment singapore",
+        "employee rights singapore",
+        "report workplace issue"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "MOM"
+      ]
+    },
+    {
+      "id": "EMP-0008",
+      "category": "employment",
+      "internalCategory": "Remote Work",
+      "question": "Can I work remotely from overseas while employed by a Singapore company?",
+      "shortAnswer": "It can be possible in some arrangements, but immigration, tax, and employment compliance must be reviewed first.",
+      "detailedAnswer": "Cross-border remote work can involve multiple compliance dimensions, including work authorization, tax exposure, and employment terms in each relevant jurisdiction. Employers and employees should confirm policy and legal implications before implementing remote arrangements.",
+      "thingsToNote": "Cross-border setups are fact-specific and may require specialist review.",
+      "relatedTopics": [
+        "Remote Work",
+        "Tax Residency",
+        "Employment Policy"
+      ],
+      "keywords": [
+        "remote work singapore employer",
+        "work overseas singapore contract",
+        "cross border employment"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "MOM",
+        "IRAS"
+      ]
+    },
+    {
+      "id": "EMP-0009",
+      "category": "employment",
+      "internalCategory": "Interview",
+      "question": "How should I prepare for a Singapore behavioral interview as a foreign candidate?",
+      "shortAnswer": "Use role-relevant STAR examples and show local context readiness.",
+      "detailedAnswer": "Prepare 4-6 STAR stories linked to the role, emphasize measurable outcomes, and show understanding of local communication expectations. Keep examples concise and role-specific.",
+      "thingsToNote": "Hiring preferences vary by employer and role.",
+      "relatedTopics": [
+        "Interview",
+        "Resume",
+        "Employment"
+      ],
+      "keywords": [
+        "singapore interview prep",
+        "behavioral interview singapore",
+        "foreign candidate interview"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "MOM"
+      ]
+    },
+    {
+      "id": "EMP-0010",
+      "category": "employment",
+      "internalCategory": "Employment Pass Basics",
+      "question": "What is Employment Pass (EP) in Singapore, and who typically needs it?",
+      "shortAnswer": "Employment Pass is a common work pass for foreign professionals hired by Singapore employers.",
+      "detailedAnswer": "EP is generally used for foreign professionals in qualifying roles with employer sponsorship. The employer applies and approval must usually be in place before work starts. Eligibility and process details can be updated, so applicants should verify the latest official requirements.",
+      "thingsToNote": "Do not resign or relocate based only on informal summaries. Check current official criteria and timelines first.",
+      "relatedTopics": [
+        "Employment Pass",
+        "Work Pass",
+        "Employer Sponsorship"
+      ],
+      "keywords": [
+        "ep singapore",
+        "employment pass basics",
+        "what is ep"
+      ],
+      "language": "en",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "MOM"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,273 @@
+{
+  "meta": {
+    "language": "zh",
+    "domain": "employment",
+    "version": "2026-07-11",
+    "sourceOfTruth": "English master",
+    "entryCount": 10
+  },
+  "items": [
+    {
+      "id": "EMP-0001",
+      "category": "employment",
+      "internalCategory": "Employment Pass",
+      "question": "持有新加坡 Employment Pass 可以换工作吗？",
+      "shortAnswer": "通常可以，但新雇主应在入职前完成所需的工作准证审批流程。",
+      "detailedAnswer": "工作准证通常与雇主申请流程相关。实践中，多数情况是由新雇主先完成相关审批，再安排正式入职。资格条件、材料要求与处理时间可能调整，建议在确定离职与入职日期前先核对最新官方信息。",
+      "thingsToNote": "本内容为一般信息，不构成法律意见。政策可能更新。",
+      "relatedTopics": [
+        "Employment Pass",
+        "MOM",
+        "Resignation"
+      ],
+      "keywords": [
+        "employment pass 换工作",
+        "新加坡更换雇主",
+        "work pass"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "MOM"
+      ]
+    },
+    {
+      "id": "EMP-0002",
+      "category": "employment",
+      "internalCategory": "S Pass",
+      "question": "新加坡 Employment Pass 和 S Pass 有什么区别？",
+      "shortAnswer": "两者是不同的工作准证路径，资格要求与雇主义务不同。",
+      "detailedAnswer": "Employment Pass 与 S Pass 面向的人才类型和规则框架不同。具体门槛与合规要求可能随政策调整，申请前应以官方最新说明为准。",
+      "thingsToNote": "涉及资格判断时，请优先查看官方准证页面。",
+      "relatedTopics": [
+        "Employment Pass",
+        "S Pass",
+        "MOM Regulations"
+      ],
+      "keywords": [
+        "employment pass vs s pass",
+        "新加坡工作签证",
+        "mom 准证"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "MOM"
+      ]
+    },
+    {
+      "id": "EMP-0003",
+      "category": "employment",
+      "internalCategory": "CPF",
+      "question": "在新加坡工作的人都适用 CPF 缴纳吗？",
+      "shortAnswer": "CPF 适用情况取决于个人身份与当期规则。",
+      "detailedAnswer": "CPF 缴纳规则会因员工身份与适用政策而不同。雇主和员工应通过 CPF 官方渠道核对当前适用标准和比率。",
+      "thingsToNote": "缴纳比例与适用条件可能定期调整。",
+      "relatedTopics": [
+        "CPF",
+        "Salary",
+        "Payroll"
+      ],
+      "keywords": [
+        "CPF 缴纳",
+        "新加坡工资",
+        "employee CPF"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "CPF"
+      ]
+    },
+    {
+      "id": "EMP-0004",
+      "category": "employment",
+      "internalCategory": "Income Tax",
+      "question": "外籍员工在新加坡如何申报个人所得税？",
+      "shortAnswer": "应先确认税务居民身份和 IRAS 申报义务，再按官方流程申报。",
+      "detailedAnswer": "建议先识别个人税务居民属性与申报责任，再通过 IRAS 官方路径完成申报、缴税和账户管理。居民与非居民税务处理可能不同，不应仅凭经验判断。",
+      "thingsToNote": "税务结果因个人情况而异，必要时应咨询专业人士。",
+      "relatedTopics": [
+        "IRAS",
+        "Tax Residency",
+        "myTax Portal"
+      ],
+      "keywords": [
+        "外籍个税 新加坡",
+        "IRAS 报税",
+        "税务居民"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "IRAS"
+      ]
+    },
+    {
+      "id": "EMP-0005",
+      "category": "employment",
+      "internalCategory": "Leave and Benefits",
+      "question": "在接受新加坡工作 offer 前应重点查看哪些假期和福利条款？",
+      "shortAnswer": "建议同时核对合同条款与法定基础保障。",
+      "detailedAnswer": "通常应查看年假、病假、住院相关安排以及岗位特定政策。合同内容应结合官方劳动规则理解，不同身份与合同结构可能导致适用差异。",
+      "thingsToNote": "请保留完整书面合同及公司政策文件。",
+      "relatedTopics": [
+        "Employment Contract",
+        "Medical Benefits",
+        "MOM Regulations"
+      ],
+      "keywords": [
+        "新加坡年假",
+        "病假政策",
+        "offer 检查清单"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "MOM"
+      ]
+    },
+    {
+      "id": "EMP-0006",
+      "category": "employment",
+      "internalCategory": "Termination",
+      "question": "在新加坡离职前应做哪些准备？",
+      "shortAnswer": "建议先整理通知期、交接文件以及准证和税务影响。",
+      "detailedAnswer": "常见准备包括通知义务、最终薪资时间、假期结算与交接资料。外籍员工还应确认离职后准证与停留安排的影响，必要时寻求专业建议。",
+      "thingsToNote": "不要默认离职后准证状态会自动延续。",
+      "relatedTopics": [
+        "Resignation",
+        "Work Pass",
+        "Final Salary"
+      ],
+      "keywords": [
+        "新加坡离职",
+        "notice period",
+        "外籍员工离职"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "MOM",
+        "IRAS"
+      ]
+    },
+    {
+      "id": "EMP-0007",
+      "category": "employment",
+      "internalCategory": "Workplace Rights",
+      "question": "遇到职场骚扰问题时可以向哪里求助？",
+      "shortAnswer": "可先按公司内部流程处理，必要时再升级到相关官方支持渠道。",
+      "detailedAnswer": "建议先保留事实记录，核对公司申诉流程，再根据事件严重程度选择外部官方渠道或专业支持。记录应客观、清晰并保留时间线。",
+      "thingsToNote": "如涉及人身安全，应立即通过适当官方渠道求助。",
+      "relatedTopics": [
+        "Harassment",
+        "Workplace Rights",
+        "Dispute Handling"
+      ],
+      "keywords": [
+        "职场骚扰 新加坡",
+        "员工权益",
+        "申诉流程"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "MOM"
+      ]
+    },
+    {
+      "id": "EMP-0008",
+      "category": "employment",
+      "internalCategory": "Remote Work",
+      "question": "受雇于新加坡公司时可以在海外远程办公吗？",
+      "shortAnswer": "某些情况下可行，但应先评估移民、税务和劳动合规问题。",
+      "detailedAnswer": "跨境远程办公可能涉及工作许可、税务责任与合同适用等多方面问题。实施前应先确认公司政策及相关国家规则。",
+      "thingsToNote": "跨境安排差异较大，很多场景需要专业评估。",
+      "relatedTopics": [
+        "Remote Work",
+        "Tax Residency",
+        "Employment Policy"
+      ],
+      "keywords": [
+        "海外远程办公",
+        "新加坡雇佣合同",
+        "cross border employment"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "MOM",
+        "IRAS"
+      ]
+    },
+    {
+      "id": "EMP-0009",
+      "category": "employment",
+      "internalCategory": "Interview",
+      "question": "外籍候选人如何准备新加坡行为面试？",
+      "shortAnswer": "建议使用与岗位直接相关的 STAR 案例，并体现本地协作沟通准备度。",
+      "detailedAnswer": "准备 4-6 个 STAR 例子，突出量化成果、协作方式和岗位匹配度，表达尽量清晰简洁。",
+      "thingsToNote": "不同公司和岗位的面试偏好可能不同。",
+      "relatedTopics": [
+        "Interview",
+        "Resume",
+        "Employment"
+      ],
+      "keywords": [
+        "新加坡 面试准备",
+        "行为面试",
+        "外籍候选人"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "MOM"
+      ]
+    },
+    {
+      "id": "EMP-0010",
+      "category": "employment",
+      "internalCategory": "Employment Pass 基础",
+      "question": "新加坡 Employment Pass（EP）是什么？通常哪些人需要？",
+      "shortAnswer": "EP 是新加坡雇主聘用外籍专业人才时常见的工作准证类型。",
+      "detailedAnswer": "EP 通常由雇主担保申请，且一般需要在入职前完成审批。资格条件和流程可能调整，建议申请人以官方最新要求为准。",
+      "thingsToNote": "不要仅依据非官方信息做离职或搬迁决定，应先核对官方条件与时间线。",
+      "relatedTopics": [
+        "Employment Pass",
+        "工作准证",
+        "雇主担保"
+      ],
+      "keywords": [
+        "ep 是什么",
+        "employment pass 基础",
+        "新加坡工作准证"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "MOM"
+      ]
+    }
+  ]
+}

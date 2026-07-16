@@ -1,0 +1,68 @@
+{
+  "version": "2026-07-10",
+  "sources": [
+    {
+      "id": "MOM",
+      "name": "Ministry of Manpower",
+      "domain": "employment",
+      "url": "https://www.mom.gov.sg/passes-and-permits",
+      "useFor": ["work pass", "employment regulations", "leave and rights"]
+    },
+    {
+      "id": "CPF",
+      "name": "Central Provident Fund Board",
+      "domain": "employment",
+      "url": "https://www.cpf.gov.sg/member",
+      "useFor": ["cpf contributions", "employee savings"]
+    },
+    {
+      "id": "IRAS",
+      "name": "Inland Revenue Authority of Singapore",
+      "domain": "employment",
+      "url": "https://www.iras.gov.sg/taxes/individual-income-tax",
+      "useFor": ["income tax filing", "tax residency", "non-resident tax"]
+    },
+    {
+      "id": "HDB",
+      "name": "Housing and Development Board",
+      "domain": "property",
+      "url": "https://www.hdb.gov.sg",
+      "useFor": ["hdb living", "town services", "car parking"]
+    },
+    {
+      "id": "URA",
+      "name": "Urban Redevelopment Authority",
+      "domain": "property",
+      "url": "https://www.ura.gov.sg",
+      "useFor": ["planning and use guidelines", "private property guidance", "season parking"]
+    },
+    {
+      "id": "SCDF",
+      "name": "Singapore Civil Defence Force",
+      "domain": "property",
+      "url": "https://www.scdf.gov.sg/fire-safety-services-listing",
+      "useFor": ["fire code", "home fire safety"]
+    },
+    {
+      "id": "ICA",
+      "name": "Immigration and Checkpoints Authority",
+      "domain": "relocation",
+      "url": "https://www.ica.gov.sg/reside",
+      "useFor": ["reside and pass pathways", "resident document processes"]
+    },
+    {
+      "id": "MOH",
+      "name": "Ministry of Health",
+      "domain": "relocation",
+      "url": "https://www.moh.gov.sg",
+      "useFor": ["healthcare navigation", "health policy baseline"]
+    },
+    {
+      "id": "LTA",
+      "name": "Land Transport Authority",
+      "domain": "relocation",
+      "url": "https://www.lta.gov.sg/content/ltagov/en/getting_around/public_transport.html",
+      "useFor": ["public transport", "commuting tools", "fare and route references"]
+    }
+  ]
+}

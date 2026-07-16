@@ -1,0 +1,276 @@
+{
+  "meta": {
+    "language": "zh",
+    "domain": "property",
+    "version": "2026-07-11",
+    "sourceOfTruth": "English master",
+    "entryCount": 10
+  },
+  "items": [
+    {
+      "id": "PRO-0001",
+      "category": "property",
+      "internalCategory": "Condo Living",
+      "question": "新加坡公寓公共设施通常由谁管理？",
+      "shortAnswer": "通常由小区管理框架与管理团队负责公共区域运作。",
+      "detailedAnswer": "住户一般通过管理渠道处理设施预约、维护报修和社区规则事项。不同项目的管理细则会有差异，建议同时查看住户手册与管理规定。",
+      "thingsToNote": "设施使用规则因项目而异。",
+      "relatedTopics": [
+        "MCST",
+        "Facilities Booking",
+        "Home Maintenance"
+      ],
+      "keywords": [
+        "新加坡公寓管理",
+        "公共设施预约",
+        "MCST"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "URA"
+      ]
+    },
+    {
+      "id": "PRO-0002",
+      "category": "property",
+      "internalCategory": "HDB Living",
+      "question": "HDB 住户可以在哪里办理常见线上住房服务？",
+      "shortAnswer": "可通过 HDB 官方电子服务渠道处理多项住户事务。",
+      "detailedAnswer": "HDB 官方渠道提供部分住房与社区相关线上服务。具体可用项目会因用户类型和事项类型而不同。",
+      "thingsToNote": "服务可用范围与账户权限相关。",
+      "relatedTopics": [
+        "HDB e-Services",
+        "Town Services",
+        "Parking"
+      ],
+      "keywords": [
+        "HDB 电子服务",
+        "MyHDB",
+        "住房服务"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB"
+      ]
+    },
+    {
+      "id": "PRO-0003",
+      "category": "property",
+      "internalCategory": "Renovation",
+      "question": "在新加坡做家装前是否需要先确认规定？",
+      "shortAnswer": "需要，家装范围不同可能触发不同审批或合规要求。",
+      "detailedAnswer": "依据房屋类型与施工内容，可能需要按管理与监管要求办理相关流程。开工前先向管理方和官方规则核对可降低风险。",
+      "thingsToNote": "未经批准施工可能带来整改或处罚风险。",
+      "relatedTopics": [
+        "Renovation",
+        "BCA Regulations",
+        "Fire Safety"
+      ],
+      "keywords": [
+        "新加坡装修规定",
+        "装修审批",
+        "公寓装修"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "URA",
+        "SCDF"
+      ]
+    },
+    {
+      "id": "PRO-0004",
+      "category": "property",
+      "internalCategory": "Fire Safety",
+      "question": "家庭应做哪些基础消防安全检查？",
+      "shortAnswer": "建议按官方指引检查用电安全、逃生通道和应急认知。",
+      "detailedAnswer": "家庭消防基础可从安全用电、保持逃生路线畅通、了解火情应对流程开始。SCDF 提供可参考的官方消防资料。",
+      "thingsToNote": "消防建议应以最新官方版本为准。",
+      "relatedTopics": [
+        "SCDF",
+        "Home Safety",
+        "Emergency"
+      ],
+      "keywords": [
+        "家庭消防 新加坡",
+        "SCDF 指引",
+        "火灾安全"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "SCDF"
+      ]
+    },
+    {
+      "id": "PRO-0005",
+      "category": "property",
+      "internalCategory": "Parking",
+      "question": "居民如何办理季节性停车相关事项？",
+      "shortAnswer": "应根据住区类型和管理主体使用对应官方停车渠道。",
+      "detailedAnswer": "停车申请、续期和转换流程在 HDB、URA 或私人物业下可能不同。建议先确认所在住区对应渠道及适用条件。",
+      "thingsToNote": "停车资格和车位供给会因区域与时段而变化。",
+      "relatedTopics": [
+        "Season Parking",
+        "Visitor Parking",
+        "Property Services"
+      ],
+      "keywords": [
+        "季节停车 新加坡",
+        "HDB 停车续期",
+        "URA 停车"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB",
+        "URA"
+      ]
+    },
+    {
+      "id": "PRO-0006",
+      "category": "property",
+      "internalCategory": "Noise and Neighbour Issues",
+      "question": "遇到邻里噪音问题时第一步该怎么做？",
+      "shortAnswer": "通常先理性沟通并记录事实，再按需要通过管理渠道升级处理。",
+      "detailedAnswer": "建议先记录发生时间与情况，再通过住区管理渠道客观反馈。若无法解决，可按住区与问题性质选择后续路径。",
+      "thingsToNote": "避免冲突，保持沟通记录客观清晰。",
+      "relatedTopics": [
+        "Neighbour Disputes",
+        "MCST",
+        "Town Council"
+      ],
+      "keywords": [
+        "噪音投诉",
+        "邻里纠纷",
+        "物业管理投诉"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "HDB",
+        "URA"
+      ]
+    },
+    {
+      "id": "PRO-0007",
+      "category": "property",
+      "internalCategory": "Utilities and Services",
+      "question": "新住户应优先开通哪些家庭基础服务？",
+      "shortAnswer": "建议先完成电、水、网络和必要生活服务开通。",
+      "detailedAnswer": "入住初期通常先处理公用事业与网络服务，再核对账户持有人、开通日期与入住日期的一致性，以减少初期生活中断。",
+      "thingsToNote": "尽量避免入住日早于服务生效日。",
+      "relatedTopics": [
+        "Utilities",
+        "Internet",
+        "Moving House"
+      ],
+      "keywords": [
+        "新家开通服务",
+        "公用事业 新加坡",
+        "网络安装"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB"
+      ]
+    },
+    {
+      "id": "PRO-0008",
+      "category": "property",
+      "internalCategory": "Waste and Recycling",
+      "question": "居民应如何正确处理垃圾与回收物？",
+      "shortAnswer": "应按小区规定和指定投放方式处理日常与特殊废弃物。",
+      "detailedAnswer": "日常垃圾与可回收物应按照住区收运规则执行。对大件或特殊物品，建议先确认指定处理渠道和时间安排。",
+      "thingsToNote": "不当投放可能引发投诉或管理处罚。",
+      "relatedTopics": [
+        "Waste Disposal",
+        "Recycling",
+        "Town Services"
+      ],
+      "keywords": [
+        "垃圾分类 新加坡",
+        "回收处理",
+        "大件废弃物"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB"
+      ]
+    },
+    {
+      "id": "PRO-0009",
+      "category": "property",
+      "internalCategory": "Utilities",
+      "question": "在新加坡新居入住后应优先设置哪些事项？",
+      "shortAnswer": "建议先完成电、水、网络及门禁等基础项。",
+      "detailedAnswer": "常见做法是先开通公用事业与网络，再处理门禁卡、快递投递说明和维修联系方式。请确认开通生效日与入住日一致，避免首周生活中断。",
+      "thingsToNote": "具体流程会因房屋类型和管理处而不同。",
+      "relatedTopics": [
+        "Utilities",
+        "Internet",
+        "Moving House"
+      ],
+      "keywords": [
+        "入住设置 新加坡",
+        "公用事业开通",
+        "搬家清单"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB",
+        "URA"
+      ]
+    },
+    {
+      "id": "PRO-0010",
+      "category": "property",
+      "internalCategory": "住房类型基础",
+      "question": "新到新加坡时，常见的住房选择有哪些？",
+      "shortAnswer": "通常会按预算、通勤距离和家庭需求比较 HDB、公寓和短期住宿选项。",
+      "detailedAnswer": "实务上可先从月预算、通勤半径、家庭人数和入住时间做筛选。HDB、公寓和服务式短住在成本、配套与便利性上各有取舍。租赁与社区管理细节请以官方和管理方信息为准。",
+      "thingsToNote": "不要只看租金，还要同时评估交通成本、合同条款与日常生活匹配度。",
+      "relatedTopics": [
+        "HDB",
+        "公寓",
+        "租房规划"
+      ],
+      "keywords": [
+        "新加坡住房选择",
+        "hdb 和公寓",
+        "新移居租房"
+      ],
+      "language": "zh",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "HDB",
+        "URA"
+      ]
+    }
+  ]
+}

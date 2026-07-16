@@ -1,0 +1,276 @@
+{
+  "meta": {
+    "language": "ko",
+    "domain": "employment",
+    "version": "2026-07-11",
+    "sourceOfTruth": "English master",
+    "entryCount": 10
+  },
+  "items": [
+    {
+      "id": "EMP-0001",
+      "category": "employment",
+      "internalCategory": "Employment Pass",
+      "question": "싱가포르 Employment Pass 소지자가 이직할 수 있나요?",
+      "shortAnswer": "일반적으로 가능하지만, 새 고용주가 근무 시작 전에 필요한 승인 절차를 완료해야 합니다.",
+      "detailedAnswer": "워크패스는 보통 고용주 스폰서 구조로 운영됩니다. 실무에서는 새 고용주가 필요한 승인 절차를 완료한 뒤 근무를 시작하는 방식이 일반적입니다. 자격요건과 제출 서류, 처리 기간은 변동될 수 있으므로 퇴사 및 입사 일정을 확정하기 전에 최신 공식 정보를 확인해야 합니다.",
+      "thingsToNote": "법률 자문이 아닌 일반 정보입니다. 정책은 수시로 변경될 수 있습니다.",
+      "relatedTopics": [
+        "Employment Pass",
+        "MOM",
+        "퇴사"
+      ],
+      "keywords": [
+        "싱가포르 employment pass 이직",
+        "고용주 변경",
+        "work pass"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "MOM"
+      ]
+    },
+    {
+      "id": "EMP-0002",
+      "category": "employment",
+      "internalCategory": "S Pass",
+      "question": "싱가포르 Employment Pass와 S Pass의 차이는 무엇인가요?",
+      "shortAnswer": "두 패스는 자격요건과 고용주 의무가 다른 별도 트랙입니다.",
+      "detailedAnswer": "Employment Pass와 S Pass는 대상 인력군과 요건이 다른 제도입니다. 세부 기준과 준수 의무는 정책 조정에 따라 달라질 수 있으므로, 신청 전에는 반드시 공식 안내에서 최신 요건을 확인해야 합니다.",
+      "thingsToNote": "최신 기준은 공식 패스 안내 페이지를 우선 확인하세요.",
+      "relatedTopics": [
+        "Employment Pass",
+        "S Pass",
+        "MOM Regulations"
+      ],
+      "keywords": [
+        "employment pass s pass 차이",
+        "싱가포르 취업비자",
+        "mom pass"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "MOM"
+      ]
+    },
+    {
+      "id": "EMP-0003",
+      "category": "employment",
+      "internalCategory": "CPF",
+      "question": "싱가포르에서는 모든 근로자가 CPF를 받나요?",
+      "shortAnswer": "CPF 적용은 근로자 프로필과 당시 규정에 따라 달라질 수 있습니다.",
+      "detailedAnswer": "CPF 기여 구조는 근로자 상태와 관련 규정에 따라 적용 방식이 다를 수 있습니다. 기업과 개인 모두 공식 CPF 자료를 통해 본인 상황에 맞는 적용 기준을 확인하는 것이 안전합니다.",
+      "thingsToNote": "기여율과 적용 기준은 주기적으로 바뀔 수 있습니다.",
+      "relatedTopics": [
+        "CPF",
+        "급여",
+        "Payroll"
+      ],
+      "keywords": [
+        "CPF 기여",
+        "싱가포르 급여",
+        "employee CPF"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "CPF"
+      ]
+    },
+    {
+      "id": "EMP-0004",
+      "category": "employment",
+      "internalCategory": "Income Tax",
+      "question": "외국인 근로자는 싱가포르 소득세를 어떻게 신고하나요?",
+      "shortAnswer": "세무상 거주자 여부와 IRAS 신고 의무를 먼저 확인한 뒤 공식 절차를 따라야 합니다.",
+      "detailedAnswer": "개인은 먼저 본인의 세무상 분류와 신고 의무를 확인해야 합니다. 이후 IRAS의 공식 경로에서 신고, 납부, 계정 관리를 진행하는 방식이 일반적입니다. 거주자/비거주자 과세가 달라질 수 있으므로 단정적 판단은 피해야 합니다.",
+      "thingsToNote": "세무 결과는 개인 상황에 따라 달라질 수 있어 필요 시 전문가 검토가 필요합니다.",
+      "relatedTopics": [
+        "IRAS",
+        "Tax Residency",
+        "myTax Portal"
+      ],
+      "keywords": [
+        "싱가포르 외국인 소득세",
+        "IRAS 신고",
+        "tax residency"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "IRAS"
+      ]
+    },
+    {
+      "id": "EMP-0005",
+      "category": "employment",
+      "internalCategory": "Leave and Benefits",
+      "question": "싱가포르 취업 오퍼 수락 전 어떤 휴가/복지 항목을 확인해야 하나요?",
+      "shortAnswer": "계약서상의 휴가 조건과 법정 기준을 함께 확인하는 것이 좋습니다.",
+      "detailedAnswer": "오퍼 검토 시에는 연차, 병가, 입원 관련 보장, 직무별 내부 정책을 함께 보는 것이 일반적입니다. 계약 조건은 공식 고용 규정과 함께 읽어야 하며, 개인 프로필이나 계약 구조에 따라 적용 내용이 달라질 수 있습니다.",
+      "thingsToNote": "계약서와 사내 정책 문서는 반드시 서면으로 보관하세요.",
+      "relatedTopics": [
+        "Employment Contract",
+        "Medical Benefits",
+        "MOM Regulations"
+      ],
+      "keywords": [
+        "싱가포르 연차",
+        "병가 기준",
+        "오퍼 체크리스트"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "MOM"
+      ]
+    },
+    {
+      "id": "EMP-0006",
+      "category": "employment",
+      "internalCategory": "Termination",
+      "question": "싱가포르에서 퇴사 전에 무엇을 준비해야 하나요?",
+      "shortAnswer": "통지 기간, 인수인계, 비자/세무 영향 항목을 미리 정리해야 합니다.",
+      "detailedAnswer": "실무적으로는 통지 의무, 최종 급여 지급 시점, 잔여 휴가 정산, 인수인계 문서 준비를 먼저 확인합니다. 외국인 근로자의 경우 워크패스와 체류 일정 영향도 함께 점검해야 하며, 필요 시 전문가 검토가 권장됩니다.",
+      "thingsToNote": "퇴사 후 비자 상태가 자동 유지된다고 가정하면 안 됩니다.",
+      "relatedTopics": [
+        "Resignation",
+        "Work Pass",
+        "Final Salary"
+      ],
+      "keywords": [
+        "싱가포르 퇴사",
+        "notice period",
+        "외국인 퇴사 준비"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "MOM",
+        "IRAS"
+      ]
+    },
+    {
+      "id": "EMP-0007",
+      "category": "employment",
+      "internalCategory": "Workplace Rights",
+      "question": "직장 내 괴롭힘 이슈가 있을 때 어디에 도움을 요청할 수 있나요?",
+      "shortAnswer": "사내 신고 절차를 우선 활용하고 필요 시 관련 공식 채널로 단계적으로 확대할 수 있습니다.",
+      "detailedAnswer": "일반적으로는 사실관계 기록을 남기고, 내부 고충 절차를 확인한 뒤 필요할 경우 외부 공식 채널 또는 전문가 자문을 검토합니다. 추후 대응을 위해 기록은 날짜와 사실 중심으로 관리하는 것이 좋습니다.",
+      "thingsToNote": "긴급 안전 이슈는 즉시 적절한 공식 채널로 신고해야 합니다.",
+      "relatedTopics": [
+        "Harassment",
+        "Workplace Rights",
+        "Dispute Handling"
+      ],
+      "keywords": [
+        "직장 내 괴롭힘 싱가포르",
+        "근로자 권리",
+        "고충 신고"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "MOM"
+      ]
+    },
+    {
+      "id": "EMP-0008",
+      "category": "employment",
+      "internalCategory": "Remote Work",
+      "question": "싱가포르 회사 소속으로 해외 원격근무가 가능한가요?",
+      "shortAnswer": "가능한 경우가 있지만, 비자/세무/고용 컴플라이언스를 먼저 검토해야 합니다.",
+      "detailedAnswer": "국경 간 원격근무는 취업허가, 세무 노출, 계약 조건 등 여러 컴플라이언스 요소를 동시에 점검해야 합니다. 실행 전에는 회사 정책과 관련 국가 규정을 함께 확인하는 것이 안전합니다.",
+      "thingsToNote": "국경 간 고용 이슈는 개별 상황 차이가 커서 전문가 검토가 필요할 수 있습니다.",
+      "relatedTopics": [
+        "Remote Work",
+        "Tax Residency",
+        "Employment Policy"
+      ],
+      "keywords": [
+        "해외 원격근무",
+        "싱가포르 고용 계약",
+        "cross border employment"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "manual",
+      "riskLevel": "high",
+      "sourceRefs": [
+        "MOM",
+        "IRAS"
+      ]
+    },
+    {
+      "id": "EMP-0009",
+      "category": "employment",
+      "internalCategory": "Interview",
+      "question": "외국인 지원자가 싱가포르 행동면접을 준비할 때 핵심은 무엇인가요?",
+      "shortAnswer": "직무 연관 STAR 사례와 현지 커뮤니케이션 적응도를 보여주는 것이 중요합니다.",
+      "detailedAnswer": "직무와 직접 연결되는 STAR 사례 4~6개를 준비하고, 정량 성과와 협업 방식, 커뮤니케이션 맥락을 명확히 제시하는 것이 좋습니다.",
+      "thingsToNote": "회사와 직무별 면접 기준은 다를 수 있습니다.",
+      "relatedTopics": [
+        "Interview",
+        "Resume",
+        "Employment"
+      ],
+      "keywords": [
+        "싱가포르 면접 준비",
+        "행동면접",
+        "외국인 채용 면접"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "low",
+      "sourceRefs": [
+        "MOM"
+      ]
+    },
+    {
+      "id": "EMP-0010",
+      "category": "employment",
+      "internalCategory": "Employment Pass 기초",
+      "question": "싱가포르 Employment Pass(EP)는 무엇이고, 주로 누가 필요한가요?",
+      "shortAnswer": "EP는 싱가포르 기업이 해외 전문인력을 채용할 때 주로 사용하는 대표적인 취업 패스입니다.",
+      "detailedAnswer": "EP는 보통 기업 스폰서십 기반으로 신청되며, 일반적으로 근무 시작 전에 승인 절차가 완료되어야 합니다. 직무 요건과 심사 기준은 변경될 수 있으므로 최신 공식 기준을 반드시 확인해야 합니다.",
+      "thingsToNote": "비공식 커뮤니티 정보만으로 의사결정하지 말고, 최신 공식 요건과 처리기간을 확인하세요.",
+      "relatedTopics": [
+        "Employment Pass",
+        "취업비자",
+        "기업 스폰서십"
+      ],
+      "keywords": [
+        "ep란",
+        "employment pass 뜻",
+        "싱가포르 취업패스",
+        "ep는 무엇이지",
+        "ep는 뭐야",
+        "ep 뜻"
+      ],
+      "language": "ko",
+      "updatedAt": "2026-07-11",
+      "sourceType": "approved_suggestion",
+      "riskLevel": "medium",
+      "sourceRefs": [
+        "MOM"
+      ]
+    }
+  ]
+}

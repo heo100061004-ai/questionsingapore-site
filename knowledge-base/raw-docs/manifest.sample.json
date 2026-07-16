@@ -1,0 +1,19 @@
+{
+  "defaults": {
+    "language": "en",
+    "category": "employment",
+    "source": "Official PDF",
+    "url": ""
+  },
+  "files": [
+    {
+      "file": "sample-recruitment-guide.pdf",
+      "title": "Sample Recruitment Guide",
+      "language": "en",
+      "category": "employment",
+      "source": "MOM Guide",
+      "url": "https://www.mom.gov.sg/passes-and-permits",
+      "keywords": ["employment pass", "work permit", "hiring"]
+    }
+  ]
+}

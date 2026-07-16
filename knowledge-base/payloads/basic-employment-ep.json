@@ -1,0 +1,36 @@
+{
+  "domain": "employment",
+  "english": {
+    "internalCategory": "Employment Pass Basics",
+    "question": "What is Employment Pass (EP) in Singapore, and who typically needs it?",
+    "shortAnswer": "Employment Pass is a common work pass for foreign professionals hired by Singapore employers.",
+    "detailedAnswer": "EP is generally used for foreign professionals in qualifying roles with employer sponsorship. The employer applies and approval must usually be in place before work starts. Eligibility and process details can be updated, so applicants should verify the latest official requirements.",
+    "thingsToNote": "Do not resign or relocate based only on informal summaries. Check current official criteria and timelines first.",
+    "relatedTopics": ["Employment Pass", "Work Pass", "Employer Sponsorship"],
+    "keywords": ["ep singapore", "employment pass basics", "what is ep"],
+    "riskLevel": "medium",
+    "sourceRefs": ["MOM"]
+  },
+  "korean": {
+    "internalCategory": "Employment Pass 기초",
+    "question": "싱가포르 Employment Pass(EP)는 무엇이고, 주로 누가 필요한가요?",
+    "shortAnswer": "EP는 싱가포르 기업이 해외 전문인력을 채용할 때 주로 사용하는 대표적인 취업 패스입니다.",
+    "detailedAnswer": "EP는 보통 기업 스폰서십 기반으로 신청되며, 일반적으로 근무 시작 전에 승인 절차가 완료되어야 합니다. 직무 요건과 심사 기준은 변경될 수 있으므로 최신 공식 기준을 반드시 확인해야 합니다.",
+    "thingsToNote": "비공식 커뮤니티 정보만으로 의사결정하지 말고, 최신 공식 요건과 처리기간을 확인하세요.",
+    "relatedTopics": ["Employment Pass", "취업비자", "기업 스폰서십"],
+    "keywords": ["ep란", "employment pass 뜻", "싱가포르 취업패스"],
+    "riskLevel": "medium",
+    "sourceRefs": ["MOM"]
+  },
+  "chinese": {
+    "internalCategory": "Employment Pass 基础",
+    "question": "新加坡 Employment Pass（EP）是什么？通常哪些人需要？",
+    "shortAnswer": "EP 是新加坡雇主聘用外籍专业人才时常见的工作准证类型。",
+    "detailedAnswer": "EP 通常由雇主担保申请，且一般需要在入职前完成审批。资格条件和流程可能调整，建议申请人以官方最新要求为准。",
+    "thingsToNote": "不要仅依据非官方信息做离职或搬迁决定，应先核对官方条件与时间线。",
+    "relatedTopics": ["Employment Pass", "工作准证", "雇主担保"],
+    "keywords": ["ep 是什么", "employment pass 基础", "新加坡工作准证"],
+    "riskLevel": "medium",
+    "sourceRefs": ["MOM"]
+  }
+}

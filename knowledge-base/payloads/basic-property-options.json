@@ -1,0 +1,36 @@
+{
+  "domain": "property",
+  "english": {
+    "internalCategory": "Housing Types Basics",
+    "question": "What are common housing options for newcomers in Singapore?",
+    "shortAnswer": "Newcomers usually compare HDB, condo, and serviced options based on budget, commute, and family needs.",
+    "detailedAnswer": "A practical housing comparison starts with commute radius, monthly budget, household size, and move-in timeline. HDB, condo, and temporary serviced stays each have different trade-offs in cost, facilities, and convenience. Use official and management channels for up-to-date tenancy and estate guidance.",
+    "thingsToNote": "Do not decide by rental price only. Include transport cost, contract terms, and daily lifestyle fit.",
+    "relatedTopics": ["HDB", "Condo", "Rental Planning"],
+    "keywords": ["housing options singapore", "hdb vs condo", "newcomer rent singapore"],
+    "riskLevel": "low",
+    "sourceRefs": ["HDB", "URA"]
+  },
+  "korean": {
+    "internalCategory": "주거 유형 기초",
+    "question": "싱가포르 이주 초기에는 어떤 주거 옵션을 주로 비교하나요?",
+    "shortAnswer": "보통 예산, 출퇴근 거리, 가족 구성에 따라 HDB·콘도·단기 체류 옵션을 비교합니다.",
+    "detailedAnswer": "주거 비교는 월 예산, 통근 반경, 가구 인원, 입주 시점부터 시작하는 것이 실무적입니다. HDB, 콘도, 단기 서비스형 숙소는 비용·시설·편의성에서 장단점이 다르므로 생활 패턴에 맞춰 선택해야 합니다. 계약/관리 관련 최신 내용은 공식 채널을 확인하세요.",
+    "thingsToNote": "월세만 보지 말고 교통비, 계약 조건, 생활 동선을 함께 비교하세요.",
+    "relatedTopics": ["HDB", "콘도", "임대 계획"],
+    "keywords": ["싱가포르 집 구하기", "hdb 콘도 차이", "이주 주거"],
+    "riskLevel": "low",
+    "sourceRefs": ["HDB", "URA"]
+  },
+  "chinese": {
+    "internalCategory": "住房类型基础",
+    "question": "新到新加坡时，常见的住房选择有哪些？",
+    "shortAnswer": "通常会按预算、通勤距离和家庭需求比较 HDB、公寓和短期住宿选项。",
+    "detailedAnswer": "实务上可先从月预算、通勤半径、家庭人数和入住时间做筛选。HDB、公寓和服务式短住在成本、配套与便利性上各有取舍。租赁与社区管理细节请以官方和管理方信息为准。",
+    "thingsToNote": "不要只看租金，还要同时评估交通成本、合同条款与日常生活匹配度。",
+    "relatedTopics": ["HDB", "公寓", "租房规划"],
+    "keywords": ["新加坡住房选择", "hdb 和公寓", "新移居租房"],
+    "riskLevel": "low",
+    "sourceRefs": ["HDB", "URA"]
+  }
+}
