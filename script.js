@@ -29,9 +29,9 @@ const HOME_TOP_VIDEO_STORAGE_KEY = 'question-singapore-home-top-video-url';
 const ADMIN_BANNER_STORAGE_KEY = 'question-singapore-admin-banner-url';
 const ADMIN_DEFAULT_BANNER_URL = 'hero-bg.svg';
 const SOCIAL_LINKS = {
-  linkedin: 'https://www.linkedin.com/company/questionsingapore/',
-  whatsapp: 'https://wa.me/6592218254',
-  kakao: 'https://open.kakao.com/'
+  linkedin: 'https://www.linkedin.com/company/question-singapore/',
+  whatsapp: 'https://chat.whatsapp.com/DTdusHVhuP07h7RLjlR6Ot?s=cl&p=i&ilr=4',
+  kakao: 'https://open.kakao.com/o/pbjE82ui'
 };
 
 const translations = {
