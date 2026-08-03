@@ -660,11 +660,10 @@ function updateContactFields() {
     return;
   }
 
-  const isWhatsapp = contactTypeSelect.value === 'whatsapp';
-  contactEmailGroup.hidden = isWhatsapp;
-  whatsappFields.hidden = !isWhatsapp;
-  contactValueInput.required = !isWhatsapp;
-  phoneNumberInput.required = isWhatsapp;
+  contactEmailGroup.hidden = false;
+  whatsappFields.hidden = false;
+  contactValueInput.required = false;
+  phoneNumberInput.required = false;
   countryCodeInput.required = false;
 }
 
@@ -1129,14 +1128,21 @@ if (form) {
     const countryCode = formData.get('countryCode')?.toString().trim() || '';
     const phoneNumber = formData.get('phoneNumber')?.toString().trim() || '';
     const language = languageSelect?.value || 'ko';
-    let contactValue = emailContact;
+    const emailOnly = Boolean(emailContact);
+    const phoneOnly = Boolean(phoneNumber.replace(/\D/g, ''));
+    let resolvedContactType = contactType;
+    let contactValue = '';
 
-    if (contactType === 'whatsapp') {
+    if (contactType === 'whatsapp' || (!emailOnly && phoneOnly)) {
       const normalizedCode = countryCode
         ? (countryCode.startsWith('+') ? countryCode : `+${countryCode.replace(/[^0-9]/g, '')}`)
         : '+65';
       const normalizedNumber = phoneNumber.replace(/[^0-9]/g, '');
+      resolvedContactType = 'whatsapp';
       contactValue = normalizedNumber ? `${normalizedCode}${normalizedNumber}` : '';
+    } else if (emailOnly) {
+      resolvedContactType = 'email';
+      contactValue = emailContact;
     }
 
     const translation = translations[language] || translations.ko;
@@ -1148,7 +1154,7 @@ if (form) {
 
     let savedEntry = null;
     if (store) {
-      savedEntry = store.addQuestion({ name, category, question, contactType, contactValue, language });
+      savedEntry = store.addQuestion({ name, category, question, contactType: resolvedContactType, contactValue, language });
     }
 
     notifyAdminOfInquiry({
@@ -1156,7 +1162,7 @@ if (form) {
       name,
       category,
       question,
-      contactType,
+      contactType: resolvedContactType,
       contactValue,
       language,
       createdAt: savedEntry?.createdAt || new Date().toISOString()
@@ -1166,7 +1172,7 @@ if (form) {
       id: savedEntry?.id || '',
       category,
       question,
-      contactType,
+      contactType: resolvedContactType,
       language,
       createdAt: savedEntry?.createdAt || new Date().toISOString()
     });
