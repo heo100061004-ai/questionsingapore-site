@@ -3,324 +3,1370 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Question Singapore</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Source+Sans+3:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    <link rel="stylesheet" href="styles.css?v=20260803-4" />
+    <title>Question Singapore Banner Concept</title>
+    <style>
+      :root {
+        --bg: #eef3fb;
+        --panel: rgba(255, 255, 255, 0.82);
+        --panel-strong: #ffffff;
+        --text: #10213d;
+        --muted: #5d6d82;
+        --line: rgba(16, 33, 61, 0.12);
+        --accent: #c7932f;
+        --blue: #173f7a;
+        --blue-soft: #e8eefb;
+        --green: #246b57;
+        --green-soft: #e8f5ef;
+        --orange: #b85f1d;
+        --orange-soft: #f9eadf;
+        --shadow: 0 24px 60px rgba(16, 33, 61, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, "Noto Sans KR", "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(900px 360px at 15% 0%, rgba(23, 63, 122, 0.16), transparent 60%),
+          radial-gradient(700px 320px at 85% 10%, rgba(199, 147, 47, 0.18), transparent 55%),
+          linear-gradient(180deg, #f5f8fd 0%, var(--bg) 100%);
+        min-height: 100vh;
+        padding: 28px;
+      }
+
+      .canvas {
+        max-width: 1320px;
+        margin: 0 auto;
+      }
+
+      .label-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 18px;
+        padding: 6px 4px;
+      }
+
+      .logo-wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .logo-mark {
+        position: relative;
+        width: 72px;
+        height: 72px;
+        flex: 0 0 auto;
+      }
+
+      .logo-mark::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border: 12px solid #0b2a5e;
+        border-radius: 50%;
+        box-sizing: border-box;
+      }
+
+      .logo-mark::after {
+        content: "";
+        position: absolute;
+        width: 28px;
+        height: 12px;
+        right: 2px;
+        bottom: 10px;
+        background: #c7932f;
+        transform: rotate(45deg);
+        transform-origin: right center;
+        border-radius: 2px;
+        box-shadow: 0 0 0 1px rgba(199, 147, 47, 0.08);
+      }
+
+      .logo-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .logo-text strong {
+        font-size: 22px;
+        letter-spacing: -0.05em;
+        color: #0b2a5e;
+      }
+
+      .logo-text span {
+        font-size: 14px;
+        color: #b88528;
+      }
+
+      .eyebrow {
+        margin: 0;
+        font-size: 12px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      .note {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(245, 248, 255, 0.9) 44%, rgba(233, 239, 251, 0.94) 100%);
+        box-shadow: var(--shadow);
+      }
+
+      .hero::before,
+      .hero::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        pointer-events: none;
+      }
+
+      .hero::before {
+        width: 340px;
+        height: 340px;
+        right: -110px;
+        top: -110px;
+        background: radial-gradient(circle at center, rgba(199, 147, 47, 0.20), rgba(199, 147, 47, 0));
+      }
+
+      .hero::after {
+        width: 280px;
+        height: 280px;
+        left: -90px;
+        bottom: -90px;
+        background: radial-gradient(circle at center, rgba(23, 63, 122, 0.18), rgba(23, 63, 122, 0));
+      }
+
+      .hero-inner {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1.25fr 0.95fr;
+        gap: 22px;
+        padding: 28px;
+        min-height: 420px;
+      }
+
+      .hero-copy {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 10px 6px 10px 6px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        padding: 9px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid rgba(16, 33, 61, 0.08);
+        color: var(--blue);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+      }
+
+      .tag-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 4px rgba(199, 147, 47, 0.18);
+      }
+
+      .hero h1 {
+        margin-top: 14px;
+        max-width: 640px;
+        font-size: clamp(2rem, 4vw, 4rem);
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+      }
+
+      .hero-text {
+        max-width: 620px;
+        margin-top: 14px;
+        font-size: 17px;
+        line-height: 1.7;
+        color: var(--muted);
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 0 18px;
+        border-radius: 14px;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        border: 1px solid transparent;
+      }
+
+      .button-primary {
+        background: linear-gradient(135deg, var(--blue) 0%, #214f9a 100%);
+        color: #fff;
+        box-shadow: 0 14px 26px rgba(23, 63, 122, 0.22);
+      }
+
+      .button-secondary {
+        background: rgba(255, 255, 255, 0.78);
+        color: var(--blue);
+        border-color: rgba(23, 63, 122, 0.16);
+      }
+
+      .hero-points {
+        display: grid;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .hero-point {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 12px 14px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(16, 33, 61, 0.08);
+        color: var(--text);
+        font-size: 14px;
+      }
+
+      .hero-point strong {
+        color: var(--blue);
+      }
+
+      .hero-point-icon {
+        width: 26px;
+        height: 26px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .icon-blue { background: var(--blue-soft); color: var(--blue); }
+      .icon-green { background: var(--green-soft); color: var(--green); }
+      .icon-orange { background: var(--orange-soft); color: var(--orange); }
+
+      .hero-media {
+        display: grid;
+        gap: 16px;
+        align-content: stretch;
+      }
+
+      .media-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        border: 1px solid rgba(16, 33, 61, 0.10);
+        background: linear-gradient(160deg, rgba(18, 37, 72, 0.98) 0%, rgba(26, 63, 123, 0.92) 58%, rgba(33, 79, 154, 0.86) 100%);
+        min-height: 250px;
+        color: #fff;
+        padding: 22px;
+        box-shadow: 0 18px 38px rgba(16, 33, 61, 0.24);
+      }
+
+      .media-card::before {
+        content: "";
+        position: absolute;
+        inset: auto -40px -50px auto;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: radial-gradient(circle at center, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0));
+      }
+
+      .media-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(90deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 100%),
+          linear-gradient(180deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 100%);
+        background-size: 22px 22px;
+        opacity: 0.22;
+      }
+
+      .media-card__inner {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        gap: 14px;
+      }
+
+      .media-card__title {
+        font-size: 24px;
+        line-height: 1.15;
+        letter-spacing: -0.03em;
+      }
+
+      .media-card__desc {
+        color: rgba(255, 255, 255, 0.84);
+        line-height: 1.65;
+        font-size: 14px;
+        max-width: 340px;
+      }
+
+      .mini-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: auto;
+      }
+
+      .mini-pill {
+        padding: 8px 11px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        font-size: 12px;
+        color: #fff;
+      }
+
+      .ad-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 20px;
+      }
+
+      .category-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 14px;
+      }
+
+      .category-card {
+        border-radius: 20px;
+        background: #fff;
+        border: 1px solid rgba(16, 33, 61, 0.10);
+        padding: 16px;
+        min-height: 220px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .category-card__title {
+        font-size: 20px;
+        letter-spacing: -0.03em;
+      }
+
+      .banner-stack {
+        display: grid;
+        gap: 10px;
+      }
+
+      .small-banner {
+        border-radius: 14px;
+        padding: 12px 14px;
+        font-size: 13px;
+        line-height: 1.5;
+        border: 1px solid rgba(16, 33, 61, 0.10);
+        background: linear-gradient(135deg, rgba(246, 249, 255, 0.96), rgba(255,255,255,1));
+      }
+
+      .small-banner strong {
+        display: block;
+        margin-bottom: 2px;
+        font-size: 14px;
+      }
+
+      .small-banner--blue { background: linear-gradient(135deg, rgba(233, 242, 255, 0.98), #fff); }
+      .small-banner--orange { background: linear-gradient(135deg, rgba(255, 242, 231, 0.98), #fff); }
+      .small-banner--green { background: linear-gradient(135deg, rgba(232, 248, 241, 0.98), #fff); }
+
+      .site-section {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 44px 0 0;
+      }
+
+      .section-intro {
+        margin-bottom: 24px;
+      }
+
+      .section-intro h2 {
+        font-size: clamp(1.8rem, 2.7vw, 2.4rem);
+        line-height: 1.2;
+      }
+
+      .site-chat-shell {
+        background:
+          radial-gradient(860px 300px at 0% 0%, rgba(17, 37, 72, 0.13), rgba(17, 37, 72, 0) 60%),
+          radial-gradient(640px 260px at 100% 100%, rgba(195, 151, 47, 0.14), rgba(195, 151, 47, 0) 62%),
+          #ffffff;
+        border: 1px solid #c9d7ec;
+        border-radius: 24px;
+        padding: 18px;
+        box-shadow: 0 18px 40px rgba(17, 37, 72, 0.14);
+      }
+
+      .site-chat-stepper {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .site-chat-step {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 13px 14px;
+        border-radius: 18px;
+        border: 1px solid #d9e5f8;
+        background: linear-gradient(180deg, rgba(252, 254, 255, 0.98) 0%, rgba(243, 248, 255, 0.98) 100%);
+        color: #1f3d73;
+        box-shadow: 0 10px 22px rgba(17, 37, 72, 0.05);
+      }
+
+      .site-chat-step.is-active {
+        background: linear-gradient(135deg, #eef6ff 0%, #fdf7e9 100%);
+        border-color: #9eb8e2;
+      }
+
+      .site-chat-step__number {
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        flex-shrink: 0;
+        border-radius: 999px;
+        background: #112548;
+        color: #ffffff;
+        font-size: 0.82rem;
+        font-weight: 800;
+      }
+
+      .site-chat-step.is-active .site-chat-step__number {
+        background: linear-gradient(135deg, #103267 0%, #2a67bf 100%);
+      }
+
+      .site-chat-step__body strong {
+        display: block;
+        font-size: 0.9rem;
+        margin-bottom: 3px;
+        line-height: 1.35;
+      }
+
+      .site-chat-step__body p {
+        margin: 0;
+        font-size: 0.78rem;
+        line-height: 1.45;
+        color: #4e6083;
+      }
+
+      .site-chat-messages {
+        max-height: 420px;
+        overflow-y: auto;
+        display: grid;
+        gap: 10px;
+        padding: 10px;
+        border: 1px solid #dbe4f1;
+        border-radius: 18px;
+        background: linear-gradient(180deg, rgba(246, 250, 255, 0.92) 0%, rgba(242, 247, 255, 0.82) 100%);
+        margin-bottom: 14px;
+      }
+
+      .site-chat-message {
+        max-width: 84%;
+        padding: 11px 13px;
+        border-radius: 15px;
+        white-space: pre-wrap;
+        line-height: 1.45;
+        font-size: 0.95rem;
+        box-shadow: 0 8px 18px rgba(17, 37, 72, 0.08);
+      }
+
+      .site-chat-message--bot {
+        margin-right: auto;
+        background: #fdfefe;
+        border: 1px solid #cfdcf0;
+        color: #1a2b4c;
+        border-bottom-left-radius: 6px;
+      }
+
+      .site-chat-message--user {
+        margin-left: auto;
+        background: linear-gradient(135deg, #102345 0%, #18386e 100%);
+        color: #ffffff;
+        border-bottom-right-radius: 6px;
+      }
+
+      .site-chat-form {
+        display: grid;
+        grid-template-columns: 160px 1fr auto;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .site-chat-select,
+      .site-chat-input,
+      .site-form input,
+      .site-form select,
+      .site-form textarea {
+        border: 1px solid #cfd9ea;
+        border-radius: 999px;
+        padding: 12px 14px;
+        font: inherit;
+        background: #ffffff;
+        box-shadow: inset 0 1px 2px rgba(17, 37, 72, 0.06);
+      }
+
+      .site-form textarea {
+        border-radius: 20px;
+        min-height: 140px;
+        resize: vertical;
+      }
+
+      .site-chat-tips {
+        margin-top: 12px;
+        padding: 12px 14px;
+        border: 1px solid #dbe4f1;
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(249, 252, 255, 0.98) 0%, rgba(243, 248, 255, 0.94) 100%);
+      }
+
+      .site-chat-tips p {
+        margin: 0 0 8px;
+        color: #1f3d73;
+        font-size: 0.84rem;
+        font-weight: 800;
+      }
+
+      .site-chat-tips ul {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 6px;
+        color: #33507d;
+        font-size: 0.84rem;
+        line-height: 1.45;
+      }
+
+      .site-chat-cta {
+        margin-top: 12px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .site-chat-cta .button-primary {
+        min-width: 320px;
+        border-radius: 999px;
+        box-shadow: 0 14px 30px rgba(23, 64, 122, 0.32), 0 0 0 4px rgba(23, 64, 122, 0.1);
+      }
+
+      .site-question-layout {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 20px;
+      }
+
+      .site-panel,
+      .site-form,
+      .site-soft-panel,
+      .site-footer-card {
+        background: #ffffff;
+        border: 1px solid #d9e1ee;
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: 0 10px 30px rgba(31, 79, 139, 0.06);
+      }
+
+      .site-soft-panel {
+        background: #f8fbff;
+      }
+
+      .site-form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 14px;
+      }
+
+      .site-form label {
+        display: grid;
+        gap: 8px;
+        color: #15305a;
+        font-weight: 600;
+      }
+
+      .site-soft-panel ol {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--muted);
+        display: grid;
+        gap: 8px;
+      }
+
+      .site-footer {
+        padding: 24px 0 40px;
+      }
+
+      .site-footer-inner {
+        max-width: 1180px;
+        margin: 0 auto;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 251, 255, 0.98) 100%);
+        border: 1px solid #d9e1ee;
+        border-radius: 20px;
+        padding: 22px 24px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(31, 79, 139, 0.06);
+      }
+
+      .site-footer-label {
+        margin: 0 0 6px;
+        color: var(--accent);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.82rem;
+      }
+
+      .site-footer-email {
+        margin: 0;
+        color: #112548;
+        font-weight: 700;
+        font-size: 1.05rem;
+      }
+
+      .site-footer-social {
+        margin-top: 16px;
+      }
+
+      .site-footer-social-title {
+        margin: 0 0 12px;
+        color: #1e3c6f;
+        font-weight: 700;
+        font-size: 0.95rem;
+      }
+
+      .site-footer-social-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        max-width: 760px;
+        margin: 0 auto;
+      }
+
+      .site-footer-social-card {
+        text-decoration: none;
+        border: 1px solid #cfd9ec;
+        background: linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
+        border-radius: 16px;
+        padding: 12px;
+        display: grid;
+        gap: 10px;
+        color: #17315d;
+      }
+
+      .site-footer-social-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 0.85rem;
+      }
+
+      .site-footer-social-head span {
+        font-size: 0.76rem;
+        color: #58739d;
+      }
+
+      .site-footer-qr {
+        width: 100%;
+        max-width: 102px;
+        margin: 0 auto;
+        aspect-ratio: 1 / 1;
+        border-radius: 12px;
+        display: block;
+        border: 1px solid #d5e0f1;
+        background: #ffffff;
+        object-fit: contain;
+        padding: 6px;
+      }
+
+      .site-footer-copy {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .banner-row-shell {
+        margin-top: 18px;
+        padding: 18px;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.62);
+        border: 1px solid var(--line);
+        box-shadow: 0 16px 32px rgba(16, 33, 61, 0.06);
+      }
+
+      .banner-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .banner-column {
+        border-radius: 20px;
+        background: #fff;
+        border: 1px solid rgba(16, 33, 61, 0.10);
+        padding: 16px;
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .ad-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 22px;
+        background: var(--panel-strong);
+        border: 1px solid var(--line);
+        box-shadow: 0 16px 36px rgba(16, 33, 61, 0.08);
+        min-height: 210px;
+        padding: 18px;
+      }
+
+      .ad-card__badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.03em;
+        margin-bottom: 12px;
+      }
+
+      .ad-card__headline {
+        font-size: 24px;
+        line-height: 1.15;
+        letter-spacing: -0.03em;
+        margin-bottom: 10px;
+      }
+
+      .ad-card__copy {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.7;
+        max-width: 300px;
+      }
+
+      .ad-card__footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: end;
+        margin-top: 18px;
+      }
+
+      .ad-card__slot {
+        font-size: 12px;
+        color: rgba(16, 33, 61, 0.55);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .ad-card__cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        padding: 0 14px;
+        border-radius: 12px;
+        background: #fff;
+        border: 1px solid rgba(16, 33, 61, 0.12);
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .employment {
+        background:
+          linear-gradient(135deg, rgba(235, 243, 255, 0.96) 0%, rgba(255,255,255,1) 100%),
+          #fff;
+      }
+      .employment .ad-card__badge { background: var(--blue-soft); color: var(--blue); }
+      .employment .ad-card__cta { color: var(--blue); }
+
+      .property {
+        background:
+          linear-gradient(135deg, rgba(255, 244, 231, 0.94) 0%, rgba(255,255,255,1) 100%),
+          #fff;
+      }
+      .property .ad-card__badge { background: #f5e4d5; color: var(--orange); }
+      .property .ad-card__cta { color: var(--orange); }
+
+      .relocation {
+        background:
+          linear-gradient(135deg, rgba(233, 249, 244, 0.95) 0%, rgba(255,255,255,1) 100%),
+          #fff;
+      }
+      .relocation .ad-card__badge { background: #dff2ea; color: var(--green); }
+      .relocation .ad-card__cta { color: var(--green); }
+
+      .subtle-map {
+        position: absolute;
+        right: -8px;
+        bottom: -6px;
+        width: 128px;
+        height: 128px;
+        border-radius: 28px;
+        background: radial-gradient(circle at 30% 30%, rgba(16, 33, 61, 0.08), transparent 36%),
+          radial-gradient(circle at 70% 40%, rgba(16, 33, 61, 0.09), transparent 22%),
+          radial-gradient(circle at 55% 72%, rgba(16, 33, 61, 0.08), transparent 28%),
+          linear-gradient(135deg, rgba(16, 33, 61, 0.06), rgba(16, 33, 61, 0.01));
+        filter: blur(0.1px);
+        opacity: 0.65;
+        transform: rotate(-8deg);
+      }
+
+      .section-caption {
+        margin-top: 22px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      @media (max-width: 1080px) {
+        .hero-inner {
+          grid-template-columns: 1fr;
+        }
+
+        .ad-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .banner-row {
+          grid-template-columns: 1fr;
+        }
+
+        .site-chat-stepper,
+        .site-question-layout,
+        .site-footer-social-grid,
+        .site-form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar,
+        .label-row {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+
+      @media (max-width: 720px) {
+        body {
+          padding: 14px;
+        }
+
+        .hero-inner {
+          padding: 18px;
+          min-height: auto;
+          gap: 16px;
+        }
+
+        .hero h1 {
+          font-size: 2rem;
+        }
+
+        .topbar {
+          margin-bottom: 14px;
+          padding: 0;
+        }
+
+        .logo-wrap {
+          gap: 10px;
+        }
+
+        .logo-mark {
+          width: 56px;
+          height: 56px;
+        }
+
+        .logo-mark::before {
+          border-width: 9px;
+        }
+
+        .logo-mark::after {
+          width: 22px;
+          height: 9px;
+          bottom: 7px;
+        }
+
+        .logo-text strong {
+          font-size: 18px;
+        }
+
+        .logo-text span,
+        .note,
+        .section-caption {
+          font-size: 12px;
+        }
+
+        .label-row {
+          margin-bottom: 12px;
+        }
+
+        .hero-copy {
+          gap: 18px;
+          padding: 0;
+        }
+
+        .hero-text {
+          font-size: 15px;
+          line-height: 1.6;
+        }
+
+        .hero-actions {
+          flex-direction: column;
+        }
+
+        .hero-actions .button,
+        .site-chat-cta .button-primary {
+          width: 100%;
+        }
+
+        .hero-point {
+          padding: 10px 12px;
+          font-size: 13px;
+        }
+
+        .media-card {
+          min-height: 210px;
+          padding: 16px;
+        }
+
+        .media-card__title,
+        .section-intro h2 {
+          font-size: 1.45rem;
+        }
+
+        .site-chat-form {
+          grid-template-columns: 1fr;
+        }
+
+        .site-chat-message {
+          max-width: 96%;
+        }
+
+        .site-chat-cta .button-primary {
+          width: 100%;
+          min-width: 0;
+        }
+
+        .banner-row-shell,
+        .site-chat-shell,
+        .site-form,
+        .site-soft-panel,
+        .site-footer-inner {
+          padding: 16px;
+        }
+
+        .banner-column {
+          min-height: auto;
+          padding: 14px;
+        }
+
+        .small-banner {
+          padding: 10px 12px;
+          font-size: 12px;
+        }
+
+        .site-chat-shell {
+          border-radius: 20px;
+        }
+
+        .site-chat-message {
+          font-size: 0.9rem;
+          padding: 10px 12px;
+        }
+
+        .site-form textarea {
+          min-height: 120px;
+        }
+
+        .site-footer-social-grid {
+          gap: 10px;
+        }
+
+        .site-footer-social-card {
+          padding: 10px;
+        }
+
+        .site-footer-qr {
+          max-width: 88px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 10px;
+        }
+
+        .hero {
+          border-radius: 22px;
+        }
+
+        .hero-inner,
+        .banner-row-shell,
+        .site-chat-shell,
+        .site-form,
+        .site-soft-panel,
+        .site-footer-inner {
+          padding: 14px;
+        }
+
+        .tag {
+          font-size: 12px;
+          padding: 8px 12px;
+        }
+
+        .hero h1,
+        .section-intro h2 {
+          font-size: 1.3rem;
+        }
+
+        .media-card__title {
+          font-size: 1.2rem;
+        }
+
+        .site-chat-step,
+        .site-footer-social-card {
+          border-radius: 14px;
+        }
+
+        .site-chat-tips ul,
+        .site-soft-panel ol,
+        .site-form label,
+        .site-footer-copy {
+          font-size: 13px;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div class="top-banner">
-      <div class="top-banner__actions">
-        <div class="top-nav__tools">
-          <span class="language-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" role="img" aria-label="language icon">
-              <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm7.93 9h-3.02a15.6 15.6 0 00-1.4-5.03A8.03 8.03 0 0119.93 11zM12 4.07c.95 1.13 1.9 3 2.33 6H9.67c.43-3 1.38-4.87 2.33-6zM8.49 5.97A15.6 15.6 0 007.09 11H4.07a8.03 8.03 0 014.42-5.03zM4.07 13h3.02a15.6 15.6 0 001.4 5.03A8.03 8.03 0 014.07 13zm7.93 6.93c-.95-1.13-1.9-3-2.33-6h4.66c-.43 3-1.38 4.87-2.33 6zm3.51-1.9a15.6 15.6 0 001.4-5.03h3.02a8.03 8.03 0 01-4.42 5.03z" />
-            </svg>
-          </span>
-          <label class="sr-only" for="language-select" data-i18n="languageLabel">Language</label>
-          <select id="language-select" class="language-select" aria-label="언어 선택">
-            <option value="ko" data-i18n="languageKo">한국어</option>
-            <option value="en" data-i18n="languageEn">English</option>
-            <option value="zh" data-i18n="languageZh">中文</option>
-          </select>
+    <main class="canvas">
+      <div class="topbar">
+        <div class="logo-wrap" aria-label="QuestionSingapore Logo">
+          <div class="logo-mark" aria-hidden="true"></div>
+          <div class="logo-text">
+            <strong>QuestionSingapore</strong>
+            <span>Information &amp; Services Community</span>
+          </div>
         </div>
+        <p class="note">연락처: 이메일 또는 WhatsApp | 언어: 한국어 / English / 中文</p>
       </div>
-    </div>
 
-    <header class="hero">
-      <div class="hero__content">
+      <div class="label-row">
         <div>
-          <p class="eyebrow" data-i18n="heroEyebrow">Singapore Advisory Studio</p>
-          <h1 data-i18n="heroTitle">신뢰할 수 있는 싱가포르 정보와 전문가 네트워크</h1>
-          <p class="hero__text" data-i18n="heroText">
-            취업 · 부동산 · 리로케이션까지 현지 라이선스를 보유한 전문가에게 안전하게 문의하세요.
-          </p>
-          <ul class="hero__highlights">
-            <li data-i18n="heroPoint1">✔ 모든 상담은 비공개로 진행됩니다.</li>
-            <li data-i18n="heroPoint2">✔ 답변은 등록하신 연락처로 개별 안내드립니다.</li>
-            <li data-i18n="heroPoint3">✔ 필요 시 검증된 현지 전문가 네트워크를 연결해 드립니다.</li>
-          </ul>
-          <div class="hero__actions">
-            <a class="button" href="#chatbot" data-i18n="btnQuestion">질문하기</a>
-          </div>
+          <p class="eyebrow">Question Singapore</p>
+          <h2>싱가포르 정보와 전문가 네트워크 안내</h2>
         </div>
-        <div class="hero__panel-card">
-          <div class="hero__video-slot">
-            <button id="home-video-play" class="hero__video-play" type="button">
-              <span class="hero__video-play-icon" aria-hidden="true">▶</span>
-              <span data-i18n="homeVideoCta">소개 영상 보기</span>
-            </button>
-            <video id="home-top-video" class="hero__video" playsinline controls preload="metadata" hidden>
-              <source id="home-top-video-source" src="" type="video/mp4" />
-            </video>
-            <p id="home-top-video-empty" class="hero__video-empty" data-i18n="homeVideoEmpty">관리자에서 소개 영상을 설정하면 이 영역에 표시됩니다.</p>
-          </div>
-          <ul>
-            <li data-i18n="heroFlow1">일반 정보는 AI 스마트 안내를 이용해서 검색합니다.</li>
-            <li data-i18n="heroFlow2">전문가 상담 필요시 질문과 연락처를 입력합니다.</li>
-            <li data-i18n="heroFlow3">관리자와 이메일/와츠앱으로 추가 상담을 진행합니다.</li>
-          </ul>
-        </div>
+        <p class="note">빠른 상담 신청으로 전문가의 답변과 네트워크를 만들어 보세요.</p>
       </div>
-    </header>
 
-    <main>
-      <div class="floating-admin-link">
-        <a class="button button--secondary" href="admin-login.html">
-          <span class="admin-login-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" role="img" aria-label="admin shield icon">
-              <path d="M12 2l8 3v6c0 5.25-3.42 10.74-8 12-4.58-1.26-8-6.75-8-12V5l8-3z" />
-              <path d="M9.5 12.5l1.8 1.8 3.2-3.2" class="icon-check" />
-            </svg>
-          </span>
-          <span data-i18n="btnAdmin">관리자</span>
-        </a>
-      </div>
-      <section class="section">
-        <div class="section__intro">
-          <p class="eyebrow" data-i18n="categoriesCaption">핵심 카테고리</p>
-          <h2 data-i18n="categoriesTitle">가장 많이 묻는 3가지 주제</h2>
-        </div>
-        <div class="cards">
-          <article class="card">
-            <h3 data-i18n="catEmpTitle">고용</h3>
-            <p data-i18n="catEmpDesc">직무, 비자, 기업 문화, 이직 전략까지 현실적인 조언을 확인하세요.</p>
-            <ul>
-              <li data-i18n="catEmp1">채용 시장과 커리어 전략</li>
-              <li data-i18n="catEmp2">이력서와 인터뷰 준비</li>
-              <li data-i18n="catEmp3">워킹 비자 정보</li>
-            </ul>
-          </article>
-          <article class="card">
-            <h3 data-i18n="catRealtyTitle">부동산</h3>
-            <p data-i18n="catRealtyDesc">주거지 선택, 임대 조건, 구매 비용을 미리 이해할 수 있습니다.</p>
-            <ul>
-              <li data-i18n="catRealty1">지역별 생활비 비교</li>
-              <li data-i18n="catRealty2">계약서 체크 포인트</li>
-              <li data-i18n="catRealty3">투자 관점의 매물 선택</li>
-            </ul>
-          </article>
-          <article class="card">
-            <h3 data-i18n="catRelocTitle">리로케이션</h3>
-            <p data-i18n="catRelocDesc">이사 준비부터 정착까지 필요한 기본 정보를 단계별로 안내합니다.</p>
-            <ul>
-              <li data-i18n="catReloc1">거주지 정하기</li>
-              <li data-i18n="catReloc2">교통과 학교 정보</li>
-              <li data-i18n="catReloc3">생활 적응 팁</li>
-            </ul>
-          </article>
+      <section class="hero">
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <div>
+              <div class="tag"><span class="tag-dot"></span>Singapore Advisory Studio</div>
+              <h1>신뢰할 수 있는 싱가포르 정보와 전문가 네트워크</h1>
+              <p class="hero-text">
+                취업 · 부동산 · 리로케이션까지 현지 라이선스를 보유한 전문가에게 안전하게 문의하세요.
+                필요한 경우 검증된 현지 전문가 네트워크와 자연스럽게 연결해 드립니다.
+              </p>
+              <div class="hero-actions">
+                <a class="button button-primary" href="#ads">추천 서비스 보기</a>
+                <a class="button button-secondary" href="#ask">상담 흐름 보기</a>
+              </div>
+            </div>
+
+            <div class="hero-points">
+              <div class="hero-point">
+                <span class="hero-point-icon icon-blue">1</span>
+                <span><strong>일반 정보는</strong> 실시간 문의 안내를 통해 먼저 확인할 수 있습니다.</span>
+              </div>
+              <div class="hero-point">
+                <span class="hero-point-icon icon-green">2</span>
+                <span><strong>전문가 상담이 필요하면</strong> 질문과 연락처를 입력해 자세히 이어갈 수 있습니다.</span>
+              </div>
+              <div class="hero-point">
+                <span class="hero-point-icon icon-orange">3</span>
+                <span><strong>관리자가</strong> 이메일 또는 WhatsApp으로 추가 상담을 진행합니다.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-media">
+            <article class="media-card">
+              <div class="media-card__inner">
+                <p class="eyebrow" style="color: rgba(255,255,255,0.72);">Question Singapore Introduction</p>
+                <h3 class="media-card__title">싱가포르 정보 안내와 상담 연결 흐름을 영상으로 확인하세요</h3>
+                <p class="media-card__desc">
+                  처음 방문한 사용자도 어떤 정보를 먼저 확인하고, 언제 상담으로 이어지면 되는지 빠르게 이해할 수 있도록 구성한 소개 영상 영역입니다.
+                </p>
+                <div style="border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.10); aspect-ratio: 16 / 9; display:flex; align-items:center; justify-content:center;">
+                  <video
+                    src="https://res.cloudinary.com/l6aa0vbz/video/upload/v1783583360/Storyboard_1_3_nh6kh7.mp4"
+                    playsinline
+                    autoplay
+                    muted
+                    loop
+                    controls
+                    preload="metadata"
+                    style="width: 100%; height: 100%; object-fit: cover; display: block;"
+                  ></video>
+                </div>
+                <div class="mini-row">
+                  <span class="mini-pill">Information</span>
+                  <span class="mini-pill">Guide</span>
+                  <span class="mini-pill">Network</span>
+                </div>
+              </div>
+            </article>
+
+            <div class="section-caption">
+              현지 정보와 연결 가능한 서비스 영역을 한눈에 확인할 수 있습니다.
+            </div>
+          </div>
         </div>
       </section>
 
-      <section class="section sponsor-section" aria-label="추천 서비스 배너">
-        <div class="section__intro sponsor-section__intro">
+      <section id="ads" aria-label="카테고리 광고 슬롯">
+        <div class="label-row" style="margin-top: 20px;">
           <div>
             <p class="eyebrow">Recommended Services</p>
             <h2>고용, 부동산, 리로케이션 분야별 추천 서비스를 확인하세요</h2>
           </div>
-          <p class="sponsor-section__note" id="sponsor-guideline-text">권장 배너 사이즈와 노출 기간은 관리자에서 함께 관리됩니다.</p>
+          <p class="note">분야별로 확인하기 쉬운 추천 배너 구성을 기준으로 안내합니다.</p>
         </div>
-        <div id="sponsor-slots" class="sponsor-grid">
-          <article class="sponsor-column sponsor-column--empty">
-            <p>추천 서비스 배너를 불러오는 중입니다...</p>
-          </article>
+
+        <div class="banner-row-shell">
+          <div class="banner-row">
+            <article class="banner-column employment">
+              <div class="ad-card__badge">Employment / 고용</div>
+              <div class="banner-stack">
+                <div class="small-banner small-banner--blue"><strong>배너 1</strong> 채용, 비자, 이직 서비스</div>
+                <div class="small-banner small-banner--blue"><strong>배너 2</strong> 커리어 컨설팅, 헤드헌팅</div>
+                <div class="small-banner small-banner--blue"><strong>배너 3</strong> 영어 면접, 실무 코칭</div>
+              </div>
+            </article>
+
+            <article class="banner-column property">
+              <div class="ad-card__badge">Property / 부동산</div>
+              <div class="banner-stack">
+                <div class="small-banner small-banner--orange"><strong>배너 1</strong> 임대 매물</div>
+                <div class="small-banner small-banner--orange"><strong>배너 2</strong> 지역 비교</div>
+                <div class="small-banner small-banner--orange"><strong>배너 3</strong> 투자형 매물</div>
+              </div>
+            </article>
+
+            <article class="banner-column relocation">
+              <div class="ad-card__badge">Relocation / 리로케이션</div>
+              <div class="banner-stack">
+                <div class="small-banner small-banner--green"><strong>배너 1</strong> 정착 서비스</div>
+                <div class="small-banner small-banner--green"><strong>배너 2</strong> 국제학교</div>
+                <div class="small-banner small-banner--green"><strong>배너 3</strong> 생활 인프라</div>
+              </div>
+            </article>
+          </div>
         </div>
       </section>
 
-      <section class="section section--light">
-        <div class="section__intro">
-          <p class="eyebrow" data-i18n="answerCaption">실전 질문과 답변</p>
-          <h2 data-i18n="answerTitle">전문가가 답해주는 대표 사례</h2>
+      <section class="site-section" id="chatbot" aria-label="AI 챗 영역">
+        <div class="section-intro">
+          <p class="eyebrow">실시간 문의 안내 제공</p>
+          <h2>문의 내용에 대한 정보를 실시간으로 확인할수 있습니다.</h2>
         </div>
-        <div class="qa-list">
-          <article class="qa-item">
-            <h3 data-i18n="qa1Q">Q. 싱가포르에서 IT 직무로 이직하려면 무엇이 가장 중요하나요?</h3>
-            <p data-i18n="qa1A">A. 현지 채용 시장에서는 실무 경험과 함께 커뮤니케이션 능력이 중요합니다. 특히 프로젝트 사례와 결과를 숫자로 보여줄 수 있다면 강점이 됩니다.</p>
-          </article>
-          <article class="qa-item">
-            <h3 data-i18n="qa2Q">Q. 1인 가구로 거주할 때 어떤 지역이 좋을까요?</h3>
-            <p data-i18n="qa2A">A. 교통 접근성과 생활비의 균형을 보면, 조용한 주거 지역이 좋습니다. 이동 시간이 길어지지 않도록 지하철 접근성을 먼저 확인하세요.</p>
-          </article>
-          <article class="qa-item">
-            <h3 data-i18n="qa3Q">Q. 리로케이션 시 꼭 준비해야 할 항목이 있나요?</h3>
-            <p data-i18n="qa3A">A. 의료, 통신, 교통, 은행 계좌 개설 순서로 준비하면 훨씬 수월합니다. 초기 2주 동안 필요한 기본 서비스부터 정리하는 것이 좋습니다.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="chatbot" class="section">
-        <div class="section__intro">
-          <p class="eyebrow" data-i18n="chatCaption">AI 스마트 안내</p>
-          <h2 data-i18n="chatTitle">문의 내용에 대한 정보를 실시간으로 확인할수 있습니다.</h2>
-        </div>
-        <div class="chatbot-shell">
-          <div class="chatbot-stepper" aria-label="챗봇 단계 안내">
-            <div class="chatbot-stepper__item chatbot-stepper__item--active" data-chatbot-step-item="1">
-              <span class="chatbot-stepper__number">1</span>
-              <div class="chatbot-stepper__body">
-                <strong data-i18n="chatStep1Title">핵심 정보부터 빠르게 정리합니다.</strong>
-                <p data-i18n="chatStep1Text">FAQ와 등록 문서를 기준으로 실무에 필요한 포인트를 먼저 보여드립니다.</p>
+        <div class="site-chat-shell">
+          <div class="site-chat-stepper">
+            <div class="site-chat-step is-active">
+              <span class="site-chat-step__number">1</span>
+              <div class="site-chat-step__body">
+                <strong>핵심 정보부터 빠르게 정리합니다.</strong>
+                <p>FAQ와 등록 문서를 기준으로 실무에 필요한 포인트를 먼저 보여드립니다.</p>
               </div>
             </div>
-            <div class="chatbot-stepper__item" data-chatbot-step-item="2">
-              <span class="chatbot-stepper__number">2</span>
-              <div class="chatbot-stepper__body">
-                <strong data-i18n="chatStep2Title">상황에 맞는 다음 확인 항목을 안내합니다.</strong>
-                <p data-i18n="chatStep2Text">문의 신청폼으로 세부 내용을 전달해 주시면 더 정확하게 이어서 안내해 드립니다.</p>
+            <div class="site-chat-step">
+              <span class="site-chat-step__number">2</span>
+              <div class="site-chat-step__body">
+                <strong>상황에 맞는 다음 확인 항목을 안내합니다.</strong>
+                <p>문의 신청폼으로 세부 내용을 전달해 주시면 더 정확하게 이어서 안내해 드립니다.</p>
               </div>
             </div>
-            <div class="chatbot-stepper__item" data-chatbot-step-item="3">
-              <span class="chatbot-stepper__number">3</span>
-              <div class="chatbot-stepper__body">
-                <strong data-i18n="chatStep3Title">필요하면 전문가 상담으로 자연스럽게 이어집니다.</strong>
-                <p data-i18n="chatStep3Text">원하실 경우 현지 전문가와 연결해 상담을 이어갈 수 있습니다.</p>
+            <div class="site-chat-step">
+              <span class="site-chat-step__number">3</span>
+              <div class="site-chat-step__body">
+                <strong>필요하면 전문가 상담으로 자연스럽게 이어집니다.</strong>
+                <p>원하실 경우 현지 전문가와 연결해 상담을 이어갈 수 있습니다.</p>
               </div>
             </div>
           </div>
-          <div id="chatbot-messages" class="chatbot-messages" aria-live="polite"></div>
-          <form id="chatbot-form" class="chatbot-form">
-            <label class="chatbot-category" for="chatbot-category" data-i18n="chatCategoryLabel">카테고리</label>
-            <select id="chatbot-category" name="chatbotCategory" class="chatbot-category-select" aria-label="챗봇 카테고리">
-              <option value="recruitment" data-i18n="categoryRecruitment">채용/고용</option>
-              <option value="property" data-i18n="categoryRealty">부동산</option>
-              <option value="relocation" data-i18n="categoryRelocation">리로케이션</option>
+          <div class="site-chat-messages">
+            <div class="site-chat-message site-chat-message--bot">안녕하세요. Question Singapore AI 스마트 안내 서비스입니다. 문의 내용을 바탕으로 요약 정보를 제공하고, 필요하면 세부 안내로 이어질 수 있습니다.</div>
+            <div class="site-chat-message site-chat-message--user">Employment Pass 이직 준비 체크리스트 알려줘</div>
+            <div class="site-chat-message site-chat-message--bot">현재 상황, 이직 시점, 목표 업종까지 함께 알려주시면 더 구체적으로 정리해드릴 수 있습니다. 우선은 비자 전환 가능성, 고용주 변경 일정, 서류 준비 순서부터 확인하는 것이 좋습니다.</div>
+          </div>
+          <div class="site-chat-form">
+            <select class="site-chat-select" aria-label="챗봇 카테고리">
+              <option>채용/고용</option>
+              <option>부동산</option>
+              <option>리로케이션</option>
             </select>
-            <label class="sr-only" for="chatbot-input" data-i18n="chatInputLabel">챗봇 질문</label>
-            <input id="chatbot-input" name="chatbotQuestion" type="text" data-i18n-placeholder="chatInputPlaceholder" placeholder="예: Employment Pass 이직 준비 체크리스트 알려줘" required />
-            <button class="button" type="submit" data-i18n="chatSend">보내기</button>
-          </form>
-          <div class="chatbot-tips" aria-label="챗봇 활용 팁">
-            <p class="chatbot-tips__title" data-i18n="chatTipTitle">챗봇을 더 잘 쓰는 방법</p>
-            <ul class="chatbot-tips__list">
-              <li data-i18n="chatTip1">목적, 현재 상황, 기한을 함께 적어주시면 더 정확합니다.</li>
-              <li data-i18n="chatTip2">한 번에 한 가지 질문만 보내면 답변이 더 짧고 명확해집니다.</li>
-              <li data-i18n="chatTip3">정확한 판단이 필요하면 마지막에 상담폼으로 이어가면 좋습니다.</li>
+            <input class="site-chat-input" type="text" value="예: Employment Pass 이직 준비 체크리스트 알려줘" aria-label="챗봇 입력 예시" />
+            <a class="button button-primary" href="#ask">보내기</a>
+          </div>
+          <div class="site-chat-tips">
+            <p>챗봇을 더 잘 쓰는 방법</p>
+            <ul>
+              <li>목적, 현재 상황, 기한을 함께 적어주시면 더 정확합니다.</li>
+              <li>한 번에 한 가지 질문만 보내면 답변이 더 짧고 명확해집니다.</li>
+              <li>정확한 판단이 필요하면 마지막에 상담폼으로 이어가면 좋습니다.</li>
             </ul>
           </div>
-          <div class="chatbot-cta-wrap">
-            <a class="button button--secondary chatbot-cta" href="#ask" data-i18n="chatCta">문의 신청으로 이동</a>
+          <div class="site-chat-cta">
+            <a class="button button-primary" href="#ask">상담폼 접수</a>
           </div>
         </div>
       </section>
 
-      <section id="ask" class="section ask-section ask-section--collapsed" hidden>
-        <div class="section__intro">
-          <p class="eyebrow" data-i18n="askCaption">문의 신청</p>
-          <h2 data-i18n="askTitle">답변이 필요한 상황을 알려주세요</h2>
+      <section class="site-section" id="ask" aria-label="문의 신청 영역">
+        <div class="section-intro">
+          <p class="eyebrow">문의 신청</p>
+          <h2>답변이 필요한 상황을 알려주세요</h2>
         </div>
-        <div class="question-layout">
-          <div class="panel">
-            <form class="form" id="question-form">
-              <div class="form-grid">
-                <label>
-                  <span data-i18n="nameLabel">이름</span>
-                  <input type="text" name="name" placeholder="이름" required data-i18n-placeholder="namePlaceholder" />
-                </label>
-                <label>
-                  <span data-i18n="categoryLabel">카테고리</span>
-                  <select name="category" required>
-                    <option value="" data-i18n="selectOption">선택해주세요</option>
-                    <option value="recruitment" data-i18n="categoryRecruitment">채용/고용</option>
-                    <option value="property" data-i18n="categoryRealty">부동산</option>
-                    <option value="relocation" data-i18n="categoryRelocation">리로케이션</option>
-                  </select>
-                </label>
-                <label>
-                  <select name="contactType" id="contact-type" required>
-                    <option value="email" data-i18n="contactEmail">이메일</option>
-                    <option value="whatsapp" data-i18n="contactWhatsapp">핸드폰(WhatsApp)</option>
-                  </select>
-                </label>
-                <label id="contact-email-group">
-                  <span data-i18n="contactValueLabel">연락처</span>
-                  <input type="text" id="contact-value" name="contactValue" placeholder="이메일 주소" required data-i18n-placeholder="emailPlaceholder" />
-                </label>
-                <div id="whatsapp-fields" class="whatsapp-fields" hidden>
-                  <label>
-                    <span data-i18n="countryCodeLabel">국가번호</span>
-                    <select id="country-code" name="countryCode" required>
-                      <option value="+65">🇸🇬 SG +65</option>
-                      <option value="+82">🇰🇷 KR +82</option>
-                      <option value="+86">🇨🇳 CN +86</option>
-                      <option value="+66">🇹🇭 TH +66</option>
-                      <option value="+84">🇻🇳 VN +84</option>
-                      <option value="+62">🇮🇩 ID +62</option>
-                      <option value="+60">🇲🇾 MY +60</option>
-                      <option value="+81">🇯🇵 JP +81</option>
-                      <option value="+63">🇵🇭 PH +63</option>
-                      <option value="+1">🇺🇸 US +1</option>
-                      <option value="+44">🇬🇧 UK +44</option>
-                      <option value="+61">🇦🇺 AU +61</option>
-                    </select>
-                  </label>
-                  <label>
-                    <span data-i18n="phoneNumberLabel">핸드폰 번호</span>
-                    <input type="text" id="phone-number" name="phoneNumber" placeholder="핸드폰 번호" inputmode="tel" data-i18n-placeholder="phoneNumberPlaceholder" />
-                  </label>
-                </div>
-              </div>
+        <div class="site-question-layout">
+          <form class="site-form">
+            <div class="site-form-grid">
               <label>
-                <span data-i18n="questionLabel">질문 내용</span>
-                <textarea name="question" rows="5" placeholder="문의하실 질문 내용을 상세히 기입해 주세요." required data-i18n-placeholder="questionPlaceholder"></textarea>
+                <span>이름</span>
+                <input type="text" value="홍길동" />
               </label>
-              <button class="button" type="submit" data-i18n="btnSubmit">질문 등록</button>
-            </form>
-            <p id="form-message" class="form-message" aria-live="polite"></p>
-          </div>
-          <div class="panel panel--soft">
-            <h3 data-i18n="consultTitle">전문가 상담 프로세스</h3>
+              <label>
+                <span>카테고리</span>
+                <select>
+                  <option>채용/고용</option>
+                  <option>부동산</option>
+                  <option>리로케이션</option>
+                </select>
+              </label>
+              <label>
+                <span>연락 방식</span>
+                <select>
+                  <option>이메일</option>
+                  <option>핸드폰(WhatsApp)</option>
+                </select>
+              </label>
+              <label>
+                <span>연락처</span>
+                <input type="text" value="hello@example.com" />
+              </label>
+            </div>
+            <label>
+              <span>질문 내용</span>
+              <textarea>싱가포르 이직과 비자 전환 일정, 준비해야 할 서류 순서를 상담받고 싶습니다.</textarea>
+            </label>
+            <div style="margin-top: 16px;">
+              <a class="button button-primary" href="#">질문 등록</a>
+            </div>
+          </form>
+          <div class="site-soft-panel">
+            <h3>전문가 상담 프로세스</h3>
             <ol>
-              <li data-i18n="consult1">문의 내용을 등록하면 관리자에게 즉시 전달됩니다.</li>
-              <li data-i18n="consult2">관리자가 답변을 준비한 뒤 이메일 또는 WhatsApp으로 회신합니다.</li>
-              <li data-i18n="consult3">언어 설정에 따라 한국어·영어·중국어로 안내를 받을 수 있습니다.</li>
+              <li>문의 내용을 등록하면 관리자에게 즉시 전달됩니다.</li>
+              <li>관리자가 답변을 준비한 뒤 이메일 또는 WhatsApp으로 회신합니다.</li>
+              <li>언어 설정에 따라 한국어, 영어, 중국어로 안내를 받을 수 있습니다.</li>
             </ol>
           </div>
         </div>
       </section>
-    </main>
 
-    <footer class="site-footer">
-      <div class="site-footer__inner">
-        <p class="site-footer__label">Inquiry</p>
-        <p class="site-footer__email">hello@questionsingapore.com</p>
-        <div class="site-footer__social">
-          <p class="site-footer__social-title" data-i18n="socialQrTitle">Community & Network</p>
-          <div class="site-footer__social-grid">
-            <a class="site-footer__social-card" id="social-linkedin-card" href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn 이동">
-              <div class="site-footer__social-head">
-                <strong>LinkedIn</strong>
-                <span data-i18n="socialOpenLabel">열기</span>
-              </div>
-              <img id="social-linkedin-qr" class="site-footer__qr" alt="LinkedIn QR code" loading="lazy" />
-            </a>
-            <a class="site-footer__social-card" id="social-whatsapp-card" href="#" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp 이동">
-              <div class="site-footer__social-head">
-                <strong>WhatsApp</strong>
-                <span data-i18n="socialOpenLabel">열기</span>
-              </div>
-              <img id="social-whatsapp-qr" class="site-footer__qr" alt="WhatsApp QR code" loading="lazy" />
-            </a>
-            <a class="site-footer__social-card" id="social-kakao-card" href="#" target="_blank" rel="noopener noreferrer" aria-label="KakaoTalk 이동">
-              <div class="site-footer__social-head">
-                <strong>KakaoTalk</strong>
-                <span data-i18n="socialOpenLabel">열기</span>
-              </div>
-              <img id="social-kakao-qr" class="site-footer__qr" alt="KakaoTalk QR code" loading="lazy" />
-            </a>
+      <footer class="site-footer" aria-label="커뮤니티 연결 영역">
+        <div class="site-footer-inner">
+          <p class="site-footer-label">Inquiry</p>
+          <p class="site-footer-email">hello@questionsingapore.com</p>
+          <div class="site-footer-social">
+            <p class="site-footer-social-title">Community &amp; Network</p>
+            <div class="site-footer-social-grid">
+              <a class="site-footer-social-card" href="https://www.linkedin.com/company/question-singapore/" target="_blank" rel="noopener noreferrer">
+                <div class="site-footer-social-head">
+                  <strong>LinkedIn</strong>
+                  <span>열기</span>
+                </div>
+                <img class="site-footer-qr" alt="LinkedIn QR code" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=https%3A%2F%2Fwww.linkedin.com%2Fcompany%2Fquestion-singapore%2F" />
+              </a>
+              <a class="site-footer-social-card" href="https://chat.whatsapp.com/DTdusHVhuP07h7RLjlR6Ot?s=cl&p=i&ilr=4" target="_blank" rel="noopener noreferrer">
+                <div class="site-footer-social-head">
+                  <strong>WhatsApp</strong>
+                  <span>열기</span>
+                </div>
+                <img class="site-footer-qr" alt="WhatsApp QR code" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=https%3A%2F%2Fchat.whatsapp.com%2FDTdusHVhuP07h7RLjlR6Ot%3Fs%3Dcl%26p%3Di%26ilr%3D4" />
+              </a>
+              <a class="site-footer-social-card" href="https://open.kakao.com/o/pbjE82ui" target="_blank" rel="noopener noreferrer">
+                <div class="site-footer-social-head">
+                  <strong>KakaoTalk</strong>
+                  <span>열기</span>
+                </div>
+                <img class="site-footer-qr" alt="KakaoTalk QR code" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=https%3A%2F%2Fopen.kakao.com%2Fo%2FpbjE82ui" />
+              </a>
+            </div>
           </div>
+          <p class="site-footer-copy">© Copyright QuestionSingapore.com Since July 2026.</p>
         </div>
-        <p class="site-footer__copyright">© Copyright QuestionSingapore.com Since July 2026.</p>
-      </div>
-    </footer>
-
-    <script src="dataStore.js?v=20260803-4"></script>
-    <script src="script.js?v=20260803-4"></script>
+      </footer>
+    </main>
   </body>
 </html>
