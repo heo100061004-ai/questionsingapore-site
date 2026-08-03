@@ -17,7 +17,7 @@ function sanitizeKnowledgeText(text = '') {
 }
 
 function sanitizeAnswerText(text = '', language = 'ko') {
-  const cleaned = stripPersonalData(text || '');
+  const cleaned = stripMarkdownFormatting(stripPersonalData(text || ''));
   if (!cleaned) {
     return cleaned;
   }
@@ -27,6 +27,16 @@ function sanitizeAnswerText(text = '', language = 'ko') {
   }
 
   return cleaned.replace(/\[redacted\]/g, '[redacted]');
+}
+
+function stripMarkdownFormatting(text = '') {
+  return String(text || '')
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/__(.*?)__/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/^\s*[-*+]\s+/gm, '• ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 }
 
 function truncateText(text = '', maxChars = 680, language = 'ko') {

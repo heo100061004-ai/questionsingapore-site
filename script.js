@@ -95,9 +95,9 @@ const translations = {
     chatStep3Text: '원하실 경우 현지 전문가와 연결해 상담을 이어갈 수 있습니다.',
     chatError: '응답 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
     chatTyping: '답변을 준비 중입니다...',
-    chatCta: '추가 안내 받기',
-    chatCtaA: '추가 안내 받기',
-    chatCtaB: '원하시면 문의 남기기',
+    chatCta: '상담폼 접수',
+    chatCtaA: '상담폼 접수',
+    chatCtaB: '상담폼 접수',
     askCaption: '문의 신청',
     askTitle: '답변이 필요한 상황을 알려주세요',
     nameLabel: '이름',
@@ -942,6 +942,13 @@ function normalizeDisplayedChatbotAnswer(text = '', language = 'ko') {
   for (const pattern of legacyPatterns) {
     body = body.replace(pattern, '');
   }
+
+  body = body
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/__(.*?)__/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/^\s*[-*+]\s+/gm, '• ')
+    .replace(/\n{3,}/g, '\n\n');
 
   body = body.trim();
   return body;
