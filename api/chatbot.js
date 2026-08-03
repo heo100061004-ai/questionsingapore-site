@@ -265,7 +265,7 @@ function getResponsePolicy(domain) {
     return {
       summaryStyle: 'high-level',
       showLinks: true,
-      maxRefs: 2
+      maxRefs: 1
     };
   }
 
@@ -273,14 +273,14 @@ function getResponsePolicy(domain) {
     return {
       summaryStyle: 'concise',
       showLinks: true,
-      maxRefs: 2
+      maxRefs: 1
     };
   }
 
   return {
     summaryStyle: 'balanced',
     showLinks: true,
-    maxRefs: 2
+    maxRefs: 1
   };
 }
 
