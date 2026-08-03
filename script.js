@@ -863,9 +863,12 @@ function appendChatMessage(role, text, meta = '') {
   if (meta) {
     const metaEl = document.createElement('div');
     const sourceKey = (meta || '').toString();
-    metaEl.className = `chatbot-meta chatbot-meta--${sourceKey}`;
-    metaEl.textContent = sourceLabel(sourceKey);
-    wrapper.appendChild(metaEl);
+    const label = sourceLabel(sourceKey);
+    if (label) {
+      metaEl.className = `chatbot-meta chatbot-meta--${sourceKey}`;
+      metaEl.textContent = label;
+      wrapper.appendChild(metaEl);
+    }
   }
 
   chatbotMessages.appendChild(wrapper);
@@ -893,11 +896,7 @@ function normalizeDisplayedChatbotAnswer(text = '', language = 'ko') {
   }
 
   body = body.trim();
-  if (language !== 'ko' || !body) {
-    return body;
-  }
-
-  return `핵심만 짧게 정리해드릴게요.\n\n${body}\n\n필요하시면 다음 단계도 이어서 정리해드릴게요.`;
+  return body;
 }
 
 function renderChatbotQuickButtons() {
