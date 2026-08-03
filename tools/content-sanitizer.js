@@ -46,14 +46,8 @@ function truncateText(text = '', maxChars = 680, language = 'ko') {
     return source;
   }
 
-  const suffix = language === 'zh'
-    ? '\n\n(已省略部分内容)'
-    : language === 'en'
-      ? '\n\n(Part of the answer was shortened.)'
-      : '\n\n(일부 내용은 간략화를 위해 생략되었습니다.)';
-
-  const safeLen = Math.max(80, limit - suffix.length);
-  return `${source.slice(0, safeLen).trim()}...${suffix}`;
+  const safeLen = Math.max(80, limit - 3);
+  return `${source.slice(0, safeLen).trim()}...`;
 }
 
 function humanizeConsultingTone(answer, language = 'ko', options = {}) {
