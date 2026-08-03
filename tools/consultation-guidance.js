@@ -24,45 +24,144 @@ function buildMinimalConsultationAnswer(question = '', language = 'ko', contextI
 
   if (language === 'zh') {
     const body = contextTitle
-      ? `您的问题与“${contextTitle}”相关。先补充这两点：`
-      : '先补充这两点：';
+      ? `您的问题与“${contextTitle}”相关。先确认这两点：`
+      : '先确认这两点：';
     return [
-      '我先帮您整理一个可执行的方向。',
+      '我先帮您缩小范围。',
       body,
       '- 您当前状态（签证/居住/预算/时间）',
-      '- 您最优先要解决的问题'
-      , '如果您愿意，我可以继续帮您把下一步整理得更具体，再用咨询表单补充细节也可以。'
+      '- 您最优先要解决的问题',
+      '如果愿意，我可以继续帮您把下一步整理得更具体。'
     ].join('\n');
   }
 
   if (language === 'en') {
     const body = contextTitle
-      ? `Your question is related to “${contextTitle}”. Share these two points first:`
-      : 'Share these two points first:';
+      ? `Your question relates to “${contextTitle}”. Start with these two points:`
+      : 'Start with these two points:';
     return [
-      'Let me map the next step in a practical way.',
+      'Let me narrow this down first.',
       body,
       '- Your current status (visa, housing, budget, timeline)',
-      '- The top issue you want to solve first'
-      , 'If you want, I can continue narrowing this down and then move it into the consultation form with more details.'
+      '- The top issue you want to solve first',
+      'If you want, I can keep narrowing this down.'
     ].join('\n');
   }
 
   const body = contextTitle
-    ? `질문은 “${contextTitle}”와 관련 있어 보여요. 아래 2가지만 알려주세요.`
-    : '아래 2가지만 알려주세요.';
+    ? `질문은 “${contextTitle}”와 관련 있어 보여요. 먼저 이 2가지만 알려주세요.`
+    : '먼저 이 2가지만 알려주세요.';
 
   return [
-    '우선 제가 바로 볼 수 있는 방향부터 정리해드릴게요.',
+    '우선 범위를 좁혀볼게요.',
     body,
     '- 현재 상황(비자/거주/예산/일정)',
     '- 가장 먼저 해결하고 싶은 1가지',
-    safeQuestion ? `현재 질문: ${safeQuestion}` : '질문을 남겨주시면 바로 방향을 잡아드립니다.',
-    '원하시면 추가상담 폼으로 이어서 세부 검토를 받을 수 있어요.'
+    safeQuestion ? `현재 질문: ${safeQuestion}` : '질문을 남겨주시면 방향을 잡아드립니다.',
+    '원하시면 다음 단계까지 이어서 정리해드릴게요.'
   ].join('\n');
+}
+
+function buildGuidedConversationAnswer({ question = '', language = 'ko', stage = 1, contextItems = [], references = [] } = {}) {
+  const safeStage = Number(stage) || 1;
+  const safeQuestion = String(question || '').trim();
+  const safeContextItems = Array.isArray(contextItems) ? contextItems : [];
+  const contextTitle = safeContextItems[0] && safeContextItems[0].title ? String(safeContextItems[0].title) : '';
+  const hasRefs = Array.isArray(references) && references.length > 0;
+
+  const refLine = hasRefs
+    ? (language === 'zh'
+      ? '需要的话，我也可以补上官方参考链接。'
+      : language === 'en'
+        ? 'If needed, I can add the official reference links too.'
+        : '필요하면 공식 참고 링크도 붙여드릴게요.')
+    : '';
+
+  if (language === 'zh') {
+    if (safeStage <= 1) {
+      return [
+        '我先帮您把范围收窄。',
+        contextTitle ? `这件事看起来和“${contextTitle}”有关。` : '这件事我先按可执行方向帮您整理。',
+        '- 您现在的情况（签证/居住/预算/时间）',
+        '- 您最想先解决的一个问题',
+        '您方便先回我这两点吗？'
+      ].filter(Boolean).join('\n');
+    }
+
+    if (safeStage === 2) {
+      return [
+        '好，我再帮您往前推进一步。',
+        safeQuestion ? `您刚刚提到的是：${safeQuestion}` : '我先按您刚刚的情况继续整理。',
+        '- 还有没有时间限制或预算上限？',
+        '- 目前最担心的是哪一项？',
+        '回我这两点后，我就能把优先顺序排出来。'
+      ].join('\n');
+    }
+
+    return [
+      '现在我可以帮您先收一个简短结论。',
+      '如果要继续往下细看，我建议直接交给管理员咨询会更稳妥。',
+      refLine || '如果需要，我也可以继续帮您整理要点。'
+    ].filter(Boolean).join('\n');
+  }
+
+  if (language === 'en') {
+    if (safeStage <= 1) {
+      return [
+        'Let me narrow this down first.',
+        contextTitle ? `This seems related to “${contextTitle}”.` : 'I will keep this practical.',
+        '- Your current situation (visa, housing, budget, timeline)',
+        '- The one issue you want to solve first',
+        'Can you share those two points?'
+      ].filter(Boolean).join('\n');
+    }
+
+    if (safeStage === 2) {
+      return [
+        'Great, I can take it one step further.',
+        safeQuestion ? `You just mentioned: ${safeQuestion}` : 'I will continue from your last point.',
+        '- Any deadline or budget limit?',
+        '- Which part is most urgent right now?',
+        'Reply with those two points and I will organize the next step.'
+      ].join('\n');
+    }
+
+    return [
+      'I can give you a short wrap-up now.',
+      'If you want a deeper review, moving this into admin consultation is the safest next step.',
+      refLine || 'If needed, I can keep summarizing the key points.'
+    ].filter(Boolean).join('\n');
+  }
+
+  if (safeStage <= 1) {
+    return [
+      '우선 범위를 좁혀볼게요.',
+      contextTitle ? `이 내용은 “${contextTitle}”와 관련 있어 보여요.` : '실행 가능한 방향부터 정리해드릴게요.',
+      '- 현재 상황(비자/거주/예산/일정)',
+      '- 가장 먼저 해결하고 싶은 1가지',
+      '이 두 가지만 먼저 알려주실래요?'
+    ].filter(Boolean).join('\n');
+  }
+
+  if (safeStage === 2) {
+    return [
+      '좋아요. 이제 한 단계 더 좁혀볼게요.',
+      safeQuestion ? `방금 말씀하신 내용은: ${safeQuestion}` : '방금 답변을 기준으로 이어서 정리해볼게요.',
+      '- 마감 시점이나 예산 상한이 있나요?',
+      '- 지금 가장 걱정되는 부분은 무엇인가요?',
+      '이 두 가지를 주시면 우선순위를 잡아드릴 수 있어요.'
+    ].join('\n');
+  }
+
+  return [
+    '지금까지 내용을 보면 방향은 잡혔습니다.',
+    '더 자세한 판단이 필요하면 관리자 상담으로 넘기는 게 가장 정확합니다.',
+    refLine || '원하시면 제가 핵심만 다시 한 번 짧게 정리해드릴게요.'
+  ].filter(Boolean).join('\n');
 }
 
 module.exports = {
   isLlmFallbackEnabled,
-  buildMinimalConsultationAnswer
+  buildMinimalConsultationAnswer,
+  buildGuidedConversationAnswer
 };

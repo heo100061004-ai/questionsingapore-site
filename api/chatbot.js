@@ -5,7 +5,7 @@ const { addChatbotLog } = require('../tools/chatbot-log-store');
 const { maybeAutoIngestRawDocs } = require('../tools/auto-ingest-raw-docs');
 const { sanitizeAnswerText, humanizeConsultingTone, truncateText } = require('../tools/content-sanitizer');
 const { createLlmBudgetGuard } = require('../tools/llm-cost-guard');
-const { isLlmFallbackEnabled, buildMinimalConsultationAnswer } = require('../tools/consultation-guidance');
+const { isLlmFallbackEnabled, buildMinimalConsultationAnswer, buildGuidedConversationAnswer } = require('../tools/consultation-guidance');
 const {
   getRuntimeDocIndexPath,
   getRuntimeFaqPath,
@@ -284,6 +284,14 @@ function getResponsePolicy(domain) {
   };
 }
 
+function normalizeConversationStage(value) {
+  const stage = Number(value);
+  if (!Number.isFinite(stage) || stage <= 0) {
+    return 0;
+  }
+  return Math.min(3, Math.max(1, Math.floor(stage)));
+}
+
 function getDefaultReferenceLinks(domain) {
   return Array.isArray(DEFAULT_REFERENCE_LINKS[domain]) ? DEFAULT_REFERENCE_LINKS[domain] : [];
 }
@@ -346,7 +354,7 @@ function buildContextPrompt(question, language, contextItems = [], policy) {
       ? 'Keep summary concise and practical. Prioritize 3-5 key points only.'
       : 'Keep a balanced summary with practical checklist style.';
 
-    const questionFocus = String(question || '').trim();
+  const questionFocus = String(question || '').trim();
 
   const safeContextItems = Array.isArray(contextItems) ? contextItems : [];
   const contextText = safeContextItems
@@ -484,6 +492,8 @@ module.exports = async function handler(req, res) {
   const question = (body.question || '').toString().trim();
   const language = LANGUAGE_MAP[(body.language || '').toString()] || 'ko';
   const preferredDomain = normalizeCategory(body.category || '');
+  const conversationMode = String(body.conversationMode || '').toLowerCase();
+  const conversationStage = normalizeConversationStage(body.conversationStage || 0);
   const safePolicy = getResponsePolicy(preferredDomain);
 
   try {
@@ -508,7 +518,7 @@ module.exports = async function handler(req, res) {
       includeFollowUp,
       openingStyle: hasLeadAlready ? 'none' : 'neutral'
     });
-    const finalAnswer = truncateText(tonedAnswer, 680, language);
+    const finalAnswer = truncateText(tonedAnswer, payload.maxChars || 520, language);
 
     addChatbotLog({
       question,
@@ -539,6 +549,30 @@ module.exports = async function handler(req, res) {
   const references = dedupeReferences(topContexts);
   const effectiveDomain = preferredDomain || normalizeCategory((topContexts[0] && topContexts[0].category) || '');
   const responsePolicy = getResponsePolicy(effectiveDomain);
+
+  const guidedConversationActive = conversationMode === 'guided' || conversationStage > 0;
+
+  if (guidedConversationActive) {
+    const stage = conversationStage || 1;
+    const guidedAnswer = buildGuidedConversationAnswer({
+      question,
+      language,
+      stage,
+      contextItems: topContexts,
+      references
+    });
+
+    reply({
+      ok: true,
+      source: 'conversation-guidance',
+      stage,
+      maxChars: stage === 1 ? 300 : stage === 2 ? 360 : 430,
+      answer: stage >= 3
+        ? `${guidedAnswer}${formatRefsForAnswer(references, language, responsePolicy, effectiveDomain || preferredDomain)}`
+        : guidedAnswer
+    });
+    return;
+  }
 
   const strongContext = topContexts.length > 0 && topContexts[0].score >= 0.2;
 

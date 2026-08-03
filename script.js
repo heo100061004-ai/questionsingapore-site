@@ -27,6 +27,7 @@ const socialKakaoQr = document.getElementById('social-kakao-qr');
 const store = window.QuestionSingaporeStore;
 const HOME_TOP_VIDEO_STORAGE_KEY = 'question-singapore-home-top-video-url';
 const ADMIN_BANNER_STORAGE_KEY = 'question-singapore-admin-banner-url';
+const CHAT_FLOW_STATE_KEY = 'question-singapore-chat-flow-state';
 const ADMIN_DEFAULT_BANNER_URL = 'hero-bg.svg';
 const SOCIAL_LINKS = {
   linkedin: 'https://www.linkedin.com/company/question-singapore/',
@@ -83,7 +84,6 @@ const translations = {
     chatInputLabel: '챗봇 질문',
     chatCategoryLabel: '카테고리',
     categoryRecruitment: '채용/고용',
-    chatQuickLabel: '최근/주요 검색 키워드',
     chatInputPlaceholder: '예: Employment Pass 이직 준비 체크리스트 알려줘',
     chatSend: '보내기',
     chatWelcome: '안녕하세요. Question Singapore AI 스마트 안내 서비스입니다. 문의 내용을 바탕으로 요약 정보를 제공하고, 필요하면 세부 안내로 이어질 수 있습니다.',
@@ -187,7 +187,6 @@ const translations = {
     chatInputLabel: 'Chatbot question',
     chatCategoryLabel: 'Category',
     categoryRecruitment: 'Recruitment',
-    chatQuickLabel: 'Recent / Top Search Keywords',
     chatInputPlaceholder: 'Example: Checklist for changing jobs on Employment Pass',
     chatSend: 'Send',
     chatWelcome: 'Hello. This is the Question Singapore AI Smart Guide. We provide summary information based on your inquiry, and can continue with more detail if needed.',
@@ -288,7 +287,6 @@ const translations = {
     chatInputLabel: '聊天问题',
     chatCategoryLabel: '分类',
     categoryRecruitment: '招聘/就业',
-    chatQuickLabel: '近期/主要搜索关键词',
     chatInputPlaceholder: '例如：Employment Pass 换工作需要准备什么？',
     chatSend: '发送',
     chatWelcome: '您好，这里是 Question Singapore AI 智能引导服务。我们会根据您的问题提供摘要信息，如有需要，也可继续提供更详细的说明。',
@@ -777,12 +775,49 @@ function normalizeChatbotCategory(value = '') {
   return 'recruitment';
 }
 
-function truncateKeywordLabel(text = '', maxLen = 18) {
-  const value = String(text || '').trim();
-  if (value.length <= maxLen) {
-    return value;
+function getChatFlowState() {
+  try {
+    const raw = window.localStorage.getItem(CHAT_FLOW_STATE_KEY);
+    if (!raw) {
+      return { mode: 'idle', stage: 0 };
+    }
+    const parsed = JSON.parse(raw);
+    const mode = parsed && parsed.mode === 'guided' ? 'guided' : 'idle';
+    const stage = Number(parsed && parsed.stage) || 0;
+    return { mode, stage: Math.min(3, Math.max(0, stage)) };
+  } catch (error) {
+    return { mode: 'idle', stage: 0 };
   }
-  return `${value.slice(0, maxLen)}...`;
+}
+
+function saveChatFlowState(state) {
+  try {
+    window.localStorage.setItem(CHAT_FLOW_STATE_KEY, JSON.stringify(state));
+  } catch (error) {
+    // Ignore storage failures.
+  }
+}
+
+function resetChatFlowState() {
+  saveChatFlowState({ mode: 'idle', stage: 0 });
+}
+
+function isGuidedConversationCandidate(question = '') {
+  const value = String(question || '').trim().toLowerCase();
+  if (!value) {
+    return false;
+  }
+
+  if (value.length <= 18) {
+    return true;
+  }
+
+  const broadPatterns = [
+    /어떻게\s*(시작|준비|해야|생각)/,
+    /방향|추천|고민|조언|상담|비교|도와줘|도와 줘|help me decide|where should|what should i consider|should i/,
+  ];
+
+  return broadPatterns.some((pattern) => pattern.test(value));
 }
 
 function getChatbotCtaBucket() {
@@ -811,44 +846,6 @@ function applyChatbotCtaVariant() {
   const bucket = getChatbotCtaBucket();
   const key = bucket === 'B' ? 'chatCtaB' : 'chatCtaA';
   cta.textContent = t[key] || t.chatCta;
-}
-
-async function loadTrendingChatbotKeywords() {
-  try {
-    const response = await fetch('/api/chatbot-keywords?limit=120');
-    if (!response.ok) {
-      return;
-    }
-
-    const data = await response.json();
-    const items = Array.isArray(data?.items) ? data.items : [];
-
-    chatbotTrendingByCategory.recruitment = [];
-    chatbotTrendingByCategory.property = [];
-    chatbotTrendingByCategory.relocation = [];
-
-    for (const item of items) {
-      const category = normalizeChatbotCategory(item?.category || '');
-      const question = String(item?.question || '').trim();
-      if (!question) {
-        continue;
-      }
-      const list = chatbotTrendingByCategory[category];
-      if (!Array.isArray(list)) {
-        continue;
-      }
-      if (list.some((entry) => entry.question === question)) {
-        continue;
-      }
-      list.push({
-        label: truncateKeywordLabel(question),
-        question,
-        category
-      });
-    }
-  } catch (error) {
-    // Ignore trending fetch failures and keep static defaults.
-  }
 }
 
 function appendChatMessage(role, text, meta = '') {
@@ -950,35 +947,6 @@ function normalizeDisplayedChatbotAnswer(text = '', language = 'ko') {
   return body;
 }
 
-function renderChatbotQuickButtons() {
-  if (!chatbotQuickList) {
-    return;
-  }
-
-  const lang = languageSelect?.value || 'ko';
-  const category = chatbotCategorySelect?.value || 'recruitment';
-  const byLang = chatbotQuickByCategory[lang] || chatbotQuickByCategory.ko;
-  const presets = byLang[category] || byLang.recruitment || [];
-  const trending = chatbotTrendingByCategory[category] || [];
-  const merged = [...trending, ...presets]
-    .filter((item, index, arr) => {
-      const question = String(item?.question || '').trim();
-      if (!question) {
-        return false;
-      }
-      return arr.findIndex((candidate) => String(candidate?.question || '').trim() === question) === index;
-    })
-    .slice(0, 6);
-
-  chatbotQuickList.innerHTML = merged
-    .map((item) => {
-      const label = item.label || '';
-      const question = item.question || '';
-      return `<button class="chatbot-quick__btn" type="button" data-chatbot-category="${category}" data-chatbot-quick="${question.replace(/"/g, '&quot;')}">${label}</button>`;
-    })
-    .join('');
-}
-
 function revealAskSection() {
   if (!askSection) {
     return;
@@ -1029,10 +997,6 @@ function initChatbot() {
     welcomeMessage.setAttribute('data-chatbot-welcome', 'true');
   }
   applyChatbotCtaVariant();
-  renderChatbotQuickButtons();
-  loadTrendingChatbotKeywords().then(() => {
-    renderChatbotQuickButtons();
-  });
 
   chatbotForm.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -1041,6 +1005,10 @@ function initChatbot() {
     const lang = languageSelect?.value || 'ko';
     const category = chatbotCategorySelect?.value || 'recruitment';
     const t = translations[lang] || translations.ko;
+    const currentFlow = getChatFlowState();
+    const guidedCandidate = currentFlow.mode === 'guided' || isGuidedConversationCandidate(question);
+    const guidedStage = currentFlow.mode === 'guided' ? Math.min(3, Math.max(1, currentFlow.stage || 1)) : 1;
+    const nextFlowStage = guidedStage >= 3 ? 0 : guidedStage + 1;
 
     if (!question) {
       return;
@@ -1050,6 +1018,14 @@ function initChatbot() {
     chatbotInput.value = '';
     appendChatMessage('bot', t.chatTyping);
 
+    if (guidedCandidate) {
+      saveChatFlowState(nextFlowStage > 0 ? { mode: 'guided', stage: nextFlowStage } : { mode: 'idle', stage: 0 });
+      renderChatbotStepState(guidedStage);
+    } else {
+      resetChatFlowState();
+      renderChatbotStepState(1);
+    }
+
     try {
       const response = await fetch('/api/chatbot', {
         method: 'POST',
@@ -1058,7 +1034,9 @@ function initChatbot() {
         body: JSON.stringify({
           question,
           language: lang,
-          category
+          category,
+          conversationMode: guidedCandidate ? 'guided' : 'normal',
+          conversationStage: guidedCandidate ? guidedStage : 0
         })
       });
 
@@ -1075,6 +1053,11 @@ function initChatbot() {
       const data = await response.json();
       const sourceKey = data && data.source ? String(data.source) : '';
       appendChatMessage('bot', normalizeDisplayedChatbotAnswer(data.answer || t.chatError, lang), sourceKey);
+
+      if (guidedCandidate && guidedStage >= 3) {
+        resetChatFlowState();
+        renderChatbotStepState(3);
+      }
     } catch (error) {
       const lastTyping = chatbotMessages.lastElementChild;
       if (lastTyping && lastTyping.classList.contains('chatbot-message--bot')) {
@@ -1084,32 +1067,6 @@ function initChatbot() {
     }
   });
 
-  if (chatbotQuickList) {
-    chatbotQuickList.addEventListener('click', (event) => {
-      const target = event.target;
-      if (!(target instanceof HTMLElement)) {
-        return;
-      }
-      const quickButton = target.closest('[data-chatbot-quick]');
-      if (!(quickButton instanceof HTMLElement)) {
-        return;
-      }
-      const quick = quickButton.getAttribute('data-chatbot-quick') || '';
-      const quickCategory = quickButton.getAttribute('data-chatbot-category') || '';
-      if (!quick) {
-        return;
-      }
-      if (chatbotCategorySelect && quickCategory) {
-        chatbotCategorySelect.value = quickCategory;
-      }
-      chatbotInput.value = quick;
-      chatbotInput.focus();
-    });
-  }
-
-  if (chatbotCategorySelect) {
-    chatbotCategorySelect.addEventListener('change', renderChatbotQuickButtons);
-  }
 }
 
 if (languageSelect) {
@@ -1118,7 +1075,6 @@ if (languageSelect) {
     refreshChatbotWelcomeMessage();
     renderChatbotStepState(1);
     applyChatbotCtaVariant();
-    renderChatbotQuickButtons();
   });
 }
 
