@@ -87,12 +87,12 @@ const translations = {
     chatInputPlaceholder: '예: Employment Pass 이직 준비 체크리스트 알려줘',
     chatSend: '보내기',
     chatWelcome: '안녕하세요. Question Singapore AI 스마트 안내 서비스입니다. 문의 내용을 바탕으로 요약 정보를 제공하고, 필요하면 세부 안내로 이어질 수 있습니다.',
-    chatStep1Title: 'AI 스마트 서치가 요약 정보를 제공합니다.',
-    chatStep1Text: 'FAQ와 등록 문서를 기준으로 요약 정보를 제공합니다.',
-    chatStep2Title: '추가상담 안내',
-    chatStep2Text: '문의 신청폼으로 세부 내용을 전달 주시면 관리자 상담 회신이 제공됩니다.',
-    chatStep3Title: '전문가 연결',
-    chatStep3Text: '요청시 현지 전문가와 연결해 상담이 진행됩니다.',
+    chatStep1Title: '핵심 정보부터 빠르게 정리합니다.',
+    chatStep1Text: 'FAQ와 등록 문서를 기준으로 실무에 필요한 포인트를 먼저 보여드립니다.',
+    chatStep2Title: '상황에 맞는 다음 확인 항목을 안내합니다.',
+    chatStep2Text: '문의 신청폼으로 세부 내용을 전달해 주시면 더 정확하게 이어서 안내해 드립니다.',
+    chatStep3Title: '필요하면 전문가 상담으로 자연스럽게 이어집니다.',
+    chatStep3Text: '원하실 경우 현지 전문가와 연결해 상담을 이어갈 수 있습니다.',
     chatError: '응답 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
     chatTyping: '답변을 준비 중입니다...',
     chatCta: '추가 안내 받기',
@@ -191,12 +191,12 @@ const translations = {
     chatInputPlaceholder: 'Example: Checklist for changing jobs on Employment Pass',
     chatSend: 'Send',
     chatWelcome: 'Hello. This is the Question Singapore AI Smart Guide. We provide summary information based on your inquiry, and can continue with more detail if needed.',
-    chatStep1Title: 'AI smart search provides summary information.',
-    chatStep1Text: 'We provide summary information based on FAQs and registered documents.',
-    chatStep2Title: 'Additional consultation guide',
-    chatStep2Text: 'If you submit the inquiry form with details, an admin reply will be provided.',
-    chatStep3Title: 'Expert connection',
-    chatStep3Text: 'If requested, we connect you with a local expert for consultation.',
+    chatStep1Title: 'We quickly organize the key information first.',
+    chatStep1Text: 'We surface practical points based on FAQs and registered documents.',
+    chatStep2Title: 'We guide the next checks for your situation.',
+    chatStep2Text: 'If you send details through the inquiry form, we can guide you more precisely.',
+    chatStep3Title: 'If needed, we continue naturally into expert consultation.',
+    chatStep3Text: 'When desired, we can connect you with a local expert to continue the consultation.',
     chatError: 'Something went wrong while generating a response. Please try again shortly.',
     chatTyping: 'Preparing your answer...',
     chatCta: 'Request more guidance',
@@ -292,12 +292,12 @@ const translations = {
     chatInputPlaceholder: '例如：Employment Pass 换工作需要准备什么？',
     chatSend: '发送',
     chatWelcome: '您好，这里是 Question Singapore AI 智能引导服务。我们会根据您的问题提供摘要信息，如有需要，也可继续提供更详细的说明。',
-    chatStep1Title: 'AI 智能搜索提供摘要信息。',
-    chatStep1Text: '我们会根据 FAQ 和已登记文档提供摘要信息。',
-    chatStep2Title: '补充咨询说明',
-    chatStep2Text: '请通过咨询申请表提交细节，管理员会回复说明。',
-    chatStep3Title: '专家连接',
-    chatStep3Text: '如有需要，可连接当地专家进行咨询。',
+    chatStep1Title: '先快速整理核心信息。',
+    chatStep1Text: '我们会根据 FAQ 和已登记文档优先展示实用要点。',
+    chatStep2Title: '说明适合您情况的下一步检查项。',
+    chatStep2Text: '请通过咨询申请表提交细节，我们可以更准确地继续说明。',
+    chatStep3Title: '必要时自然衔接到专家咨询。',
+    chatStep3Text: '如您需要，可继续连接当地专家进行咨询。',
     chatError: '生成回复时出现问题，请稍后重试。',
     chatTyping: '正在整理回答...',
     chatCta: '获取更多帮助',
@@ -858,7 +858,58 @@ function appendChatMessage(role, text, meta = '') {
 
   const wrapper = document.createElement('article');
   wrapper.className = `chatbot-message chatbot-message--${role}`;
-  wrapper.textContent = text || '';
+
+  const rawText = String(text || '').trim();
+  let bodyText = rawText;
+  let referenceItems = [];
+
+  if (role === 'bot' && rawText) {
+    const referenceMatch = rawText.match(/\n\n(참고 링크|Reference Links|参考链接):\n([\s\S]*)$/i);
+    if (referenceMatch) {
+      bodyText = rawText.slice(0, referenceMatch.index).trim();
+      referenceItems = referenceMatch[2]
+        .split('\n')
+        .map((line) => line.replace(/^[-•]\s*/, '').trim())
+        .filter(Boolean)
+        .map((line) => {
+          const separatorIndex = line.lastIndexOf(': ');
+          if (separatorIndex > -1) {
+            return {
+              label: line.slice(0, separatorIndex).trim(),
+              url: line.slice(separatorIndex + 2).trim()
+            };
+          }
+          const url = line.trim();
+          return {
+            label: url,
+            url
+          };
+        })
+        .filter((item) => /^https?:\/\//i.test(item.url));
+    }
+  }
+
+  const bodyEl = document.createElement('div');
+  bodyEl.className = 'chatbot-message__body';
+  bodyEl.textContent = bodyText;
+  wrapper.appendChild(bodyEl);
+
+  if (referenceItems.length > 0) {
+    const refsEl = document.createElement('div');
+    refsEl.className = 'chatbot-references';
+
+    for (const ref of referenceItems.slice(0, 3)) {
+      const chip = document.createElement('a');
+      chip.className = 'chatbot-reference-chip';
+      chip.href = ref.url;
+      chip.target = '_blank';
+      chip.rel = 'noreferrer noopener';
+      chip.textContent = ref.label;
+      refsEl.appendChild(chip);
+    }
+
+    wrapper.appendChild(refsEl);
+  }
 
   if (meta) {
     const metaEl = document.createElement('div');
@@ -1002,6 +1053,7 @@ function initChatbot() {
     try {
       const response = await fetch('/api/chatbot', {
         method: 'POST',
+        cache: 'no-store',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           question,

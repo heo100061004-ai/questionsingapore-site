@@ -346,6 +346,8 @@ function buildContextPrompt(question, language, contextItems = [], policy) {
       ? 'Keep summary concise and practical. Prioritize 3-5 key points only.'
       : 'Keep a balanced summary with practical checklist style.';
 
+    const questionFocus = String(question || '').trim();
+
   const safeContextItems = Array.isArray(contextItems) ? contextItems : [];
   const contextText = safeContextItems
     .map((item, index) => {
@@ -360,6 +362,8 @@ function buildContextPrompt(question, language, contextItems = [], policy) {
     'Provide general informational guidance only. Avoid legal, tax, or immigration determinations.',
     'If the question is high risk, explicitly recommend contacting a qualified professional.',
     'Write like a helpful consultant having a short natural conversation: acknowledge the situation, give the practical baseline, mention 1-2 next checks, and gently suggest the inquiry form for follow-up.',
+    'Make the answer specific to this exact question. Do not reuse a generic template across different topics.',
+    'Start by reflecting one concrete detail from the user question in your own words so different questions naturally produce different answers.',
     'Keep answer concise and practical, 4-8 sentences, with actionable checklist style.',
     styleInstruction,
     'Rewrite in your own words. Do not copy source text verbatim.',
@@ -367,6 +371,7 @@ function buildContextPrompt(question, language, contextItems = [], policy) {
     'Prefer summary and actionable interpretation over direct quotation.',
     langInstruction,
     'Do not fabricate links or regulations.',
+    `Question focus: ${questionFocus}`,
     `Retrieved context:\n${contextText}`,
     `User question: ${question}`
   ].join(' ');
@@ -392,7 +397,9 @@ async function callOpenAI(question, language, contextItems) {
       },
       body: JSON.stringify({
         model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
-        temperature: 0.2,
+        temperature: 0.35,
+        presence_penalty: 0.25,
+        frequency_penalty: 0.15,
         messages: [
           {
             role: 'system',
@@ -468,6 +475,10 @@ module.exports = async function handler(req, res) {
     res.status(405).json({ ok: false, message: 'Method Not Allowed' });
     return;
   }
+
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
 
   const body = req.body || {};
   const question = (body.question || '').toString().trim();

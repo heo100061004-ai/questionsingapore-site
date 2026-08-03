@@ -998,19 +998,20 @@ h1 {
 .chatbot-stepper {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .chatbot-stepper__item {
   display: flex;
   gap: 10px;
   align-items: flex-start;
-  padding: 12px 13px;
-  border-radius: 16px;
+  padding: 13px 14px;
+  border-radius: 18px;
   border: 1px solid #d9e5f8;
-  background: #f8fbff;
+  background: linear-gradient(180deg, rgba(252, 254, 255, 0.98) 0%, rgba(243, 248, 255, 0.98) 100%);
   color: #1f3d73;
+  box-shadow: 0 10px 22px rgba(17, 37, 72, 0.05);
 }
 
 .chatbot-stepper__item--active {
@@ -1044,15 +1045,15 @@ h1 {
 
 .chatbot-stepper__body strong {
   display: block;
-  font-size: 0.88rem;
-  margin-bottom: 2px;
+  font-size: 0.9rem;
+  margin-bottom: 3px;
   line-height: 1.35;
 }
 
 .chatbot-stepper__body p {
   margin: 0;
-  font-size: 0.76rem;
-  line-height: 1.4;
+  font-size: 0.78rem;
+  line-height: 1.45;
   color: #4e6083;
 }
 
@@ -1068,8 +1069,8 @@ h1 {
   max-height: 420px;
   overflow-y: auto;
   display: grid;
-  gap: 12px;
-  padding: 12px;
+  gap: 10px;
+  padding: 10px;
   border: 1px solid #dbe4f1;
   border-radius: 18px;
   background: linear-gradient(180deg, rgba(246, 250, 255, 0.92) 0%, rgba(242, 247, 255, 0.82) 100%);
@@ -1077,13 +1078,17 @@ h1 {
 }
 
 .chatbot-message {
-  max-width: 90%;
-  padding: 12px 14px;
-  border-radius: 16px;
+  max-width: 84%;
+  padding: 11px 13px;
+  border-radius: 15px;
   white-space: pre-wrap;
   line-height: 1.45;
   font-size: 0.95rem;
   box-shadow: 0 8px 18px rgba(17, 37, 72, 0.08);
+}
+
+.chatbot-message__body {
+  white-space: pre-wrap;
 }
 
 .chatbot-message--user {
@@ -1100,6 +1105,34 @@ h1 {
   color: #1a2b4c;
   border-bottom-left-radius: 6px;
   line-height: 1.55;
+}
+
+.chatbot-references {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.chatbot-reference-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 9px;
+  border-radius: 999px;
+  border: 1px solid #c5d5ea;
+  background: rgba(241, 246, 255, 0.96);
+  color: #294b7a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.chatbot-reference-chip:hover {
+  background: #e8f0ff;
+  border-color: #9fb7da;
+  transform: translateY(-1px);
 }
 
 .chatbot-meta {
