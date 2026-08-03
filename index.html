@@ -865,6 +865,63 @@
         gap: 14px;
       }
 
+      .sponsor-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .sponsor-column {
+        border-radius: 20px;
+        background: #fff;
+        border: 1px solid rgba(16, 33, 61, 0.10);
+        padding: 16px;
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .sponsor-column__head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .sponsor-stack {
+        display: grid;
+        gap: 10px;
+      }
+
+      .sponsor-card {
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid rgba(16, 33, 61, 0.10);
+        background: linear-gradient(135deg, rgba(246, 249, 255, 0.96), rgba(255,255,255,1));
+      }
+
+      .sponsor-card__anchor {
+        display: block;
+      }
+
+      .sponsor-card__image {
+        aspect-ratio: 15 / 5;
+        background: #dfe8f6;
+      }
+
+      .sponsor-card__image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .sponsor-column--empty {
+        grid-column: 1 / -1;
+        text-align: center;
+      }
+
       .banner-column {
         border-radius: 20px;
         background: #fff;
@@ -998,6 +1055,10 @@
         }
 
         .banner-row {
+          grid-template-columns: 1fr;
+        }
+
+        .sponsor-grid {
           grid-template-columns: 1fr;
         }
 
@@ -1238,7 +1299,7 @@
           <div class="hero-copy">
             <div>
               <div class="tag"><span class="tag-dot"></span>Singapore Advisory Studio</div>
-              <h1>신뢰할 수 있는 싱가포르 정보와 전문가 네트워크</h1>
+              <h1>신뢰할수 있는 싱가포르<br />정보와 전문가 네트워크</h1>
               <p class="hero-text">
                 취업 · 부동산 · 리로케이션까지 현지 라이선스를 보유한 전문가에게 안전하게 문의하세요.
                 필요한 경우 검증된 현지 전문가 네트워크와 자연스럽게 연결해 드립니다.
@@ -1277,8 +1338,6 @@
                   <video
                     src="https://res.cloudinary.com/l6aa0vbz/video/upload/v1783583360/Storyboard_1_3_nh6kh7.mp4"
                     playsinline
-                    autoplay
-                    muted
                     loop
                     controls
                     preload="metadata"
@@ -1306,36 +1365,13 @@
             <p class="eyebrow">Recommended Services</p>
             <h2>고용, 부동산, 리로케이션 분야별 추천 서비스를 확인하세요</h2>
           </div>
-          <p class="note">분야별로 확인하기 쉬운 추천 배너 구성을 기준으로 안내합니다.</p>
+          <p id="sponsor-guideline-text" class="note">분야별로 확인하기 쉬운 추천 배너 구성을 기준으로 안내합니다.</p>
         </div>
 
         <div class="banner-row-shell">
-          <div class="banner-row">
-            <article class="banner-column employment">
-              <div class="ad-card__badge">Employment / 고용</div>
-              <div class="banner-stack">
-                <div class="small-banner small-banner--blue"><strong>배너 1</strong> 채용, 비자, 이직 서비스</div>
-                <div class="small-banner small-banner--blue"><strong>배너 2</strong> 커리어 컨설팅, 헤드헌팅</div>
-                <div class="small-banner small-banner--blue"><strong>배너 3</strong> 영어 면접, 실무 코칭</div>
-              </div>
-            </article>
-
-            <article class="banner-column property">
-              <div class="ad-card__badge">Property / 부동산</div>
-              <div class="banner-stack">
-                <div class="small-banner small-banner--orange"><strong>배너 1</strong> 임대 매물</div>
-                <div class="small-banner small-banner--orange"><strong>배너 2</strong> 지역 비교</div>
-                <div class="small-banner small-banner--orange"><strong>배너 3</strong> 투자형 매물</div>
-              </div>
-            </article>
-
-            <article class="banner-column relocation">
-              <div class="ad-card__badge">Relocation / 리로케이션</div>
-              <div class="banner-stack">
-                <div class="small-banner small-banner--green"><strong>배너 1</strong> 정착 서비스</div>
-                <div class="small-banner small-banner--green"><strong>배너 2</strong> 국제학교</div>
-                <div class="small-banner small-banner--green"><strong>배너 3</strong> 생활 인프라</div>
-              </div>
+          <div id="sponsor-slots" class="sponsor-grid">
+            <article class="sponsor-column sponsor-column--empty">
+              <p>추천 서비스 배너를 불러오는 중입니다...</p>
             </article>
           </div>
         </div>
@@ -1454,14 +1490,6 @@
             </ol>
           </div>
         </div>
-      </section>
-
-      <section class="site-section" aria-label="최근 접수된 질문">
-        <div class="section-intro">
-          <p class="eyebrow" data-i18n="recentCaption">최근 접수된 질문</p>
-          <h2 data-i18n="recentTitle">이 사이트에 남겨진 최신 문의</h2>
-        </div>
-        <div id="recent-questions" class="recent-list"></div>
       </section>
 
       <footer class="site-footer" aria-label="커뮤니티 연결 영역">
