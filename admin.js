@@ -264,16 +264,12 @@ function showSponsorSyncGuide(message, payload) {
 }
 
 function parseSponsorFormData(container, item) {
+  const rawLink = container.querySelector('[data-field="linkUrl"]')?.value.trim() || '';
+  const linkUrl = rawLink || '#';
   return {
     ...item,
-    title: container.querySelector('[data-field="title"]')?.value.trim() || '',
-    description: container.querySelector('[data-field="description"]')?.value.trim() || '',
-    imageUrl: container.querySelector('[data-field="imageUrl"]')?.value.trim() || '',
-    linkUrl: container.querySelector('[data-field="linkUrl"]')?.value.trim() || '#ask',
-    badge: container.querySelector('[data-field="badge"]')?.value.trim() || '추천 서비스',
-    startDate: container.querySelector('[data-field="startDate"]')?.value || '',
-    endDate: container.querySelector('[data-field="endDate"]')?.value || '',
-    active: Boolean(container.querySelector('[data-field="active"]')?.checked)
+    linkUrl,
+    active: true
   };
 }
 
@@ -295,18 +291,9 @@ function renderSponsorAdmin() {
   sponsorAdminList.innerHTML = categories.map((category) => {
     const cards = (Array.isArray(category.items) ? category.items : []).map((item) => `
       <article class="sponsor-admin-card" data-category-id="${escapeHtml(category.id || '')}" data-item-id="${escapeHtml(item.id || '')}">
-        <div class="sponsor-admin-card__preview"><img src="${escapeHtml(item.imageUrl || '')}" alt="${escapeHtml(item.title || '')}" /></div>
+        <div class="sponsor-admin-card__preview"><img src="${escapeHtml(item.imageUrl || '')}" alt="${escapeHtml(category.label || '배너')} 샘플" /></div>
         <div class="sponsor-admin-card__fields">
-          <label><span>제목</span><input data-field="title" value="${escapeHtml(item.title || '')}" /></label>
-          <label><span>설명</span><textarea data-field="description">${escapeHtml(item.description || '')}</textarea></label>
-          <label><span>이미지 URL</span><input data-field="imageUrl" value="${escapeHtml(item.imageUrl || '')}" /></label>
-          <label><span>링크 URL</span><input data-field="linkUrl" value="${escapeHtml(item.linkUrl || '')}" /></label>
-          <label><span>배지 문구</span><input data-field="badge" value="${escapeHtml(item.badge || '')}" /></label>
-          <div class="sponsor-admin-card__meta">
-            <label><span>시작일</span><input data-field="startDate" type="date" value="${escapeHtml(item.startDate || '')}" /></label>
-            <label><span>종료일</span><input data-field="endDate" type="date" value="${escapeHtml(item.endDate || '')}" /></label>
-          </div>
-          <label><span><input data-field="active" type="checkbox" ${item.active === false ? '' : 'checked'} /> 노출중</span></label>
+          <label><span>클릭 이동 링크 URL</span><input data-field="linkUrl" type="url" placeholder="https://advertiser.example" value="${escapeHtml(item.linkUrl || '')}" /></label>
         </div>
         <div class="sponsor-admin-card__actions">
           <button class="button button--secondary" type="button" data-action="save-sponsor">슬롯 저장</button>

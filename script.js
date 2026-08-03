@@ -633,6 +633,23 @@ function isSponsorActive(item) {
   return true;
 }
 
+function normalizeSponsorLink(value) {
+  const raw = (value || '').toString().trim();
+  if (!raw) {
+    return '#';
+  }
+
+  if (raw.startsWith('#')) {
+    return raw;
+  }
+
+  if (/^https?:\/\//i.test(raw)) {
+    return raw;
+  }
+
+  return '#';
+}
+
 function renderSponsorSlots(data) {
   const container = document.getElementById('sponsor-slots');
   const note = document.getElementById('sponsor-guideline-text');
@@ -651,7 +668,15 @@ function renderSponsorSlots(data) {
   const visibleCategories = categories
     .map((category) => ({
       ...category,
-      items: Array.isArray(category.items) ? category.items.filter(isSponsorActive).slice(0, 3) : []
+      items: Array.isArray(category.items)
+        ? category.items
+          .filter(isSponsorActive)
+          .slice(0, 3)
+          .map((item) => ({
+            ...item,
+            linkUrl: normalizeSponsorLink(item.linkUrl)
+          }))
+        : []
     }))
     .filter((category) => category.items.length > 0);
 
@@ -663,18 +688,11 @@ function renderSponsorSlots(data) {
   container.innerHTML = visibleCategories.map((category) => {
     const cards = category.items.map((item) => `
       <article class="sponsor-card">
-        <div class="sponsor-card__image">
-          <img src="${escapeHtmlText(item.imageUrl || '')}" alt="${escapeHtmlText(item.title || '')}" loading="lazy" />
-        </div>
-        <div class="sponsor-card__body">
-          <span class="sponsor-card__badge">${escapeHtmlText(item.badge || '추천 서비스')}</span>
-          <h3 class="sponsor-card__title">${escapeHtmlText(item.title || '')}</h3>
-          <p class="sponsor-card__desc">${escapeHtmlText(item.description || '')}</p>
-          <div class="sponsor-card__meta">
-            <span>${escapeHtmlText(item.startDate || '')} ~ ${escapeHtmlText(item.endDate || '')}</span>
-            <a class="sponsor-card__link" href="${escapeHtmlText(item.linkUrl || '#ask')}">자세히 보기</a>
+        <a class="sponsor-card__anchor" href="${escapeHtmlText(item.linkUrl || '#')}" target="_blank" rel="noopener noreferrer">
+          <div class="sponsor-card__image">
+            <img src="${escapeHtmlText(item.imageUrl || '')}" alt="${escapeHtmlText((category.label || '추천 서비스') + ' 배너')}" loading="lazy" />
           </div>
-        </div>
+        </a>
       </article>
     `).join('');
 

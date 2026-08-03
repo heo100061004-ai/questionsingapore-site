@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updatedAt": "2026-08-03T00:00:00.000Z",
+    "updatedAt": "2026-08-03T12:00:00.000Z",
     "bannerGuideline": {
       "recommendedDesktop": "1200x320",
       "recommendedMobile": "720x240",
@@ -15,36 +15,30 @@
       "items": [
         {
           "id": "employment-1",
-          "title": "커리어 컨설팅",
-          "description": "싱가포르 이직 준비, 인터뷰 코칭, 커리어 전략",
-          "imageUrl": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80",
-          "linkUrl": "#ask",
-          "badge": "추천 서비스",
-          "active": true,
-          "startDate": "2026-08-01",
-          "endDate": "2026-12-31"
+          "title": "Sample Banner 1",
+          "description": "",
+          "imageUrl": "assets/sponsors/employment-sample.svg",
+          "linkUrl": "https://example.com/employment-1",
+          "badge": "",
+          "active": true
         },
         {
           "id": "employment-2",
-          "title": "비자 체크리스트",
-          "description": "Employment Pass, 이직 서류, 준비 순서 안내",
-          "imageUrl": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80",
-          "linkUrl": "#chatbot",
-          "badge": "관리자 추천",
-          "active": true,
-          "startDate": "2026-08-01",
-          "endDate": "2026-12-31"
+          "title": "Sample Banner 2",
+          "description": "",
+          "imageUrl": "assets/sponsors/employment-sample.svg",
+          "linkUrl": "https://example.com/employment-2",
+          "badge": "",
+          "active": true
         },
         {
           "id": "employment-3",
-          "title": "실무 영어 코칭",
-          "description": "영문 이력서, 인터뷰 답변, 커뮤니케이션 준비",
-          "imageUrl": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
-          "linkUrl": "#ask",
-          "badge": "Featured",
-          "active": true,
-          "startDate": "2026-08-01",
-          "endDate": "2026-12-31"
+          "title": "Sample Banner 3",
+          "description": "",
+          "imageUrl": "assets/sponsors/employment-sample.svg",
+          "linkUrl": "https://example.com/employment-3",
+          "badge": "",
+          "active": true
         }
       ]
     },
@@ -54,36 +48,30 @@
       "items": [
         {
           "id": "property-1",
-          "title": "임대 매물 추천",
-          "description": "거주 지역 비교와 렌탈 매물 검토",
-          "imageUrl": "https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=1200&q=80",
-          "linkUrl": "#ask",
-          "badge": "추천 서비스",
-          "active": true,
-          "startDate": "2026-08-01",
-          "endDate": "2026-12-31"
+          "title": "Sample Banner 1",
+          "description": "",
+          "imageUrl": "assets/sponsors/property-sample.svg",
+          "linkUrl": "https://example.com/property-1",
+          "badge": "",
+          "active": true
         },
         {
           "id": "property-2",
-          "title": "계약 체크 포인트",
-          "description": "계약서, 보증금, 입주 일정 확인",
-          "imageUrl": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80",
-          "linkUrl": "#chatbot",
-          "badge": "관리자 추천",
-          "active": true,
-          "startDate": "2026-08-01",
-          "endDate": "2026-12-31"
+          "title": "Sample Banner 2",
+          "description": "",
+          "imageUrl": "assets/sponsors/property-sample.svg",
+          "linkUrl": "https://example.com/property-2",
+          "badge": "",
+          "active": true
         },
         {
           "id": "property-3",
-          "title": "생활권 비교",
-          "description": "교통, 생활비, 가족 동반 거주 조건 비교",
-          "imageUrl": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
-          "linkUrl": "#ask",
-          "badge": "Featured",
-          "active": true,
-          "startDate": "2026-08-01",
-          "endDate": "2026-12-31"
+          "title": "Sample Banner 3",
+          "description": "",
+          "imageUrl": "assets/sponsors/property-sample.svg",
+          "linkUrl": "https://example.com/property-3",
+          "badge": "",
+          "active": true
         }
       ]
     },
@@ -93,36 +81,30 @@
       "items": [
         {
           "id": "relocation-1",
-          "title": "정착 가이드",
-          "description": "초기 정착 체크리스트와 생활 준비 가이드",
-          "imageUrl": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
-          "linkUrl": "#ask",
-          "badge": "추천 서비스",
-          "active": true,
-          "startDate": "2026-08-01",
-          "endDate": "2026-12-31"
+          "title": "Sample Banner 1",
+          "description": "",
+          "imageUrl": "assets/sponsors/relocation-sample.svg",
+          "linkUrl": "https://example.com/relocation-1",
+          "badge": "",
+          "active": true
         },
         {
           "id": "relocation-2",
-          "title": "학교 / 가족 이동",
-          "description": "가족 동반 이주, 학교 정보, 생활 인프라 안내",
-          "imageUrl": "https://images.unsplash.com/photo-1503437313881-503a91226419?auto=format&fit=crop&w=1200&q=80",
-          "linkUrl": "#chatbot",
-          "badge": "관리자 추천",
-          "active": true,
-          "startDate": "2026-08-01",
-          "endDate": "2026-12-31"
+          "title": "Sample Banner 2",
+          "description": "",
+          "imageUrl": "assets/sponsors/relocation-sample.svg",
+          "linkUrl": "https://example.com/relocation-2",
+          "badge": "",
+          "active": true
         },
         {
           "id": "relocation-3",
-          "title": "초기 컨시어지",
-          "description": "통신, 은행, 교통 등 초기 세팅 안내",
-          "imageUrl": "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=1200&q=80",
-          "linkUrl": "#ask",
-          "badge": "Featured",
-          "active": true,
-          "startDate": "2026-08-01",
-          "endDate": "2026-12-31"
+          "title": "Sample Banner 3",
+          "description": "",
+          "imageUrl": "assets/sponsors/relocation-sample.svg",
+          "linkUrl": "https://example.com/relocation-3",
+          "badge": "",
+          "active": true
         }
       ]
     }
