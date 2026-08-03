@@ -2,6 +2,10 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { jaccardSimilarity } = require('../tools/faq-kb-lib');
 const { addChatbotLog } = require('../tools/chatbot-log-store');
+const { maybeAutoIngestRawDocs } = require('../tools/auto-ingest-raw-docs');
+const { sanitizeAnswerText, humanizeConsultingTone, truncateText } = require('../tools/content-sanitizer');
+const { createLlmBudgetGuard } = require('../tools/llm-cost-guard');
+const { isLlmFallbackEnabled, buildMinimalConsultationAnswer } = require('../tools/consultation-guidance');
 const {
   getRuntimeDocIndexPath,
   getRuntimeFaqPath,
@@ -21,6 +25,10 @@ const LANGUAGE_MAP = {
 };
 
 const DOMAINS = ['employment', 'property', 'relocation'];
+const llmBudgetGuard = createLlmBudgetGuard({
+  budgetUsd: Number(process.env.LLM_BUDGET_USD || 5),
+  statePath: path.join(ROOT_DIR, '.llm-budget-state.json')
+});
 
 function normalizeCategory(category = '') {
   const value = String(category || '').toLowerCase();
@@ -47,18 +55,7 @@ function customizeGeneratedAnswer(answer, language) {
     .replace(/"[^"\n]{160,}"/g, '"원문 인용 생략"')
     .replace(/“[^”\n]{160,}”/g, '"원문 인용 생략"');
 
-  const normalized = noLongQuotes.replace(/\n{3,}/g, '\n\n').trim();
-  const disclaimer = language === 'ko'
-    ? '참고: 아래 답변은 등록된 자료를 재서술한 맞춤 요약이며, 원문 문장을 그대로 복제하지 않도록 구성되었습니다.'
-    : language === 'zh'
-      ? '说明：以下回答为基于已收录资料的重述摘要，已尽量避免直接复制原文句子。'
-      : 'Note: This answer is a customized paraphrased summary based on indexed sources and is structured to avoid direct verbatim copying.';
-
-  if (normalized.includes(disclaimer)) {
-    return normalized;
-  }
-
-  return `${normalized}\n\n${disclaimer}`;
+  return noLongQuotes.replace(/\n{3,}/g, '\n\n').trim();
 }
 
 function loadFaqData(language, preferredDomain = null) {
@@ -436,12 +433,12 @@ function composeContextOnlyAnswer(question, topMatches, language) {
 
 function offlineFallback(language) {
   if (language === 'ko') {
-    return '현재 FAQ에서 직접 일치 항목을 찾지 못했습니다. 구체적인 상황(카테고리, 체류상태, 일정)을 알려주시면 관리자 상담으로 바로 연결해 드리겠습니다.';
+    return '현재 FAQ에서 직접 일치 항목을 찾지 못했습니다. 구체적인 상황(카테고리, 체류상태, 일정)을 알려주시면 필요에 따라 추가로 확인해 드릴 수 있습니다.';
   }
   if (language === 'zh') {
-    return '目前在 FAQ 中未找到直接匹配内容。请补充您的具体情况（类别、居留状态、时间计划），我们可为您转接人工咨询。';
+    return '目前在 FAQ 中未找到直接匹配内容。请补充您的具体情况（类别、居留状态、时间计划），我们可根据需要继续为您提供更细的帮助。';
   }
-  return 'No direct FAQ match was found. Share more context (category, status, timeline), and we can route this to admin consultation.';
+  return 'No direct FAQ match was found. Share more context (category, status, timeline), and we can continue with more detailed support if needed.';
 }
 
 module.exports = async function handler(req, res) {
@@ -455,17 +452,41 @@ module.exports = async function handler(req, res) {
   const language = LANGUAGE_MAP[(body.language || '').toString()] || 'ko';
   const preferredDomain = normalizeCategory(body.category || '');
 
+  try {
+    await maybeAutoIngestRawDocs({
+      trigger: 'chatbot-request',
+      force: false
+    });
+  } catch (error) {
+    // Continue chatbot service even if auto-ingest fails.
+  }
+
   function reply(payload) {
+    const sanitizedAnswer = sanitizeAnswerText(payload.answer || '', language);
+    const followUpSources = new Set(['fallback', 'consultation-guidance', 'budget-blocked', 'context-fallback']);
+    const includeFollowUp = followUpSources.has(String(payload.source || '').toLowerCase());
+    const hasLeadAlready = /^(먼저 핵심만|핵심만 간단히|here is a short direction|let me give you a short direction|先给您一个简短方向|先为您简要说明重点)/i.test(
+      String(sanitizedAnswer || '').trim()
+    );
+    const tonedAnswer = humanizeConsultingTone(sanitizedAnswer, language, {
+      includeFollowUp,
+      openingStyle: hasLeadAlready ? 'none' : 'neutral'
+    });
+    const finalAnswer = truncateText(tonedAnswer, 680, language);
+
     addChatbotLog({
       question,
       language,
       category: preferredDomain || '',
       source: payload.source || 'unknown',
       score: payload.score,
-      answer: payload.answer || ''
+      answer: finalAnswer || ''
     });
 
-    res.status(200).json(payload);
+    res.status(200).json({
+      ...payload,
+      answer: finalAnswer
+    });
   }
 
   if (!question) {
@@ -486,13 +507,55 @@ module.exports = async function handler(req, res) {
   const strongContext = topContexts.length > 0 && topContexts[0].score >= 0.2;
 
   if (strongContext) {
-    const llmAnswerFromContext = await callOpenAI(question, language, topContexts);
-    if (llmAnswerFromContext) {
+    const minimalAnswer = buildMinimalConsultationAnswer(question, language, topContexts);
+    const shouldUseLlm = isLlmFallbackEnabled(process.env) && llmBudgetGuard.shouldAllowCall({ question, language, domain: effectiveDomain || 'employment' }).allowed;
+
+    if (!shouldUseLlm) {
       reply({
         ok: true,
-        source: 'ai-context',
+        source: 'consultation-guidance',
         score: Number(topContexts[0].score.toFixed(3)),
-        answer: `${customizeGeneratedAnswer(llmAnswerFromContext, language)}${formatRefsForAnswer(references, language, responsePolicy)}`
+        answer: `${minimalAnswer}${formatRefsForAnswer(references, language, responsePolicy)}`
+      });
+      return;
+    }
+
+    const budgetDecision = llmBudgetGuard.shouldAllowCall({ question, language, domain: effectiveDomain || 'employment' });
+    if (!budgetDecision.allowed) {
+      reply({
+        ok: true,
+        source: 'budget-blocked',
+        score: Number(topContexts[0].score.toFixed(3)),
+        answer: `${minimalAnswer}${formatRefsForAnswer(references, language, responsePolicy)}`
+      });
+      return;
+    }
+
+    const llmAnswerFromContext = await llmBudgetGuard.getCachedOrExecute({
+      question,
+      language,
+      domain: effectiveDomain || 'employment',
+      executor: async () => {
+        const answer = await callOpenAI(question, language, topContexts);
+        if (answer) {
+          return {
+            ok: true,
+            answer: `${customizeGeneratedAnswer(answer, language)}${formatRefsForAnswer(references, language, responsePolicy)}`
+          };
+        }
+        return {
+          ok: true,
+          answer: `${composeContextOnlyAnswer(question, topContexts, language)}${formatRefsForAnswer(references, language, responsePolicy)}`
+        };
+      }
+    });
+
+    if (llmAnswerFromContext && llmAnswerFromContext.answer) {
+      reply({
+        ok: true,
+        source: llmAnswerFromContext.source || 'ai-context',
+        score: Number(topContexts[0].score.toFixed(3)),
+        answer: llmAnswerFromContext.answer
       });
       return;
     }
@@ -507,11 +570,12 @@ module.exports = async function handler(req, res) {
   }
 
   if (best && best.score >= 0.63) {
+    const minimalAnswer = buildMinimalConsultationAnswer(question, language, []);
     reply({
       ok: true,
       source: 'faq',
       score: Number(best.score.toFixed(3)),
-      answer: composeFaqAnswer(best.item, language)
+      answer: `${minimalAnswer}\n\n${composeFaqAnswer(best.item, language)}`
     });
     return;
   }
@@ -522,29 +586,32 @@ module.exports = async function handler(req, res) {
     const bestEnglish = findBestFaqMatch(question, englishItems);
 
     if (bestEnglish && bestEnglish.score >= 0.63) {
+      const minimalAnswer = buildMinimalConsultationAnswer(question, language, []);
       reply({
         ok: true,
         source: 'faq-en-fallback',
         score: Number(bestEnglish.score.toFixed(3)),
-        answer: composeFaqAnswer(bestEnglish.item, 'en')
+        answer: `${minimalAnswer}\n\n${composeFaqAnswer(bestEnglish.item, 'en')}`
       });
       return;
     }
   }
 
-  const llmAnswer = await callOpenAI(question, language);
-  if (llmAnswer) {
-    reply({
-      ok: true,
-      source: 'llm-fallback',
-      answer: customizeGeneratedAnswer(llmAnswer, language)
-    });
-    return;
+  if (isLlmFallbackEnabled(process.env)) {
+    const llmAnswer = await callOpenAI(question, language);
+    if (llmAnswer) {
+      reply({
+        ok: true,
+        source: 'llm-fallback',
+        answer: customizeGeneratedAnswer(llmAnswer, language)
+      });
+      return;
+    }
   }
 
   reply({
     ok: true,
     source: 'fallback',
-    answer: offlineFallback(language)
+    answer: buildMinimalConsultationAnswer(question, language, [])
   });
 };

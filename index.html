@@ -144,8 +144,31 @@
         </div>
         <div class="chatbot-shell">
           <div class="chatbot-head">
-            <div class="chatbot-head__badge">LIVE FAQ</div>
-            <div class="chatbot-head__badge chatbot-head__badge--soft">AI Fallback</div>
+            <div class="chatbot-head__badge">STEP 1</div>
+            <div class="chatbot-head__badge chatbot-head__badge--soft">FAQ First</div>
+          </div>
+          <div class="chatbot-stepper" aria-label="챗봇 단계 안내">
+            <div class="chatbot-stepper__item chatbot-stepper__item--active" data-chatbot-step-item="1">
+              <span class="chatbot-stepper__number">1</span>
+              <div class="chatbot-stepper__body">
+                <strong data-i18n="chatStep1Title">기본 안내</strong>
+                <p data-i18n="chatStep1Text">FAQ와 등록 문서를 기준으로 간단히 안내합니다.</p>
+              </div>
+            </div>
+            <div class="chatbot-stepper__item" data-chatbot-step-item="2">
+              <span class="chatbot-stepper__number">2</span>
+              <div class="chatbot-stepper__body">
+                <strong data-i18n="chatStep2Title">추가 상담 안내</strong>
+                <p data-i18n="chatStep2Text">원하시면 문의 신청으로 이어서 더 자세히 확인해 드릴 수 있습니다.</p>
+              </div>
+            </div>
+            <div class="chatbot-stepper__item" data-chatbot-step-item="3">
+              <span class="chatbot-stepper__number">3</span>
+              <div class="chatbot-stepper__body">
+                <strong data-i18n="chatStep3Title">점진적 확장</strong>
+                <p data-i18n="chatStep3Text">필요에 따라 더 정교한 안내로 이어갈 수 있습니다.</p>
+              </div>
+            </div>
           </div>
           <div id="chatbot-messages" class="chatbot-messages" aria-live="polite"></div>
           <div class="chatbot-quick">

@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { findDuplicate, nextFaqId } = require('./faq-kb-lib');
 const { buildDocIndex } = require('./build-doc-index');
+const { sanitizeKnowledgeText } = require('./content-sanitizer');
 const {
   getRuntimeDocIndexPath,
   getRuntimeFaqPath,
@@ -148,7 +149,7 @@ function buildFaqEntry(id, domain, item, sourceRefMap) {
   const url = String(item.url || '').trim();
   const sourceId = sourceRefMap.get(url);
   const sourceRefs = sourceId ? [sourceId] : [];
-  const content = shorten(item.text || '');
+  const content = shorten(sanitizeKnowledgeText(item.text || ''), 900);
   const summary = firstSentence(content);
 
   return {

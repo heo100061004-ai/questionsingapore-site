@@ -86,12 +86,18 @@ const translations = {
     chatQuickLabel: '최근/주요 검색 키워드',
     chatInputPlaceholder: '예: Employment Pass 이직 준비 체크리스트 알려줘',
     chatSend: '보내기',
-    chatWelcome: '안녕하세요. Question Singapore AI 스마트 안내 서비스입니다. AI를 통해 필요한 정보를 먼저 검색해 보세요. 전문가의 상담이 필요한 경우, 아래 문의 신청 폼을 작성해 주시면 신속하게 안내해 드리겠습니다.',
+    chatWelcome: '안녕하세요. Question Singapore AI 스마트 안내 서비스입니다. 먼저 간단한 방향을 안내해 드리고, 필요하시면 이어서 더 자세히 확인해 드릴 수 있습니다.',
+    chatStep1Title: '기본 안내',
+    chatStep1Text: 'FAQ와 등록 문서를 기준으로 간단히 안내합니다.',
+    chatStep2Title: '추가 상담 안내',
+    chatStep2Text: '원하시면 문의 신청으로 이어서 더 자세히 확인해 드릴 수 있습니다.',
+    chatStep3Title: '점진적 확장',
+    chatStep3Text: '필요에 따라 더 정교한 안내로 이어갈 수 있습니다.',
     chatError: '응답 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
     chatTyping: '답변을 준비 중입니다...',
-    chatCta: '문의 신청으로 이동',
-    chatCtaA: '문의 신청으로 이동',
-    chatCtaB: '전문가 상담 신청하기',
+    chatCta: '추가 안내 받기',
+    chatCtaA: '추가 안내 받기',
+    chatCtaB: '원하시면 문의 남기기',
     askCaption: '문의 신청',
     askTitle: '답변이 필요한 상황을 알려주세요',
     nameLabel: '이름',
@@ -184,12 +190,18 @@ const translations = {
     chatQuickLabel: 'Recent / Top Search Keywords',
     chatInputPlaceholder: 'Example: Checklist for changing jobs on Employment Pass',
     chatSend: 'Send',
-    chatWelcome: 'Hello. This is the Question Singapore AI Smart Guide. Please search for the information you need through AI first. If expert consultation is required, please complete the inquiry form below and we will guide you promptly.',
+    chatWelcome: 'Hello. This is the Question Singapore AI Smart Guide. We first provide a short starting point, and if needed, we can continue with more detailed support.',
+    chatStep1Title: 'Basic guidance',
+    chatStep1Text: 'We provide short guidance based on FAQs and registered documents.',
+    chatStep2Title: 'Additional support',
+    chatStep2Text: 'If you would like, we can continue through an inquiry form for more detailed help.',
+    chatStep3Title: 'Gradual expansion',
+    chatStep3Text: 'We can expand into more detailed support as needed.',
     chatError: 'Something went wrong while generating a response. Please try again shortly.',
     chatTyping: 'Preparing your answer...',
-    chatCta: 'Go To Inquiry Form',
-    chatCtaA: 'Go To Inquiry Form',
-    chatCtaB: 'Request Expert Consultation',
+    chatCta: 'Request more guidance',
+    chatCtaA: 'Request more guidance',
+    chatCtaB: 'Leave an inquiry if needed',
     askCaption: 'Inquiry Submission',
     askTitle: 'Tell us your situation for a tailored answer',
     nameLabel: 'Name',
@@ -279,12 +291,12 @@ const translations = {
     chatQuickLabel: '近期/主要搜索关键词',
     chatInputPlaceholder: '例如：Employment Pass 换工作需要准备什么？',
     chatSend: '发送',
-    chatWelcome: '您好，这里是 Question Singapore AI 智能引导服务。建议您先通过 AI 搜索所需信息。如需专家咨询，请填写下方咨询申请表，我们将尽快为您提供指引。',
+    chatWelcome: '您好，这里是 Question Singapore AI 智能引导服务。我们先给出一个简短的方向说明，如有需要，也可以继续通过咨询申请获得更详细的帮助。',
     chatError: '生成回复时出现问题，请稍后重试。',
     chatTyping: '正在整理回答...',
-    chatCta: '前往咨询表单',
-    chatCtaA: '前往咨询表单',
-    chatCtaB: '申请专家咨询',
+    chatCta: '获取更多帮助',
+    chatCtaA: '获取更多帮助',
+    chatCtaB: '如有需要可提交咨询',
     askCaption: '提交咨询',
     askTitle: '告诉我们您的情况以获得定制答案',
     nameLabel: '姓名',
@@ -855,6 +867,33 @@ function appendChatMessage(role, text, meta = '') {
   return wrapper;
 }
 
+function normalizeDisplayedChatbotAnswer(text = '', language = 'ko') {
+  let body = String(text || '').trim();
+  if (!body) {
+    return body;
+  }
+
+  const legacyPatterns = [
+    /^좋은 질문이에요\.\s*상황에 맞게 핵심부터 편하게 정리해드릴게요\.\s*/,
+    /^좋은 질문이에요\.\s*/,
+    /^좋은 포인트예요\.\s*핵심만 짧게 정리해볼게요\.\s*/,
+    /^핵심만 짧게 정리해볼게요\.\s*/,
+    /\n*필요하시면 현재 상황\(비자 상태, 예산, 일정\)을 알려주세요\.\s*다음 단계까지 같이 정리해드릴게요\.\s*$/,
+    /\n*필요하시면 현재 상황을 기준으로 전문가 상담까지 자연스럽게 이어서 도와드릴게요\.\s*$/
+  ];
+
+  for (const pattern of legacyPatterns) {
+    body = body.replace(pattern, '');
+  }
+
+  body = body.trim();
+  if (language !== 'ko' || !body) {
+    return body;
+  }
+
+  return `핵심만 짧게 정리해드릴게요.\n\n${body}\n\n필요하시면 다음 단계도 이어서 정리해드릴게요.`;
+}
+
 function renderChatbotQuickButtons() {
   if (!chatbotQuickList) {
     return;
@@ -913,6 +952,14 @@ function refreshChatbotWelcomeMessage() {
   }
 }
 
+function renderChatbotStepState(activeStep = 1) {
+  document.querySelectorAll('[data-chatbot-step-item]').forEach((item) => {
+    const stepNumber = Number(item.getAttribute('data-chatbot-step-item') || '1');
+    item.classList.toggle('chatbot-stepper__item--active', stepNumber === activeStep);
+    item.classList.toggle('chatbot-stepper__item--done', stepNumber < activeStep);
+  });
+}
+
 function initChatbot() {
   if (!chatbotMessages || !chatbotForm || !chatbotInput) {
     return;
@@ -920,6 +967,7 @@ function initChatbot() {
 
   const currentLang = languageSelect?.value || 'ko';
   const translation = translations[currentLang] || translations.ko;
+  renderChatbotStepState(1);
   const welcomeMessage = appendChatMessage('bot', translation.chatWelcome);
   if (welcomeMessage) {
     welcomeMessage.setAttribute('data-chatbot-welcome', 'true');
@@ -969,7 +1017,7 @@ function initChatbot() {
 
       const data = await response.json();
       const sourceKey = data && data.source ? String(data.source) : '';
-      appendChatMessage('bot', data.answer || t.chatError, sourceKey);
+      appendChatMessage('bot', normalizeDisplayedChatbotAnswer(data.answer || t.chatError, lang), sourceKey);
     } catch (error) {
       const lastTyping = chatbotMessages.lastElementChild;
       if (lastTyping && lastTyping.classList.contains('chatbot-message--bot')) {
@@ -1011,6 +1059,7 @@ if (languageSelect) {
   languageSelect.addEventListener('change', () => {
     updateLanguage(languageSelect.value);
     refreshChatbotWelcomeMessage();
+    renderChatbotStepState(1);
     applyChatbotCtaVariant();
     renderChatbotQuickButtons();
   });

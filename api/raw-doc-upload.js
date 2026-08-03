@@ -1,5 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const { maybeAutoIngestRawDocs } = require('../tools/auto-ingest-raw-docs');
 
 const RUNTIME_RAW_DOC_DIR = path.join('/tmp', 'question-singapore-raw-docs');
 const RUNTIME_MANIFEST_PATH = path.join(RUNTIME_RAW_DOC_DIR, 'manifest.json');
@@ -124,9 +125,24 @@ module.exports = async function handler(req, res) {
 
     upsertManifest(manifestEntries);
 
+    let autoIngest = null;
+    try {
+      autoIngest = await maybeAutoIngestRawDocs({
+        force: true,
+        trigger: 'admin-upload',
+        files: manifestEntries.map((item) => item.file)
+      });
+    } catch (autoError) {
+      autoIngest = {
+        ok: false,
+        message: autoError && autoError.message ? autoError.message : 'auto-ingest failed'
+      };
+    }
+
     res.status(200).json({
       ok: true,
       savedCount,
+      autoIngest,
       runtimeRawDocsPath: RUNTIME_RAW_DOC_DIR,
       warning: process.env.ADMIN_API_TOKEN ? null : 'ADMIN_API_TOKEN is not set. Configure token for production safety.'
     });

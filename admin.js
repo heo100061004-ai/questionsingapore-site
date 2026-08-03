@@ -66,6 +66,11 @@ const rawDocUrlInput = document.getElementById('raw-doc-url');
 const rawDocKeywordsInput = document.getElementById('raw-doc-keywords');
 const rawDocUploadButton = document.getElementById('raw-doc-upload-button');
 const rawDocUploadStatus = document.getElementById('raw-doc-upload-status');
+const docArchiveToggleButton = document.getElementById('doc-archive-toggle');
+const docArchiveRefreshButton = document.getElementById('doc-archive-refresh');
+const docArchivePanel = document.getElementById('doc-archive-panel');
+const docArchiveStatus = document.getElementById('doc-archive-status');
+const docArchiveList = document.getElementById('doc-archive-list');
 const modalExperts = document.getElementById('question-modal-experts');
 const store = window.QuestionSingaporeStore;
 const ADMIN_EMAIL = 'hello@questionsingapore.com';
@@ -86,6 +91,7 @@ let categoryFilter = 'all';
 let sortOrder = 'latest';
 let selectedQuestionId = null;
 let docSuggestions = [];
+let docArchiveOpen = false;
 
 const languageMap = {
   ko: '한국어',
@@ -652,6 +658,84 @@ function renderExperts() {
     .join('');
 }
 
+function renderDocArchiveItems(items) {
+  if (!docArchiveList) {
+    return;
+  }
+
+  const list = Array.isArray(items) ? items : [];
+  if (!list.length) {
+    docArchiveList.innerHTML = '<p class="empty-state">기록된 업데이트 이력이 없습니다.</p>';
+    return;
+  }
+
+  docArchiveList.innerHTML = list
+    .map((item) => {
+      const files = Array.isArray(item.files) ? item.files : [];
+      const filePreview = files.slice(0, 4).join(', ');
+      const fileTail = files.length > 4 ? ` 외 ${files.length - 4}개` : '';
+
+      return `
+        <article class="doc-archive-item">
+          <div class="doc-archive-item__head">
+            <strong>${escapeHtml(formatDateTime(item.createdAt))}</strong>
+            <span class="chip">${escapeHtml(item.trigger || 'system')}</span>
+          </div>
+          <p class="doc-archive-item__meta">파일 ${Number(item.fileCount || files.length || 0)}개 · 신규 ${Number(item.insertedCount || 0)}개 · 중복 스킵 ${Number(item.skippedCount || 0)}개 · 다국어 ${Number(item.localizedCount || 0)}개</p>
+          <p class="doc-archive-item__files">${escapeHtml(filePreview || '-')} ${escapeHtml(fileTail)}</p>
+        </article>
+      `;
+    })
+    .join('');
+}
+
+async function fetchDocArchive() {
+  if (!docArchiveStatus) {
+    return;
+  }
+
+  docArchiveStatus.textContent = '아카이브를 불러오는 중...';
+
+  try {
+    const response = await fetch('/api/doc-archive?limit=120', {
+      headers: getAdminApiHeaders()
+    });
+
+    const data = await response.json();
+    if (!response.ok || !data || !data.ok) {
+      throw new Error((data && data.message) || `Failed: ${response.status}`);
+    }
+
+    const items = Array.isArray(data.items) ? data.items : [];
+    const total = Number(data.total || items.length || 0);
+    docArchiveStatus.textContent = `총 ${total}건 업데이트 이력`; 
+    renderDocArchiveItems(items);
+  } catch (error) {
+    docArchiveStatus.textContent = '아카이브를 불러오지 못했습니다.';
+    if (docArchiveList) {
+      docArchiveList.innerHTML = '<p class="empty-state">아카이브 조회 실패</p>';
+    }
+  }
+}
+
+function setDocArchiveOpen(nextOpen) {
+  docArchiveOpen = Boolean(nextOpen);
+  if (docArchivePanel) {
+    docArchivePanel.hidden = !docArchiveOpen;
+  }
+  if (docArchiveRefreshButton) {
+    docArchiveRefreshButton.hidden = !docArchiveOpen;
+  }
+  if (docArchiveToggleButton) {
+    docArchiveToggleButton.textContent = docArchiveOpen ? '아카이브 닫기' : '아카이브 보기';
+    docArchiveToggleButton.setAttribute('aria-expanded', docArchiveOpen ? 'true' : 'false');
+  }
+
+  if (docArchiveOpen) {
+    fetchDocArchive();
+  }
+}
+
 function addExpertFromForm() {
   if (!expertForm || !store || typeof store.addExpert !== 'function') {
     return;
@@ -751,11 +835,18 @@ async function uploadRawDocs() {
       throw new Error((data && data.message) || `Failed: ${response.status}`);
     }
 
-    rawDocUploadStatus.textContent = `업로드 완료: ${data.savedCount || encodedFiles.length}개 파일 저장됨. 문서 제안을 새로고침합니다.`;
+    const ingest = data.autoIngest && data.autoIngest.summary ? data.autoIngest.summary : null;
+    const inserted = ingest && Number.isFinite(Number(ingest.insertedCount)) ? Number(ingest.insertedCount) : 0;
+    const skipped = ingest && Number.isFinite(Number(ingest.skippedCount)) ? Number(ingest.skippedCount) : 0;
+    const localized = ingest && Number.isFinite(Number(ingest.localizedCount)) ? Number(ingest.localizedCount) : 0;
+
+    rawDocUploadStatus.textContent = `업로드 완료: ${data.savedCount || encodedFiles.length}개 저장 / 자동반영 신규 ${inserted}개, 중복 스킵 ${skipped}개, 다국어 ${localized}개`;
     if (rawDocUploadForm) {
       rawDocUploadForm.reset();
     }
-    await fetchDocSuggestions();
+    if (docArchiveOpen) {
+      await fetchDocArchive();
+    }
   } catch (error) {
     rawDocUploadStatus.textContent = `업로드 실패: ${error.message || 'unknown error'}`;
   } finally {
@@ -1469,6 +1560,18 @@ if (docSuggestList) {
   });
 }
 
+if (docArchiveToggleButton) {
+  docArchiveToggleButton.addEventListener('click', () => {
+    setDocArchiveOpen(!docArchiveOpen);
+  });
+}
+
+if (docArchiveRefreshButton) {
+  docArchiveRefreshButton.addEventListener('click', () => {
+    fetchDocArchive();
+  });
+}
+
 if (expertForm) {
   expertForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -1540,5 +1643,4 @@ renderQuestions();
 renderDashboard();
 initAdminBannerImage();
 initHomeVideoSettings();
-fetchDocSuggestions();
 renderExperts();
