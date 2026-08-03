@@ -64,6 +64,14 @@
         display: inline-flex;
         align-items: center;
         gap: 14px;
+        text-decoration: none;
+      }
+
+      .logo-wrap,
+      .logo-wrap:visited,
+      .logo-wrap:hover,
+      .logo-wrap:active {
+        color: inherit;
       }
 
       .logo-mark {
@@ -617,6 +625,7 @@
       #whatsapp-fields {
         display: grid;
         gap: 10px;
+        grid-template-columns: 0.9fr 1.1fr;
       }
 
       .recent-list {
@@ -906,7 +915,7 @@
       }
 
       .sponsor-card__image {
-        aspect-ratio: 15 / 5;
+        aspect-ratio: 16 / 4;
         background: #dfe8f6;
       }
 
@@ -1066,6 +1075,10 @@
         .site-question-layout,
         .site-footer-social-grid,
         .site-form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        #whatsapp-fields {
           grid-template-columns: 1fr;
         }
 
@@ -1267,15 +1280,15 @@
     </style>
   </head>
   <body>
-    <main class="canvas">
+    <main class="canvas" id="top">
       <div class="topbar">
-        <div class="logo-wrap" aria-label="QuestionSingapore Logo">
+        <a class="logo-wrap" href="#top" aria-label="QuestionSingapore Logo">
           <div class="logo-mark" aria-hidden="true"></div>
           <div class="logo-text">
             <strong>QuestionSingapore</strong>
             <span>Information &amp; Services Community</span>
           </div>
-        </div>
+        </a>
         <div class="lang-switch">
           <span data-i18n="languageLabel">언어</span>
           <select id="language-select" aria-label="언어 선택">
@@ -1289,7 +1302,7 @@
       <div class="label-row">
         <div>
           <p class="eyebrow">Question Singapore</p>
-          <h2>싱가포르 정보와 전문가 네트워크 안내</h2>
+          <h2 data-i18n="topHeaderTitle">싱가포르 정보와 전문가 네트워크 안내</h2>
         </div>
         <p class="note" data-i18n="heroInfo3">빠른 상담 신청으로 전문가의 답변과 네트워크를 만들어 보세요.</p>
       </div>
@@ -1298,11 +1311,10 @@
         <div class="hero-inner">
           <div class="hero-copy">
             <div>
-              <div class="tag"><span class="tag-dot"></span>Singapore Advisory Studio</div>
-              <h1>신뢰할수 있는 싱가포르<br />정보와 전문가 네트워크</h1>
-              <p class="hero-text">
+              <div class="tag"><span class="tag-dot"></span><span data-i18n="heroEyebrow">Singapore Advisory Studio</span></div>
+              <h1 data-i18n-html="heroTitle">신뢰할수 있는 싱가포르<br />정보와 전문가 네트워크</h1>
+              <p class="hero-text" data-i18n="heroText">
                 취업 · 부동산 · 리로케이션까지 현지 라이선스를 보유한 전문가에게 안전하게 문의하세요.
-                필요한 경우 검증된 현지 전문가 네트워크와 자연스럽게 연결해 드립니다.
               </p>
               <div class="hero-actions">
                 <a class="button button-primary" href="#ads">추천 서비스 보기</a>
@@ -1464,11 +1476,24 @@
               <div id="whatsapp-fields">
                 <label for="country-code">
                   <span data-i18n="countryCodeLabel">국가번호</span>
-                  <input id="country-code" name="countryCode" type="text" value="+65" data-i18n-placeholder="countryCodePlaceholder" placeholder="+65" />
+                  <select id="country-code" name="countryCode" aria-label="Country code">
+                    <option value="+65">+65 Singapore</option>
+                    <option value="+82">+82 Korea</option>
+                    <option value="+86">+86 China</option>
+                    <option value="+1">+1 USA/Canada</option>
+                    <option value="+44">+44 UK</option>
+                    <option value="+61">+61 Australia</option>
+                    <option value="+81">+81 Japan</option>
+                    <option value="+60">+60 Malaysia</option>
+                    <option value="+62">+62 Indonesia</option>
+                    <option value="+63">+63 Philippines</option>
+                    <option value="+66">+66 Thailand</option>
+                    <option value="+84">+84 Vietnam</option>
+                  </select>
                 </label>
                 <label for="phone-number">
                   <span data-i18n="phoneNumberLabel">핸드폰 번호</span>
-                  <input id="phone-number" name="phoneNumber" type="text" data-i18n-placeholder="phoneNumberPlaceholder" placeholder="핸드폰 번호" />
+                  <input id="phone-number" name="phoneNumber" type="tel" inputmode="numeric" autocomplete="tel-national" pattern="[0-9\-\s]{6,20}" data-i18n-placeholder="phoneNumberPlaceholder" placeholder="핸드폰 번호" />
                 </label>
               </div>
             </div>

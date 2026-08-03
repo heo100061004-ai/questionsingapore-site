@@ -47,7 +47,8 @@ const SPONSOR_FALLBACK_DATA = {
 const translations = {
   ko: {
     heroEyebrow: 'Singapore Advisory Studio',
-    heroTitle: '신뢰할 수 있는 싱가포르 정보와 전문가 네트워크',
+    topHeaderTitle: '싱가포르 정보와 전문가 네트워크 안내',
+    heroTitle: '신뢰할수 있는 싱가포르<br />정보와 전문가 네트워크',
     heroText: '취업 · 부동산 · 리로케이션까지 현지 라이선스를 보유한 전문가에게 안전하게 문의하세요.',
     heroPoint1: '✔ 모든 상담은 비공개로 진행됩니다.',
     heroPoint2: '✔ 답변은 등록하신 연락처로 개별 안내드립니다.',
@@ -154,7 +155,8 @@ const translations = {
   },
   en: {
     heroEyebrow: 'Singapore Advisory Studio',
-    heroTitle: 'A trusted guide with Singapore local experts',
+    topHeaderTitle: 'Singapore Information and Expert Network Guide',
+    heroTitle: 'A trusted Singapore guide<br />with expert networks',
     heroText: 'From employment to real estate and relocation, ask safely to licensed local experts.',
     heroPoint1: '✔ All consultations are handled privately.',
     heroPoint2: '✔ Answers are delivered individually to your registered contact.',
@@ -258,7 +260,8 @@ const translations = {
   },
   zh: {
     heroEyebrow: '新加坡咨询工作室',
-    heroTitle: '由新加坡本地专家陪伴的可信信息指南',
+    topHeaderTitle: '新加坡信息与专家网络指南',
+    heroTitle: '值得信赖的新加坡信息<br />与专家网络',
     heroText: '涵盖就业、房产与搬迁，安全地向持牌本地专家咨询。',
     heroPoint1: '✔ 所有咨询均为非公开私密进行。',
     heroPoint2: '✔ 回复将发送至您登记的联系方式。',
@@ -751,6 +754,13 @@ function updateLanguage(lang) {
     }
   });
 
+  document.querySelectorAll('[data-i18n-html]').forEach((element) => {
+    const key = element.dataset.i18nHtml;
+    if (key && translation[key]) {
+      element.innerHTML = translation[key];
+    }
+  });
+
   document.querySelectorAll('[data-i18n-placeholder]').forEach((element) => {
     const key = element.dataset.i18nPlaceholder;
     if (key && translation[key]) {
@@ -764,11 +774,21 @@ function updateContactFields() {
     return;
   }
 
-  contactEmailGroup.hidden = false;
-  whatsappFields.hidden = false;
-  contactValueInput.required = false;
-  phoneNumberInput.required = false;
-  countryCodeInput.required = false;
+  const contactType = (contactTypeSelect.value || 'email').toLowerCase();
+  const isWhatsApp = contactType === 'whatsapp';
+
+  contactEmailGroup.hidden = isWhatsApp;
+  whatsappFields.hidden = !isWhatsApp;
+
+  contactValueInput.required = !isWhatsApp;
+  phoneNumberInput.required = isWhatsApp;
+  countryCodeInput.required = isWhatsApp;
+
+  if (!isWhatsApp) {
+    phoneNumberInput.value = '';
+  } else if (!countryCodeInput.value) {
+    countryCodeInput.value = '+65';
+  }
 }
 
 function formatPhoneByCountry(countryCode, digitsOnly) {
