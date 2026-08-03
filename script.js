@@ -664,8 +664,8 @@ function updateContactFields() {
   contactEmailGroup.hidden = isWhatsapp;
   whatsappFields.hidden = !isWhatsapp;
   contactValueInput.required = !isWhatsapp;
-  countryCodeInput.required = isWhatsapp;
   phoneNumberInput.required = isWhatsapp;
+  countryCodeInput.required = false;
 }
 
 function formatPhoneByCountry(countryCode, digitsOnly) {
@@ -1132,9 +1132,11 @@ if (form) {
     let contactValue = emailContact;
 
     if (contactType === 'whatsapp') {
-      const normalizedCode = countryCode.startsWith('+') ? countryCode : `+${countryCode.replace(/[^0-9]/g, '')}`;
+      const normalizedCode = countryCode
+        ? (countryCode.startsWith('+') ? countryCode : `+${countryCode.replace(/[^0-9]/g, '')}`)
+        : '+65';
       const normalizedNumber = phoneNumber.replace(/[^0-9]/g, '');
-      contactValue = `${normalizedCode}${normalizedNumber}`;
+      contactValue = normalizedNumber ? `${normalizedCode}${normalizedNumber}` : '';
     }
 
     const translation = translations[language] || translations.ko;
@@ -1173,6 +1175,7 @@ if (form) {
     renderRecentQuestions();
     form.reset();
     updateContactFields();
+    message.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 }
 
