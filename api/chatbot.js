@@ -289,7 +289,7 @@ function normalizeConversationStage(value) {
   if (!Number.isFinite(stage) || stage <= 0) {
     return 0;
   }
-  return Math.min(3, Math.max(1, Math.floor(stage)));
+  return Math.min(5, Math.max(1, Math.floor(stage)));
 }
 
 function getDefaultReferenceLinks(domain) {
@@ -566,8 +566,8 @@ module.exports = async function handler(req, res) {
       ok: true,
       source: 'conversation-guidance',
       stage,
-      maxChars: stage === 1 ? 300 : stage === 2 ? 360 : 430,
-      answer: stage >= 3
+      maxChars: stage === 1 ? 260 : stage === 2 ? 320 : stage === 3 ? 360 : stage === 4 ? 400 : 430,
+      answer: stage >= 5
         ? `${guidedAnswer}${formatRefsForAnswer(references, language, responsePolicy, effectiveDomain || preferredDomain)}`
         : guidedAnswer
     });

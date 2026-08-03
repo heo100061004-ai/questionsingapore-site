@@ -63,7 +63,7 @@ function buildMinimalConsultationAnswer(question = '', language = 'ko', contextI
 }
 
 function buildGuidedConversationAnswer({ question = '', language = 'ko', stage = 1, contextItems = [], references = [] } = {}) {
-  const safeStage = Number(stage) || 1;
+  const safeStage = Math.min(5, Math.max(1, Number(stage) || 1));
   const safeQuestion = String(question || '').trim();
   const safeContextItems = Array.isArray(contextItems) ? contextItems : [];
   const contextTitle = safeContextItems[0] && safeContextItems[0].title ? String(safeContextItems[0].title) : '';
@@ -98,9 +98,19 @@ function buildGuidedConversationAnswer({ question = '', language = 'ko', stage =
       ].join('\n');
     }
 
+    if (safeStage === 3 || safeStage === 4) {
+      return [
+        '好的，我继续帮您往下收窄。',
+        safeQuestion ? `基于您刚才的情况：${safeQuestion}` : '我继续基于您刚才的情况整理。',
+        '- 还有哪些必须先确认的条件？',
+        '- 哪一项如果不确定，最容易影响决策？',
+        '您再补充一点，我就能把顺序排得更清楚。'
+      ].join('\n');
+    }
+
     return [
-      '现在我可以帮您先收一个简短结论。',
-      '如果要继续往下细看，我建议直接交给管理员咨询会更稳妥。',
+      '我先帮您收一个简短结论。',
+      '如果接下来要做更细的判断，交给管理员会更稳妥。',
       refLine || '如果需要，我也可以继续帮您整理要点。'
     ].filter(Boolean).join('\n');
   }
@@ -123,6 +133,16 @@ function buildGuidedConversationAnswer({ question = '', language = 'ko', stage =
         '- Any deadline or budget limit?',
         '- Which part is most urgent right now?',
         'Reply with those two points and I will organize the next step.'
+      ].join('\n');
+    }
+
+    if (safeStage === 3 || safeStage === 4) {
+      return [
+        'Great, let me narrow this down further.',
+        safeQuestion ? `Based on what you just said: ${safeQuestion}` : 'I will continue from your last point.',
+        '- What other condition should we confirm first?',
+        '- Which uncertainty would affect the decision most?',
+        'Add one more detail and I can organize the next step more clearly.'
       ].join('\n');
     }
 
@@ -153,9 +173,19 @@ function buildGuidedConversationAnswer({ question = '', language = 'ko', stage =
     ].join('\n');
   }
 
+  if (safeStage === 3 || safeStage === 4) {
+    return [
+      '좋아요. 여기서 한 번 더 좁혀볼게요.',
+      safeQuestion ? `방금 말씀하신 내용 기준으로 보면: ${safeQuestion}` : '방금 답변을 기준으로 이어서 정리해볼게요.',
+      '- 지금도 확인이 필요한 조건이 또 있나요?',
+      '- 어떤 부분이 확실하지 않으면 판단이 가장 흔들리나요?',
+      '조금만 더 알려주시면 우선순위를 더 정확하게 잡아드릴 수 있어요.'
+    ].join('\n');
+  }
+
   return [
     '지금까지 내용을 보면 방향은 잡혔습니다.',
-    '더 자세한 판단이 필요하면 관리자 상담으로 넘기는 게 가장 정확합니다.',
+    '더 자세한 판단이 필요하면 그때 상담폼으로 이어가면 가장 정확합니다.',
     refLine || '원하시면 제가 핵심만 다시 한 번 짧게 정리해드릴게요.'
   ].filter(Boolean).join('\n');
 }

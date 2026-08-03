@@ -796,7 +796,7 @@ function getChatFlowState() {
     const parsed = JSON.parse(raw);
     const mode = parsed && parsed.mode === 'guided' ? 'guided' : 'idle';
     const stage = Number(parsed && parsed.stage) || 0;
-    return { mode, stage: Math.min(3, Math.max(0, stage)) };
+    return { mode, stage: Math.min(5, Math.max(0, stage)) };
   } catch (error) {
     return { mode: 'idle', stage: 0 };
   }
@@ -820,13 +820,13 @@ function isGuidedConversationCandidate(question = '') {
     return false;
   }
 
-  if (value.length <= 18) {
+  if (value.length <= 28) {
     return true;
   }
 
   const broadPatterns = [
     /어떻게\s*(시작|준비|해야|생각)/,
-    /방향|추천|고민|조언|상담|비교|도와줘|도와 줘|help me decide|where should|what should i consider|should i/,
+    /방향|추천|고민|조언|상담|비교|도와줘|도와 줘|help me decide|where should|what should i consider|should i|어떤\s*게|무엇부터|먼저|계속|더 자세히/,
   ];
 
   return broadPatterns.some((pattern) => pattern.test(value));
@@ -1026,8 +1026,8 @@ function initChatbot() {
     const t = translations[lang] || translations.ko;
     const currentFlow = getChatFlowState();
     const guidedCandidate = currentFlow.mode === 'guided' || isGuidedConversationCandidate(question);
-    const guidedStage = currentFlow.mode === 'guided' ? Math.min(3, Math.max(1, currentFlow.stage || 1)) : 1;
-    const nextFlowStage = guidedStage >= 3 ? 0 : guidedStage + 1;
+    const guidedStage = currentFlow.mode === 'guided' ? Math.min(5, Math.max(1, currentFlow.stage || 1)) : 1;
+    const nextFlowStage = guidedStage >= 5 ? 0 : guidedStage + 1;
 
     if (!question) {
       return;
@@ -1073,7 +1073,7 @@ function initChatbot() {
       const sourceKey = data && data.source ? String(data.source) : '';
       appendChatMessage('bot', normalizeDisplayedChatbotAnswer(data.answer || t.chatError, lang), sourceKey);
 
-      if (guidedCandidate && guidedStage >= 3) {
+      if (guidedCandidate && guidedStage >= 5) {
         resetChatFlowState();
         renderChatbotStepState(3);
       }
