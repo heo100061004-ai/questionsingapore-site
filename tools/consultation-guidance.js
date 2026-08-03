@@ -27,9 +27,11 @@ function buildMinimalConsultationAnswer(question = '', language = 'ko', contextI
       ? `您的问题与“${contextTitle}”相关。先补充这两点：`
       : '先补充这两点：';
     return [
+      '我先帮您整理一个可执行的方向。',
       body,
       '- 您当前状态（签证/居住/预算/时间）',
       '- 您最优先要解决的问题'
+      , '如果您愿意，我可以继续帮您把下一步整理得更具体，再用咨询表单补充细节也可以。'
     ].join('\n');
   }
 
@@ -38,9 +40,11 @@ function buildMinimalConsultationAnswer(question = '', language = 'ko', contextI
       ? `Your question is related to “${contextTitle}”. Share these two points first:`
       : 'Share these two points first:';
     return [
+      'Let me map the next step in a practical way.',
       body,
       '- Your current status (visa, housing, budget, timeline)',
       '- The top issue you want to solve first'
+      , 'If you want, I can continue narrowing this down and then move it into the consultation form with more details.'
     ].join('\n');
   }
 
@@ -49,10 +53,12 @@ function buildMinimalConsultationAnswer(question = '', language = 'ko', contextI
     : '아래 2가지만 알려주세요.';
 
   return [
+    '우선 제가 바로 볼 수 있는 방향부터 정리해드릴게요.',
     body,
     '- 현재 상황(비자/거주/예산/일정)',
     '- 가장 먼저 해결하고 싶은 1가지',
-    safeQuestion ? `현재 질문: ${safeQuestion}` : '질문을 남겨주시면 바로 방향을 잡아드립니다.'
+    safeQuestion ? `현재 질문: ${safeQuestion}` : '질문을 남겨주시면 바로 방향을 잡아드립니다.',
+    '원하시면 추가상담 폼으로 이어서 세부 검토를 받을 수 있어요.'
   ].join('\n');
 }
 

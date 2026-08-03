@@ -359,6 +359,7 @@ function buildContextPrompt(question, language, contextItems = [], policy) {
     'Use only the provided context. If context is insufficient, say what is missing and suggest inquiry form.',
     'Provide general informational guidance only. Avoid legal, tax, or immigration determinations.',
     'If the question is high risk, explicitly recommend contacting a qualified professional.',
+    'Write like a helpful consultant having a short natural conversation: acknowledge the situation, give the practical baseline, mention 1-2 next checks, and gently suggest the inquiry form for follow-up.',
     'Keep answer concise and practical, 4-8 sentences, with actionable checklist style.',
     styleInstruction,
     'Rewrite in your own words. Do not copy source text verbatim.',
@@ -412,7 +413,12 @@ async function callOpenAI(question, language, contextItems) {
     return null;
   }
 
-  const data = await response.json();
+  let data;
+  try {
+    data = await response.json();
+  } catch (error) {
+    return null;
+  }
   const content = data && data.choices && data.choices[0] && data.choices[0].message
     ? data.choices[0].message.content
     : '';
@@ -467,6 +473,9 @@ module.exports = async function handler(req, res) {
   const question = (body.question || '').toString().trim();
   const language = LANGUAGE_MAP[(body.language || '').toString()] || 'ko';
   const preferredDomain = normalizeCategory(body.category || '');
+  const safePolicy = getResponsePolicy(preferredDomain);
+
+  try {
 
   try {
     await maybeAutoIngestRawDocs({
@@ -630,4 +639,13 @@ module.exports = async function handler(req, res) {
     source: 'fallback',
     answer: `${buildMinimalConsultationAnswer(question, language, [])}${formatRefsForAnswer([], language, responsePolicy, effectiveDomain || preferredDomain)}`
   });
+  } catch (error) {
+    const safeQuestion = question || '';
+    const safeAnswer = `${buildMinimalConsultationAnswer(safeQuestion, language, [])}${formatRefsForAnswer([], language, safePolicy, preferredDomain)}`;
+    res.status(200).json({
+      ok: true,
+      source: 'safe-fallback',
+      answer: safeAnswer
+    });
+  }
 };
