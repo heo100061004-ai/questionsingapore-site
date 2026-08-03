@@ -1,5 +1,6 @@
 const STORAGE_KEY = 'question-singapore-questions';
 const EXPERT_STORAGE_KEY = 'question-singapore-experts';
+const SPONSOR_STORAGE_KEY = 'question-singapore-sponsors';
 
 const DEFAULT_QUESTIONS = [
   {
@@ -57,6 +58,19 @@ const DEFAULT_EXPERTS = [
     createdAt: '2026-07-10T09:10:00.000Z'
   }
 ];
+
+const DEFAULT_SPONSORS = {
+  meta: {
+    updatedAt: '2026-08-03T00:00:00.000Z',
+    bannerGuideline: {
+      recommendedDesktop: '1200x320',
+      recommendedMobile: '720x240',
+      maxFileSizeMb: 2,
+      formats: ['jpg', 'png', 'webp']
+    }
+  },
+  categories: []
+};
 
 function getStorage() {
   if (typeof window !== 'undefined' && window.localStorage) {
@@ -212,11 +226,52 @@ function removeExpert(id, storage = getStorage()) {
   return filtered.length !== experts.length;
 }
 
+function getSponsors(storage = getStorage()) {
+  if (storage) {
+    const raw = storage.getItem(SPONSOR_STORAGE_KEY);
+
+    if (!raw) {
+      saveSponsors(DEFAULT_SPONSORS, storage);
+      return JSON.parse(JSON.stringify(DEFAULT_SPONSORS));
+    }
+
+    try {
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === 'object' ? parsed : JSON.parse(JSON.stringify(DEFAULT_SPONSORS));
+    } catch (error) {
+      return JSON.parse(JSON.stringify(DEFAULT_SPONSORS));
+    }
+  }
+
+  if (typeof window !== 'undefined' && window.__questionSingaporeSponsors) {
+    return JSON.parse(JSON.stringify(window.__questionSingaporeSponsors));
+  }
+
+  return JSON.parse(JSON.stringify(DEFAULT_SPONSORS));
+}
+
+function saveSponsors(sponsors, storage = getStorage()) {
+  const normalized = sponsors && typeof sponsors === 'object' ? sponsors : DEFAULT_SPONSORS;
+
+  if (storage) {
+    storage.setItem(SPONSOR_STORAGE_KEY, JSON.stringify(normalized));
+    return normalized;
+  }
+
+  if (typeof window !== 'undefined') {
+    window.__questionSingaporeSponsors = normalized;
+  }
+
+  return normalized;
+}
+
 const api = {
   STORAGE_KEY,
   EXPERT_STORAGE_KEY,
+  SPONSOR_STORAGE_KEY,
   DEFAULT_QUESTIONS,
   DEFAULT_EXPERTS,
+  DEFAULT_SPONSORS,
   getQuestions,
   saveQuestions,
   addQuestion,
@@ -225,7 +280,9 @@ const api = {
   getExperts,
   saveExperts,
   addExpert,
-  removeExpert
+  removeExpert,
+  getSponsors,
+  saveSponsors
 };
 
 if (typeof module !== 'undefined' && module.exports) {

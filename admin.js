@@ -43,6 +43,14 @@ const videoSyncGuide = document.getElementById('video-sync-guide');
 const videoSyncMessage = document.getElementById('video-sync-message');
 const videoSyncCommand = document.getElementById('video-sync-command');
 const videoSyncCopyButton = document.getElementById('video-sync-copy');
+const sponsorAdminList = document.getElementById('sponsor-admin-list');
+const sponsorSyncGuide = document.getElementById('sponsor-sync-guide');
+const sponsorSyncMessage = document.getElementById('sponsor-sync-message');
+const sponsorSyncCommand = document.getElementById('sponsor-sync-command');
+const sponsorSyncCopyButton = document.getElementById('sponsor-sync-copy');
+const sponsorSizeDesktop = document.getElementById('sponsor-size-desktop');
+const sponsorSizeMobile = document.getElementById('sponsor-size-mobile');
+const sponsorSizeLimit = document.getElementById('sponsor-size-limit');
 const docSuggestRefreshButton = document.getElementById('doc-suggest-refresh');
 const docSuggestCopyButton = document.getElementById('doc-suggest-copy');
 const docSuggestRunButton = document.getElementById('doc-suggest-run');
@@ -83,6 +91,7 @@ const HOME_MEDIA_DB_NAME = 'question-singapore-media-db';
 const HOME_MEDIA_DB_VERSION = 1;
 const HOME_MEDIA_STORE_NAME = 'media';
 const HOME_TOP_VIDEO_BLOB_KEY = 'home-top-video';
+const SPONSOR_CONFIG_PATH = '/config/sponsors.json';
 
 let currentView = 'recent';
 let searchTerm = '';
@@ -219,7 +228,8 @@ function showSyncGuide(kind, message, command) {
 function initSyncGuides() {
   [
     [bannerSyncGuide, bannerSyncMessage, bannerSyncCommand],
-    [videoSyncGuide, videoSyncMessage, videoSyncCommand]
+    [videoSyncGuide, videoSyncMessage, videoSyncCommand],
+    [sponsorSyncGuide, sponsorSyncMessage, sponsorSyncCommand]
   ].forEach(([guide, text, area]) => {
     if (text) {
       text.textContent = '';
@@ -231,6 +241,143 @@ function initSyncGuides() {
       guide.hidden = true;
     }
   });
+}
+
+function buildJsonSyncCommand(configPath, payload, commitMessage) {
+  return [
+    `cat > ${configPath} <<'EOF'`,
+    JSON.stringify(payload, null, 2),
+    'EOF',
+    '',
+    `git add ${configPath} && git commit -m "${commitMessage}" && git push`
+  ].join('\n');
+}
+
+function showSponsorSyncGuide(message, payload) {
+  if (!sponsorSyncGuide || !sponsorSyncMessage || !sponsorSyncCommand) {
+    return;
+  }
+
+  sponsorSyncMessage.textContent = message;
+  sponsorSyncCommand.value = buildJsonSyncCommand('config/sponsors.json', payload, 'Update sponsor slots');
+  sponsorSyncGuide.hidden = false;
+}
+
+function parseSponsorFormData(container, item) {
+  return {
+    ...item,
+    title: container.querySelector('[data-field="title"]')?.value.trim() || '',
+    description: container.querySelector('[data-field="description"]')?.value.trim() || '',
+    imageUrl: container.querySelector('[data-field="imageUrl"]')?.value.trim() || '',
+    linkUrl: container.querySelector('[data-field="linkUrl"]')?.value.trim() || '#ask',
+    badge: container.querySelector('[data-field="badge"]')?.value.trim() || '추천 서비스',
+    startDate: container.querySelector('[data-field="startDate"]')?.value || '',
+    endDate: container.querySelector('[data-field="endDate"]')?.value || '',
+    active: Boolean(container.querySelector('[data-field="active"]')?.checked)
+  };
+}
+
+function renderSponsorAdmin() {
+  if (!sponsorAdminList || !store || typeof store.getSponsors !== 'function') {
+    return;
+  }
+
+  const payload = store.getSponsors();
+  const categories = Array.isArray(payload.categories) ? payload.categories : [];
+  const guideline = payload.meta && payload.meta.bannerGuideline ? payload.meta.bannerGuideline : null;
+
+  if (guideline) {
+    if (sponsorSizeDesktop) sponsorSizeDesktop.textContent = guideline.recommendedDesktop || '-';
+    if (sponsorSizeMobile) sponsorSizeMobile.textContent = guideline.recommendedMobile || '-';
+    if (sponsorSizeLimit) sponsorSizeLimit.textContent = `${guideline.maxFileSizeMb || '-'}MB`;
+  }
+
+  sponsorAdminList.innerHTML = categories.map((category) => {
+    const cards = (Array.isArray(category.items) ? category.items : []).map((item) => `
+      <article class="sponsor-admin-card" data-category-id="${escapeHtml(category.id || '')}" data-item-id="${escapeHtml(item.id || '')}">
+        <div class="sponsor-admin-card__preview"><img src="${escapeHtml(item.imageUrl || '')}" alt="${escapeHtml(item.title || '')}" /></div>
+        <div class="sponsor-admin-card__fields">
+          <label><span>제목</span><input data-field="title" value="${escapeHtml(item.title || '')}" /></label>
+          <label><span>설명</span><textarea data-field="description">${escapeHtml(item.description || '')}</textarea></label>
+          <label><span>이미지 URL</span><input data-field="imageUrl" value="${escapeHtml(item.imageUrl || '')}" /></label>
+          <label><span>링크 URL</span><input data-field="linkUrl" value="${escapeHtml(item.linkUrl || '')}" /></label>
+          <label><span>배지 문구</span><input data-field="badge" value="${escapeHtml(item.badge || '')}" /></label>
+          <div class="sponsor-admin-card__meta">
+            <label><span>시작일</span><input data-field="startDate" type="date" value="${escapeHtml(item.startDate || '')}" /></label>
+            <label><span>종료일</span><input data-field="endDate" type="date" value="${escapeHtml(item.endDate || '')}" /></label>
+          </div>
+          <label><span><input data-field="active" type="checkbox" ${item.active === false ? '' : 'checked'} /> 노출중</span></label>
+        </div>
+        <div class="sponsor-admin-card__actions">
+          <button class="button button--secondary" type="button" data-action="save-sponsor">슬롯 저장</button>
+        </div>
+      </article>
+    `).join('');
+
+    return `
+      <section class="sponsor-admin-category" data-category-id="${escapeHtml(category.id || '')}">
+        <div class="sponsor-admin-category__head">
+          <h3>${escapeHtml(category.label || '')}</h3>
+          <span class="chip">${Array.isArray(category.items) ? category.items.length : 0}개 슬롯</span>
+        </div>
+        <div class="sponsor-admin-grid">${cards}</div>
+      </section>
+    `;
+  }).join('');
+}
+
+function saveSponsorSlot(categoryId, itemId, card) {
+  if (!store || typeof store.getSponsors !== 'function' || typeof store.saveSponsors !== 'function') {
+    return;
+  }
+
+  const payload = store.getSponsors();
+  const categories = Array.isArray(payload.categories) ? payload.categories : [];
+  const nextCategories = categories.map((category) => {
+    if (category.id !== categoryId) {
+      return category;
+    }
+    return {
+      ...category,
+      items: (Array.isArray(category.items) ? category.items : []).map((item) => {
+        if (item.id !== itemId) {
+          return item;
+        }
+        return parseSponsorFormData(card, item);
+      })
+    };
+  });
+
+  const nextPayload = {
+    ...payload,
+    meta: {
+      ...(payload.meta || {}),
+      updatedAt: new Date().toISOString()
+    },
+    categories: nextCategories
+  };
+
+  store.saveSponsors(nextPayload);
+  showSponsorSyncGuide('로컬 추천 서비스 배너가 저장되었습니다. 모든 기기에 반영하려면 아래 명령을 실행하세요.', nextPayload);
+  renderSponsorAdmin();
+}
+
+async function initSponsorsAdmin() {
+  if (!store || typeof store.saveSponsors !== 'function') {
+    return;
+  }
+
+  try {
+    const response = await fetch(SPONSOR_CONFIG_PATH);
+    if (response.ok) {
+      const data = await response.json();
+      store.saveSponsors(data);
+    }
+  } catch (error) {
+    console.warn('Config 파일에서 스폰서 설정을 불러오지 못했습니다:', error);
+  }
+
+  renderSponsorAdmin();
 }
 
 async function copyCommandToClipboard(command, button) {
@@ -1529,6 +1676,13 @@ if (videoSyncCopyButton) {
   });
 }
 
+if (sponsorSyncCopyButton) {
+  sponsorSyncCopyButton.addEventListener('click', () => {
+    const command = sponsorSyncCommand ? sponsorSyncCommand.value : '';
+    copyCommandToClipboard(command, sponsorSyncCopyButton);
+  });
+}
+
 if (docSuggestRefreshButton) {
   docSuggestRefreshButton.addEventListener('click', () => {
     fetchDocSuggestions();
@@ -1590,6 +1744,20 @@ if (expertList) {
   });
 }
 
+if (sponsorAdminList) {
+  sponsorAdminList.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-action="save-sponsor"]');
+    if (!trigger) {
+      return;
+    }
+    const card = trigger.closest('[data-item-id]');
+    if (!card) {
+      return;
+    }
+    saveSponsorSlot(card.getAttribute('data-category-id') || '', card.getAttribute('data-item-id') || '', card);
+  });
+}
+
 if (rawDocUploadForm) {
   rawDocUploadForm.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -1643,4 +1811,5 @@ renderQuestions();
 renderDashboard();
 initAdminBannerImage();
 initHomeVideoSettings();
+initSponsorsAdmin();
 renderExperts();

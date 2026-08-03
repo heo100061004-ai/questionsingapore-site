@@ -26,13 +26,22 @@ const socialWhatsappQr = document.getElementById('social-whatsapp-qr');
 const socialKakaoQr = document.getElementById('social-kakao-qr');
 const store = window.QuestionSingaporeStore;
 const HOME_TOP_VIDEO_STORAGE_KEY = 'question-singapore-home-top-video-url';
-const ADMIN_BANNER_STORAGE_KEY = 'question-singapore-admin-banner-url';
 const CHAT_FLOW_STATE_KEY = 'question-singapore-chat-flow-state';
 const ADMIN_DEFAULT_BANNER_URL = 'hero-bg.svg';
 const SOCIAL_LINKS = {
   linkedin: 'https://www.linkedin.com/company/question-singapore/',
   whatsapp: 'https://chat.whatsapp.com/DTdusHVhuP07h7RLjlR6Ot?s=cl&p=i&ilr=4',
   kakao: 'https://open.kakao.com/o/pbjE82ui'
+};
+const SPONSOR_FALLBACK_DATA = {
+  meta: {
+    bannerGuideline: {
+      recommendedDesktop: '1200x320',
+      recommendedMobile: '720x240',
+      maxFileSizeMb: 2
+    }
+  },
+  categories: []
 };
 
 const translations = {
@@ -571,35 +580,6 @@ function initHomeVideo() {
     });
 }
 
-function initSharedTopBanner() {
-  const topBanner = document.querySelector('.top-banner');
-  if (!topBanner) {
-    return;
-  }
-
-  function applyBanner(url) {
-    const imageUrl = (url || ADMIN_DEFAULT_BANNER_URL).trim() || ADMIN_DEFAULT_BANNER_URL;
-    topBanner.style.backgroundImage = `url('${imageUrl}')`;
-  }
-
-  fetch('/config/banner.json')
-    .then((res) => (res.ok ? res.json() : Promise.reject(new Error('config not found'))))
-    .then((data) => {
-      const sharedUrl = (data && data.url ? String(data.url) : '').trim();
-      if (sharedUrl) {
-        window.localStorage.setItem(ADMIN_BANNER_STORAGE_KEY, sharedUrl);
-        applyBanner(sharedUrl);
-        return;
-      }
-      const cached = window.localStorage.getItem(ADMIN_BANNER_STORAGE_KEY) || '';
-      applyBanner(cached || ADMIN_DEFAULT_BANNER_URL);
-    })
-    .catch(() => {
-      const cached = window.localStorage.getItem(ADMIN_BANNER_STORAGE_KEY) || '';
-      applyBanner(cached || ADMIN_DEFAULT_BANNER_URL);
-    });
-}
-
 function buildQrImageUrl(targetUrl) {
   const encoded = encodeURIComponent(targetUrl || '');
   return `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=${encoded}`;
@@ -617,6 +597,112 @@ function initFooterSocialLinks() {
   applySocialCard(socialLinkedinCard, socialLinkedinQr, SOCIAL_LINKS.linkedin);
   applySocialCard(socialWhatsappCard, socialWhatsappQr, SOCIAL_LINKS.whatsapp);
   applySocialCard(socialKakaoCard, socialKakaoQr, SOCIAL_LINKS.kakao);
+}
+
+function escapeHtmlText(value) {
+  return (value || '')
+    .toString()
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function isSponsorActive(item) {
+  if (!item || item.active === false) {
+    return false;
+  }
+
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  const start = item.startDate ? new Date(item.startDate) : null;
+  const end = item.endDate ? new Date(item.endDate) : null;
+
+  if (start && !Number.isNaN(start.getTime()) && start > now) {
+    return false;
+  }
+
+  if (end && !Number.isNaN(end.getTime())) {
+    end.setHours(23, 59, 59, 999);
+    if (end < now) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function renderSponsorSlots(data) {
+  const container = document.getElementById('sponsor-slots');
+  const note = document.getElementById('sponsor-guideline-text');
+  if (!container) {
+    return;
+  }
+
+  const payload = data && typeof data === 'object' ? data : SPONSOR_FALLBACK_DATA;
+  const categories = Array.isArray(payload.categories) ? payload.categories : [];
+  const guideline = payload.meta && payload.meta.bannerGuideline ? payload.meta.bannerGuideline : null;
+
+  if (note && guideline) {
+    note.textContent = `권장 배너: 데스크톱 ${guideline.recommendedDesktop}, 모바일 ${guideline.recommendedMobile}, 최대 ${guideline.maxFileSizeMb}MB`;
+  }
+
+  const visibleCategories = categories
+    .map((category) => ({
+      ...category,
+      items: Array.isArray(category.items) ? category.items.filter(isSponsorActive).slice(0, 3) : []
+    }))
+    .filter((category) => category.items.length > 0);
+
+  if (!visibleCategories.length) {
+    container.innerHTML = '<article class="sponsor-column sponsor-column--empty"><p>현재 노출중인 추천 서비스가 없습니다.</p></article>';
+    return;
+  }
+
+  container.innerHTML = visibleCategories.map((category) => {
+    const cards = category.items.map((item) => `
+      <article class="sponsor-card">
+        <div class="sponsor-card__image">
+          <img src="${escapeHtmlText(item.imageUrl || '')}" alt="${escapeHtmlText(item.title || '')}" loading="lazy" />
+        </div>
+        <div class="sponsor-card__body">
+          <span class="sponsor-card__badge">${escapeHtmlText(item.badge || '추천 서비스')}</span>
+          <h3 class="sponsor-card__title">${escapeHtmlText(item.title || '')}</h3>
+          <p class="sponsor-card__desc">${escapeHtmlText(item.description || '')}</p>
+          <div class="sponsor-card__meta">
+            <span>${escapeHtmlText(item.startDate || '')} ~ ${escapeHtmlText(item.endDate || '')}</span>
+            <a class="sponsor-card__link" href="${escapeHtmlText(item.linkUrl || '#ask')}">자세히 보기</a>
+          </div>
+        </div>
+      </article>
+    `).join('');
+
+    return `
+      <div class="sponsor-column">
+        <div class="sponsor-column__head">
+          <h3>${escapeHtmlText(category.label || '')}</h3>
+          <span class="chip">${category.items.length}개</span>
+        </div>
+        <div class="sponsor-stack">${cards}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function initSponsors() {
+  fetch('/config/sponsors.json')
+    .then((res) => (res.ok ? res.json() : Promise.reject(new Error('sponsors not found'))))
+    .then((data) => {
+      if (store && typeof store.saveSponsors === 'function') {
+        store.saveSponsors(data);
+      }
+      renderSponsorSlots(data);
+    })
+    .catch(() => {
+      const cached = store && typeof store.getSponsors === 'function' ? store.getSponsors() : SPONSOR_FALLBACK_DATA;
+      renderSponsorSlots(cached);
+    });
 }
 
 if (homeVideoPlayButton && homeTopVideo) {
@@ -1096,7 +1182,7 @@ if (languageSelect) {
   });
 }
 
-document.querySelectorAll('a[href="#ask"]').forEach((link) => {
+document.querySelectorAll('.chatbot-cta[href="#ask"]').forEach((link) => {
   link.addEventListener('click', (event) => {
     event.preventDefault();
     revealAskSection();
@@ -1190,6 +1276,6 @@ sanitizeCategorySelectors();
 updateLanguage('ko');
 updateContactFields();
 initHomeVideo();
-initSharedTopBanner();
 initChatbot();
 initFooterSocialLinks();
+initSponsors();

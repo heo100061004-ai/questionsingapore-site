@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=20260803-4" />
   </head>
   <body class="admin-page">
     <script>
@@ -30,32 +30,6 @@
     </script>
 
     <header class="hero hero--compact">
-      <div class="admin-banner" id="admin-banner" role="img" aria-label="관리자 배너 이미지">
-        <div class="admin-banner__overlay"></div>
-        <div class="admin-banner__controls panel panel--soft">
-          <p class="admin-banner__title">관리자 배너 설정</p>
-          <label>
-            <span>배너 이미지 URL</span>
-            <input id="admin-banner-url" type="url" placeholder="https://example.com/banner.jpg" />
-          </label>
-          <div class="admin-banner__actions">
-            <button class="button button--secondary" id="admin-banner-apply" type="button">URL 적용</button>
-            <label class="button button--secondary admin-banner__upload">
-              <span>파일 업로드</span>
-              <input id="admin-banner-file" type="file" accept="image/*" />
-            </label>
-            <button class="button button--secondary" id="admin-banner-reset" type="button">기본 배너</button>
-          </div>
-          <p class="admin-banner__meta">현재 배너 원본 크기: <strong id="admin-banner-size">확인 중...</strong></p>
-          <p class="admin-banner__meta">표시 영역 기준: 데스크톱 최대 1180x190px, 태블릿 150px 높이, 모바일 136px 높이</p>
-          <div id="banner-sync-guide" class="sync-guide" hidden>
-            <p id="banner-sync-message" class="sync-guide__message"></p>
-            <textarea id="banner-sync-command" class="sync-guide__command" readonly></textarea>
-            <button id="banner-sync-copy" class="button button--secondary" type="button">명령어 복사</button>
-          </div>
-        </div>
-      </div>
-
       <div class="hero__content">
         <div class="admin-hero-copy">
           <p class="eyebrow">Admin Panel</p>
@@ -100,6 +74,25 @@
               <button id="video-sync-copy" class="button button--secondary" type="button">명령어 복사</button>
             </div>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel panel--soft sponsor-admin-panel">
+        <p class="eyebrow">Recommended Services</p>
+        <h2>카테고리별 추천 배너 슬롯 관리</h2>
+        <p class="home-media-settings__caption">고용, 부동산, 리로케이션별 배너를 관리합니다. 권장 배너 사이즈와 노출 기간을 함께 설정해 라이브에서 즉시 확인할 수 있습니다.</p>
+        <div class="sponsor-admin-guideline">
+          <p><strong>권장 데스크톱:</strong> <span id="sponsor-size-desktop">1200x320</span></p>
+          <p><strong>권장 모바일:</strong> <span id="sponsor-size-mobile">720x240</span></p>
+          <p><strong>최대 용량:</strong> <span id="sponsor-size-limit">2MB</span></p>
+        </div>
+        <div id="sponsor-admin-list" class="sponsor-admin-list"></div>
+        <div id="sponsor-sync-guide" class="sync-guide" hidden>
+          <p id="sponsor-sync-message" class="sync-guide__message"></p>
+          <textarea id="sponsor-sync-command" class="sync-guide__command" readonly></textarea>
+          <button id="sponsor-sync-copy" class="button button--secondary" type="button">명령어 복사</button>
         </div>
       </div>
     </section>
@@ -317,7 +310,7 @@
       </section>
     </div>
 
-    <script src="dataStore.js"></script>
-    <script src="admin.js"></script>
+    <script src="dataStore.js?v=20260803-4"></script>
+    <script src="admin.js?v=20260803-4"></script>
   </body>
 </html>
