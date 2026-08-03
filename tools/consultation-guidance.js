@@ -1,6 +1,19 @@
 function isLlmFallbackEnabled(env = process.env) {
+  const apiKey = String(env.OPENAI_API_KEY || '').trim();
+  if (!apiKey) {
+    return false;
+  }
+
   const value = String(env.LLM_FALLBACK_ENABLED || '').trim().toLowerCase();
-  return value === 'true' || value === '1' || value === 'yes' || value === 'on';
+  if (value === 'false' || value === '0' || value === 'no' || value === 'off') {
+    return false;
+  }
+  if (value === 'true' || value === '1' || value === 'yes' || value === 'on') {
+    return true;
+  }
+
+  // Default to enabled when API key exists and no explicit toggle is set.
+  return true;
 }
 
 function buildMinimalConsultationAnswer(question = '', language = 'ko', contextItems = []) {
