@@ -25,6 +25,20 @@ const LANGUAGE_MAP = {
 };
 
 const DOMAINS = ['employment', 'property', 'relocation'];
+const DEFAULT_REFERENCE_LINKS = {
+  employment: [
+    { label: 'Ministry of Manpower', url: 'https://www.mom.gov.sg/passes-and-permits' },
+    { label: 'GoBusiness Singapore', url: 'https://www.gobusiness.gov.sg/' }
+  ],
+  property: [
+    { label: 'Housing & Development Board', url: 'https://www.hdb.gov.sg/' },
+    { label: 'Urban Redevelopment Authority', url: 'https://www.ura.gov.sg/' }
+  ],
+  relocation: [
+    { label: 'Immigration & Checkpoints Authority', url: 'https://www.ica.gov.sg/' },
+    { label: 'Ministry of Manpower', url: 'https://www.mom.gov.sg/' }
+  ]
+};
 const llmBudgetGuard = createLlmBudgetGuard({
   budgetUsd: Number(process.env.LLM_BUDGET_USD || 5),
   statePath: path.join(ROOT_DIR, '.llm-budget-state.json')
@@ -250,8 +264,8 @@ function getResponsePolicy(domain) {
   if (domain === 'relocation') {
     return {
       summaryStyle: 'high-level',
-      showLinks: false,
-      maxRefs: 0
+      showLinks: true,
+      maxRefs: 2
     };
   }
 
@@ -259,28 +273,30 @@ function getResponsePolicy(domain) {
     return {
       summaryStyle: 'concise',
       showLinks: true,
-      maxRefs: 3
+      maxRefs: 2
     };
   }
 
   return {
     summaryStyle: 'balanced',
     showLinks: true,
-    maxRefs: 5
+    maxRefs: 2
   };
 }
 
-function formatRefsForAnswer(refs, language, policy) {
+function getDefaultReferenceLinks(domain) {
+  return Array.isArray(DEFAULT_REFERENCE_LINKS[domain]) ? DEFAULT_REFERENCE_LINKS[domain] : [];
+}
+
+function formatRefsForAnswer(refs, language, policy, domain) {
   const safePolicy = policy || getResponsePolicy(null);
   if (!safePolicy.showLinks) {
     return '';
   }
 
-  if (!Array.isArray(refs) || !refs.length) {
-    return '';
-  }
+  const sourceRefs = Array.isArray(refs) && refs.length ? refs : getDefaultReferenceLinks(domain);
 
-  const limited = refs.slice(0, Math.max(0, Number(safePolicy.maxRefs || 0)));
+  const limited = sourceRefs.slice(0, Math.max(0, Number(safePolicy.maxRefs || 0)));
   if (!limited.length) {
     return '';
   }
@@ -515,7 +531,7 @@ module.exports = async function handler(req, res) {
         ok: true,
         source: 'consultation-guidance',
         score: Number(topContexts[0].score.toFixed(3)),
-        answer: `${minimalAnswer}${formatRefsForAnswer(references, language, responsePolicy)}`
+        answer: `${minimalAnswer}${formatRefsForAnswer(references, language, responsePolicy, effectiveDomain || preferredDomain)}`
       });
       return;
     }
@@ -526,7 +542,7 @@ module.exports = async function handler(req, res) {
         ok: true,
         source: 'budget-blocked',
         score: Number(topContexts[0].score.toFixed(3)),
-        answer: `${minimalAnswer}${formatRefsForAnswer(references, language, responsePolicy)}`
+        answer: `${minimalAnswer}${formatRefsForAnswer(references, language, responsePolicy, effectiveDomain || preferredDomain)}`
       });
       return;
     }
@@ -540,12 +556,12 @@ module.exports = async function handler(req, res) {
         if (answer) {
           return {
             ok: true,
-            answer: `${customizeGeneratedAnswer(answer, language)}${formatRefsForAnswer(references, language, responsePolicy)}`
+            answer: `${customizeGeneratedAnswer(answer, language)}${formatRefsForAnswer(references, language, responsePolicy, effectiveDomain || preferredDomain)}`
           };
         }
         return {
           ok: true,
-          answer: `${composeContextOnlyAnswer(question, topContexts, language)}${formatRefsForAnswer(references, language, responsePolicy)}`
+          answer: `${composeContextOnlyAnswer(question, topContexts, language)}${formatRefsForAnswer(references, language, responsePolicy, effectiveDomain || preferredDomain)}`
         };
       }
     });
@@ -564,7 +580,7 @@ module.exports = async function handler(req, res) {
       ok: true,
       source: 'context-fallback',
       score: Number(topContexts[0].score.toFixed(3)),
-      answer: `${composeContextOnlyAnswer(question, topContexts, language)}${formatRefsForAnswer(references, language, responsePolicy)}`
+      answer: `${composeContextOnlyAnswer(question, topContexts, language)}${formatRefsForAnswer(references, language, responsePolicy, effectiveDomain || preferredDomain)}`
     });
     return;
   }
@@ -575,7 +591,7 @@ module.exports = async function handler(req, res) {
       ok: true,
       source: 'faq',
       score: Number(best.score.toFixed(3)),
-      answer: `${minimalAnswer}\n\n${composeFaqAnswer(best.item, language)}`
+      answer: `${minimalAnswer}\n\n${composeFaqAnswer(best.item, language)}${formatRefsForAnswer([], language, responsePolicy, effectiveDomain || preferredDomain)}`
     });
     return;
   }
@@ -591,7 +607,7 @@ module.exports = async function handler(req, res) {
         ok: true,
         source: 'faq-en-fallback',
         score: Number(bestEnglish.score.toFixed(3)),
-        answer: `${minimalAnswer}\n\n${composeFaqAnswer(bestEnglish.item, 'en')}`
+        answer: `${minimalAnswer}\n\n${composeFaqAnswer(bestEnglish.item, 'en')}${formatRefsForAnswer([], 'en', responsePolicy, effectiveDomain || preferredDomain)}`
       });
       return;
     }
@@ -603,7 +619,7 @@ module.exports = async function handler(req, res) {
       reply({
         ok: true,
         source: 'llm-fallback',
-        answer: customizeGeneratedAnswer(llmAnswer, language)
+        answer: `${customizeGeneratedAnswer(llmAnswer, language)}${formatRefsForAnswer([], language, responsePolicy, effectiveDomain || preferredDomain)}`
       });
       return;
     }
@@ -612,6 +628,6 @@ module.exports = async function handler(req, res) {
   reply({
     ok: true,
     source: 'fallback',
-    answer: buildMinimalConsultationAnswer(question, language, [])
+    answer: `${buildMinimalConsultationAnswer(question, language, [])}${formatRefsForAnswer([], language, responsePolicy, effectiveDomain || preferredDomain)}`
   });
 };

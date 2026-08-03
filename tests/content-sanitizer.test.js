@@ -29,8 +29,9 @@ test('humanizeConsultingTone uses neutral tone and optional follow-up', () => {
   const neutral = humanizeConsultingTone(answer, 'ko');
   const withFollowUp = humanizeConsultingTone(answer, 'ko', { includeFollowUp: true });
 
-  assert.ok(neutral.includes('핵심만 간단히 안내드립니다.'));
   assert.ok(neutral.includes('Here are the key steps to follow.'));
+  assert.equal(neutral.includes('핵심만 간단히 안내드립니다.'), false);
+  assert.equal(neutral.includes('핵심만 짧게 정리해드릴게요.'), false);
   assert.equal(neutral.includes('추가 확인이 필요하면 문의를 남겨주세요.'), false);
 
   assert.ok(withFollowUp.includes('추가 확인이 필요하면 문의를 남겨주세요.'));

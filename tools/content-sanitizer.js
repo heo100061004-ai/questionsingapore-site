@@ -77,14 +77,6 @@ function humanizeConsultingTone(answer, language = 'ko', options = {}) {
   }
   body = body.trim();
 
-  const opening = openingStyle === 'none'
-    ? ''
-    : language === 'ko'
-      ? '핵심만 간단히 안내드립니다.'
-      : language === 'zh'
-        ? '先为您简要说明重点。'
-        : 'Here is a short practical summary.';
-
   const closing = includeFollowUp
     ? (language === 'ko'
       ? '추가 확인이 필요하면 문의를 남겨주세요.'
@@ -94,9 +86,6 @@ function humanizeConsultingTone(answer, language = 'ko', options = {}) {
     : '';
 
   const parts = [];
-  if (opening) {
-    parts.push(opening);
-  }
   parts.push(body);
   if (closing) {
     parts.push(closing);
