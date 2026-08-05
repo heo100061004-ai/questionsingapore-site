@@ -159,6 +159,20 @@ function loadDocumentIndex(language, preferredDomain = null) {
     return items.filter((item) => {
       const itemLanguage = (item && item.language ? String(item.language) : 'en').toLowerCase();
       const itemDomain = normalizeCategory(item && item.category ? item.category : '') || 'employment';
+      const itemFile = (item && item.file ? String(item.file) : '').toLowerCase();
+      const itemTitle = (item && item.title ? String(item.title) : '').toLowerCase();
+
+      const isOperationalDoc = itemFile === 'readme.md'
+        || itemFile === 'auto-ingest-state.json'
+        || itemFile === 'manifest.json'
+        || itemFile === 'manifest.sample.json'
+        || itemFile === 'update-archive.json'
+        || itemTitle === 'readme.md'
+        || itemTitle === 'auto-ingest-state.json';
+
+      if (isOperationalDoc) {
+        return false;
+      }
 
       const languageMatch = itemLanguage === language || itemLanguage === 'multi' || itemLanguage === 'en';
       const domainMatch = preferredDomain ? itemDomain === preferredDomain : true;
@@ -172,6 +186,7 @@ function loadDocumentIndex(language, preferredDomain = null) {
 function buildContextCandidates(language, preferredDomain = null) {
   const sourceMap = loadSourceRegistryMap();
   const faqItems = loadFaqData(language, preferredDomain);
+  const englishFaqItems = language === 'en' ? [] : loadFaqData('en', preferredDomain);
   const docs = loadDocumentIndex(language, preferredDomain);
 
   const faqCandidates = faqItems.map((item) => {
@@ -210,7 +225,26 @@ function buildContextCandidates(language, preferredDomain = null) {
     };
   });
 
-  return [...docCandidates, ...faqCandidates];
+  const englishFaqCandidates = englishFaqItems.map((item) => {
+    const refs = Array.isArray(item && item.sourceRefs)
+      ? item.sourceRefs
+          .map((id) => sourceMap.get(String(id)))
+          .filter(Boolean)
+          .map((source) => ({ label: source.name, url: source.url }))
+      : [];
+
+    return {
+      type: 'faq-en',
+      category: item && item._domain ? String(item._domain) : String(item.category || ''),
+      language: 'en',
+      title: item && item.question ? String(item.question) : '',
+      text: [item.shortAnswer, item.detailedAnswer, item.thingsToNote].filter(Boolean).join(' '),
+      keywords: Array.isArray(item && item.keywords) ? item.keywords : [],
+      refs
+    };
+  });
+
+  return [...faqCandidates, ...englishFaqCandidates, ...docCandidates];
 }
 
 function rankContextMatches(question, candidates) {
@@ -388,10 +422,13 @@ function buildContextPrompt(question, language, contextItems = [], policy, histo
 
   return [
     'You are an AI Q&A assistant for Question Singapore website.',
-    'Use only the provided context. If context is insufficient, say what is missing and suggest inquiry form.',
+    'Use the provided context first. If context is insufficient, give the safest practical baseline answer using general Singapore guidance, clearly note what still needs confirmation, and then suggest the inquiry form.',
     'Provide general informational guidance only. Avoid legal, tax, or immigration determinations.',
     'If the question is high risk, explicitly recommend contacting a qualified professional.',
     'Write like a helpful consultant having a short natural conversation: acknowledge the situation, give the practical baseline, mention 1-2 next checks, and gently suggest the inquiry form for follow-up.',
+    'Always answer the user question directly in the first 1-2 sentences before asking for any more detail.',
+    'If context is partial, still give the safest useful baseline instead of only asking follow-up questions.',
+    'When you close the answer, use a soft handoff: if the case needs person-specific review, naturally suggest the inquiry form instead of sounding abrupt.',
     'Keep continuity with the recent conversation history, but answer the latest user question directly.',
     'Do not switch to unrelated topics or categories unless the latest user question clearly changes topic.',
     'If the user gave partial context earlier, reuse it instead of asking the same question again.',
@@ -409,6 +446,88 @@ function buildContextPrompt(question, language, contextItems = [], policy, histo
     `Retrieved context:\n${contextText}`,
     `User question: ${question}`
   ].join(' ');
+}
+
+function buildDomainSpecificFallback(question, language, domain) {
+  const q = String(question || '').toLowerCase();
+  const safeDomain = domain || 'employment';
+
+  if (safeDomain === 'employment' && (q.includes('employment pass') || q.includes('ep') || q.includes('s pass'))) {
+    if (language === 'en') {
+      return [
+        'For pass-related job planning, check the pass type, sponsor change timing, and whether the new employer will file the next application before you move.',
+        '- If you are changing jobs, confirm resignation timing, new employer sponsorship, and work-start date after approval.',
+        '- If you are comparing EP and S Pass, review salary band, role level, and employer eligibility first.',
+        'If expert consultation is needed, please submit the inquiry form.'
+      ].join('\n');
+    }
+    if (language === 'zh') {
+      return [
+        '如果是签证相关问题，建议先确认准证类型、雇主变更时间，以及新雇主是否会先提交新的申请。',
+        '- 换工作时，先确认离职时间、下一家公司的担保安排、以及获批后的到岗时间。',
+        '- 比较 EP 和 S Pass 时，先看薪资区间、岗位层级和雇主资格。',
+        '如需专家进一步判断，请提交咨询表单。'
+      ].join('\n');
+    }
+    return [
+      '비자 관련 질문이라면 먼저 패스 종류, 고용주 변경 시점, 새 회사의 스폰서 진행 가능 여부를 확인하는 것이 좋습니다.',
+      '- 이직이라면 퇴사 시점, 새 회사의 비자 신청 일정, 승인 후 출근 가능일을 먼저 맞춰보세요.',
+      '- EP와 S Pass 비교라면 급여 기준, 직무 레벨, 회사의 신청 가능 조건을 먼저 보셔야 합니다.',
+      '전문가의 상담이 필요하면 상담폼을 접수해 주시기 바랍니다.'
+    ].join('\n');
+  }
+
+  if (safeDomain === 'property' && (q.includes('lease') || q.includes('rental') || q.includes('rent') || q.includes('임대') || q.includes('계약') || q.includes('월세') || q.includes('디파짓'))) {
+    if (language === 'en') {
+      return [
+        'Before committing to a rental, review the lease term, deposit terms, agent fee, and who pays for repairs or early termination risk.',
+        '- Ask for the exact deposit amount, refund condition, and inventory handover record in writing.',
+        '- If you are comparing areas, balance commute, lifestyle, and monthly housing budget together.',
+        'If expert consultation is needed, please submit the inquiry form.'
+      ].join('\n');
+    }
+    if (language === 'zh') {
+      return [
+        '签租约前，建议先确认租期、押金条款、中介费用，以及维修责任和提前解约风险。',
+        '- 押金金额、退还条件、房屋交接清单最好都以书面方式确认。',
+        '- 如果您在比较区域，建议同时看通勤、生活便利度和月度住房预算。',
+        '如需专家进一步判断，请提交咨询表单。'
+      ].join('\n');
+    }
+    return [
+      '임대 계약 전에는 계약 기간, 디파짓 조건, 에이전트 수수료, 수리 책임, 중도해지 조항을 먼저 확인하는 것이 좋습니다.',
+      '- 디파짓 금액과 반환 조건, 입주 인벤토리 목록은 문서로 남겨두세요.',
+      '- 지역을 비교 중이라면 출퇴근 시간, 생활 편의, 월세 예산을 함께 보셔야 합니다.',
+      '전문가의 상담이 필요하면 상담폼을 접수해 주시기 바랍니다.'
+    ].join('\n');
+  }
+
+  if (safeDomain === 'relocation' && (q.includes('first') || q.includes('2주') || q.includes('첫') || q.includes('搬') || q.includes('孩子') || q.includes('family') || q.includes('가족'))) {
+    if (language === 'en') {
+      return [
+        'For the first two weeks after relocation, focus on address setup, school or family essentials, mobile and banking basics, and your daily transport routine first.',
+        '- Confirm documents you need immediately for dependants, school contact, and healthcare access.',
+        '- Settle one temporary routine first: home, school, transport, and emergency contact flow.',
+        'If expert consultation is needed, please submit the inquiry form.'
+      ].join('\n');
+    }
+    if (language === 'zh') {
+      return [
+        '搬迁后的前两周，建议优先处理住址安排、孩子学校或家庭必需事项、手机与银行基础设置、以及日常交通动线。',
+        '- 先确认家属文件、学校联络方式和医疗使用所需材料。',
+        '- 先把居住、上学、出行和紧急联系人这条日常流程稳定下来。',
+        '如需专家进一步判断，请提交咨询表单。'
+      ].join('\n');
+    }
+    return [
+      '가족 이주 첫 2주에는 거주지 정리, 자녀 학교/가족 필수 절차, 휴대폰과 은행 같은 기본 인프라, 일상 이동 동선을 먼저 안정시키는 것이 좋습니다.',
+      '- 가족 구성원 서류, 학교 연락 체계, 병원 이용 준비를 먼저 확인해 두세요.',
+      '- 집, 학교, 교통, 비상 연락 흐름을 먼저 잡으면 초반 적응이 훨씬 수월합니다.',
+      '전문가의 상담이 필요하면 상담폼을 접수해 주시기 바랍니다.'
+    ].join('\n');
+  }
+
+  return '';
 }
 
 async function callOpenAI(question, language, contextItems, history = []) {
@@ -536,7 +655,7 @@ module.exports = async function handler(req, res) {
 
   function reply(payload) {
     const sanitizedAnswer = sanitizeAnswerText(payload.answer || '', language);
-    const followUpSources = new Set(['fallback', 'consultation-guidance', 'budget-blocked', 'context-fallback']);
+    const followUpSources = new Set(['fallback', 'consultation-guidance', 'budget-blocked', 'context-fallback', 'ai-context', 'llm-fallback']);
     const includeFollowUp = followUpSources.has(String(payload.source || '').toLowerCase());
     const hasLeadAlready = /^(먼저 핵심만|핵심만 간단히|here is a short direction|let me give you a short direction|先给您一个简短方向|先为您简要说明重点)/i.test(
       String(sanitizedAnswer || '').trim()
@@ -709,7 +828,7 @@ module.exports = async function handler(req, res) {
   reply({
     ok: true,
     source: 'fallback',
-    answer: `${buildMinimalConsultationAnswer(question, language, [])}${formatRefsForAnswer([], language, responsePolicy, effectiveDomain || preferredDomain)}`
+    answer: `${buildDomainSpecificFallback(question, language, effectiveDomain || preferredDomain) || buildMinimalConsultationAnswer(question, language, [])}${formatRefsForAnswer([], language, responsePolicy, effectiveDomain || preferredDomain)}`
   });
   } catch (error) {
     const safeQuestion = question || '';
