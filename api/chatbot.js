@@ -340,7 +340,24 @@ function composeFaqAnswer(item, language) {
   return lines.join('\n\n');
 }
 
-function buildContextPrompt(question, language, contextItems = [], policy) {
+function normalizeHistoryItems(history = []) {
+  return (Array.isArray(history) ? history : [])
+    .map((item) => {
+      const role = String(item && item.role ? item.role : '').toLowerCase();
+      const text = String(item && item.text ? item.text : '').trim();
+      if (!text) {
+        return null;
+      }
+      return {
+        role: role === 'assistant' || role === 'bot' ? 'assistant' : 'user',
+        text: text.slice(0, 500)
+      };
+    })
+    .filter(Boolean)
+    .slice(-6);
+}
+
+function buildContextPrompt(question, language, contextItems = [], policy, history = []) {
   const langInstruction = language === 'ko'
     ? 'Respond in Korean.'
     : language === 'zh'
@@ -357,6 +374,7 @@ function buildContextPrompt(question, language, contextItems = [], policy) {
   const questionFocus = String(question || '').trim();
 
   const safeContextItems = Array.isArray(contextItems) ? contextItems : [];
+  const safeHistory = normalizeHistoryItems(history);
   const contextText = safeContextItems
     .map((item, index) => {
       const body = String(item.text || '').slice(0, 900);
@@ -364,12 +382,19 @@ function buildContextPrompt(question, language, contextItems = [], policy) {
     })
     .join('\n\n');
 
+  const historyText = safeHistory.length
+    ? safeHistory.map((item, index) => `Turn ${index + 1} [${item.role}] ${item.text}`).join('\n')
+    : 'No prior conversation.';
+
   return [
     'You are an AI Q&A assistant for Question Singapore website.',
     'Use only the provided context. If context is insufficient, say what is missing and suggest inquiry form.',
     'Provide general informational guidance only. Avoid legal, tax, or immigration determinations.',
     'If the question is high risk, explicitly recommend contacting a qualified professional.',
     'Write like a helpful consultant having a short natural conversation: acknowledge the situation, give the practical baseline, mention 1-2 next checks, and gently suggest the inquiry form for follow-up.',
+    'Keep continuity with the recent conversation history, but answer the latest user question directly.',
+    'Do not switch to unrelated topics or categories unless the latest user question clearly changes topic.',
+    'If the user gave partial context earlier, reuse it instead of asking the same question again.',
     'Make the answer specific to this exact question. Do not reuse a generic template across different topics.',
     'Start by reflecting one concrete detail from the user question in your own words so different questions naturally produce different answers.',
     'Keep answer concise and practical, 4-8 sentences, with actionable checklist style.',
@@ -379,13 +404,14 @@ function buildContextPrompt(question, language, contextItems = [], policy) {
     'Prefer summary and actionable interpretation over direct quotation.',
     langInstruction,
     'Do not fabricate links or regulations.',
+    `Recent conversation:\n${historyText}`,
     `Question focus: ${questionFocus}`,
     `Retrieved context:\n${contextText}`,
     `User question: ${question}`
   ].join(' ');
 }
 
-async function callOpenAI(question, language, contextItems) {
+async function callOpenAI(question, language, contextItems, history = []) {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
     return null;
@@ -393,7 +419,7 @@ async function callOpenAI(question, language, contextItems) {
 
   const preferredDomain = normalizeCategory((contextItems && contextItems[0] && contextItems[0].category) || '');
   const policy = getResponsePolicy(preferredDomain);
-  const prompt = buildContextPrompt(question, language, contextItems || [], policy);
+  const prompt = buildContextPrompt(question, language, contextItems || [], policy, history);
 
   let response;
   try {
@@ -492,6 +518,7 @@ module.exports = async function handler(req, res) {
   const question = (body.question || '').toString().trim();
   const language = LANGUAGE_MAP[(body.language || '').toString()] || 'ko';
   const preferredDomain = normalizeCategory(body.category || '');
+  const conversationHistory = normalizeHistoryItems(body.history);
   const conversationMode = String(body.conversationMode || '').toLowerCase();
   const conversationStage = normalizeConversationStage(body.conversationStage || 0);
   const safePolicy = getResponsePolicy(preferredDomain);
@@ -606,7 +633,7 @@ module.exports = async function handler(req, res) {
       language,
       domain: effectiveDomain || 'employment',
       executor: async () => {
-        const answer = await callOpenAI(question, language, topContexts);
+        const answer = await callOpenAI(question, language, topContexts, conversationHistory);
         if (answer) {
           return {
             ok: true,
@@ -668,7 +695,7 @@ module.exports = async function handler(req, res) {
   }
 
   if (isLlmFallbackEnabled(process.env)) {
-    const llmAnswer = await callOpenAI(question, language);
+    const llmAnswer = await callOpenAI(question, language, [], conversationHistory);
     if (llmAnswer) {
       reply({
         ok: true,

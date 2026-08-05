@@ -16,49 +16,79 @@ function isLlmFallbackEnabled(env = process.env) {
   return true;
 }
 
+function compactText(value = '', max = 180) {
+  const text = String(value || '').replace(/\s+/g, ' ').trim();
+  if (!text) {
+    return '';
+  }
+  return text.length > max ? `${text.slice(0, max).trimEnd()}...` : text;
+}
+
+function buildContextHighlights(contextItems = [], language = 'ko') {
+  const items = Array.isArray(contextItems) ? contextItems : [];
+  const top = items.slice(0, 2).map((item) => ({
+    title: String(item && item.title ? item.title : '').trim(),
+    text: compactText(item && item.text ? item.text : '', 160)
+  })).filter((item) => item.title || item.text);
+
+  if (!top.length) {
+    if (language === 'zh') {
+      return ['目前先按您这次提问的方向整理重点。'];
+    }
+    if (language === 'en') {
+      return ['I will summarize the practical baseline for this question first.'];
+    }
+    return ['우선 현재 질문 기준으로 바로 확인할 핵심부터 정리드리겠습니다.'];
+  }
+
+  return top.map((item) => {
+    if (language === 'zh') {
+      return item.title
+        ? `${item.title}: ${item.text || '与本次咨询直接相关。'}`
+        : item.text;
+    }
+    if (language === 'en') {
+      return item.title
+        ? `${item.title}: ${item.text || 'Directly relevant to this inquiry.'}`
+        : item.text;
+    }
+    return item.title
+      ? `${item.title}: ${item.text || '이번 문의와 직접 관련된 항목입니다.'}`
+      : item.text;
+  });
+}
+
 function buildMinimalConsultationAnswer(question = '', language = 'ko', contextItems = []) {
   const safeQuestion = String(question || '').trim();
   const safeContextItems = Array.isArray(contextItems) ? contextItems : [];
   const firstContext = safeContextItems[0] || null;
   const contextTitle = firstContext && firstContext.title ? String(firstContext.title) : '';
+  const highlights = buildContextHighlights(safeContextItems, language);
 
   if (language === 'zh') {
-    const body = contextTitle
-      ? `您的问题与“${contextTitle}”相关。先确认这两点：`
-      : '先确认这两点：';
     return [
-      '我先帮您缩小范围。',
-      body,
-      '- 您当前状态（签证/居住/预算/时间）',
-      '- 您最优先要解决的问题',
-      '如果愿意，我可以继续帮您把下一步整理得更具体。'
+      contextTitle ? `您的问题与“${contextTitle}”相关，先给您一版简要信息。` : '先给您一版简要信息。',
+      ...highlights.map((line) => `- ${line}`),
+      '如果您愿意，我可以继续根据您的实际情况把下一步收窄。',
+      '如需专家进一步判断，请提交咨询表单。'
     ].join('\n');
   }
 
   if (language === 'en') {
-    const body = contextTitle
-      ? `Your question relates to “${contextTitle}”. Start with these two points:`
-      : 'Start with these two points:';
     return [
-      'Let me narrow this down first.',
-      body,
-      '- Your current status (visa, housing, budget, timeline)',
-      '- The top issue you want to solve first',
-      'If you want, I can keep narrowing this down.'
+      contextTitle ? `Your question is related to “${contextTitle}”, so here is the short baseline first.` : 'Here is the short baseline first.',
+      ...highlights.map((line) => `- ${line}`),
+      'If you want, I can narrow this down further based on your exact situation.',
+      'If expert review is needed, please submit the inquiry form.'
     ].join('\n');
   }
 
-  const body = contextTitle
-    ? `질문은 “${contextTitle}”와 관련 있어 보여요. 먼저 이 2가지만 알려주세요.`
-    : '먼저 이 2가지만 알려주세요.';
-
   return [
-    '우선 범위를 좁혀볼게요.',
-    body,
-    '- 현재 상황(비자/거주/예산/일정)',
-    '- 가장 먼저 해결하고 싶은 1가지',
-    safeQuestion ? `현재 질문: ${safeQuestion}` : '질문을 남겨주시면 방향을 잡아드립니다.',
-    '원하시면 다음 단계까지 이어서 정리해드릴게요.'
+    contextTitle ? `질문은 “${contextTitle}”와 관련 있어 보여서 먼저 핵심 정보를 짧게 정리드릴게요.` : '먼저 현재 질문과 직접 관련된 핵심 정보를 짧게 정리드릴게요.',
+    ...highlights.map((line) => `- ${line}`),
+    safeQuestion ? `현재 질문 기준: ${safeQuestion}` : '질문 의도에 맞는 방향으로 정리해드리고 있습니다.',
+    '원하시면 현재 상황(비자/거주/예산/일정)을 기준으로 다음 단계도 이어서 좁혀드릴게요.',
+    '전문가의 상담이 필요하면 상담폼을 접수해 주시기 바랍니다.'
   ].join('\n');
 }
 
@@ -185,7 +215,7 @@ function buildGuidedConversationAnswer({ question = '', language = 'ko', stage =
 
   return [
     '지금까지 내용을 보면 방향은 잡혔습니다.',
-    '더 자세한 판단이 필요하면 그때 상담폼으로 이어가면 가장 정확합니다.',
+    '전문가의 상담이 필요하면 상담폼을 접수해 주시기 바랍니다.',
     refLine || '원하시면 제가 핵심만 다시 한 번 짧게 정리해드릴게요.'
   ].filter(Boolean).join('\n');
 }

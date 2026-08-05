@@ -9,6 +9,7 @@ const whatsappFields = document.getElementById('whatsapp-fields');
 const countryCodeInput = document.getElementById('country-code');
 const phoneNumberInput = document.getElementById('phone-number');
 const homeTopVideo = document.getElementById('home-top-video');
+const homeInlineVideo = document.getElementById('home-inline-video');
 const homeTopVideoSource = document.getElementById('home-top-video-source');
 const homeTopVideoEmpty = document.getElementById('home-top-video-empty');
 const homeVideoPlayButton = document.getElementById('home-video-play');
@@ -43,6 +44,8 @@ const SPONSOR_FALLBACK_DATA = {
   },
   categories: []
 };
+const CHAT_HISTORY_LIMIT = 8;
+const chatbotConversationHistory = [];
 
 const translations = {
   ko: {
@@ -50,6 +53,21 @@ const translations = {
     topHeaderTitle: '싱가포르 정보와 전문가 네트워크 안내',
     heroTitle: '신뢰할수 있는 싱가포르<br />정보와 전문가 네트워크',
     heroText: '취업 · 부동산 · 리로케이션까지 현지 라이선스를 보유한 전문가에게 안전하게 문의하세요.',
+    heroActionServices: '추천 서비스 보기',
+    heroActionConsult: '상담 흐름 보기',
+    heroFlowCard1: '일반 정보는 실시간 문의 안내를 통해 먼저 확인할 수 있습니다.',
+    heroFlowCard2: '전문가 상담이 필요하면 질문과 연락처를 입력해 자세히 이어갈 수 있습니다.',
+    heroFlowCard3: '관리자가 이메일 또는 WhatsApp으로 추가 상담을 진행합니다.',
+    homeVideoEyebrow: 'Question Singapore Introduction',
+    homeVideoTitle: '싱가포르 정보 안내와 상담 연결 흐름을 영상으로 확인하세요',
+    homeVideoDescription: '처음 방문한 사용자도 어떤 정보를 먼저 확인하고, 언제 상담으로 이어지면 되는지 빠르게 이해할 수 있도록 구성한 소개 영상 영역입니다.',
+    homeVideoTag1: 'Information',
+    homeVideoTag2: 'Guide',
+    homeVideoTag3: 'Network',
+    heroSectionCaption: '현지 정보와 연결 가능한 서비스 영역을 한눈에 확인할 수 있습니다.',
+    adsEyebrow: 'Recommended Services',
+    adsTitle: '고용, 부동산, 리로케이션 분야별 추천 서비스를 확인하세요',
+    adsGuideIntro: '분야별로 확인하기 쉬운 추천 배너 구성을 기준으로 안내합니다.',
     heroPoint1: '✔ 모든 상담은 비공개로 진행됩니다.',
     heroPoint2: '✔ 답변은 등록하신 연락처로 개별 안내드립니다.',
     heroPoint3: '✔ 필요 시 검증된 현지 전문가 네트워크를 연결해 드립니다.',
@@ -99,7 +117,7 @@ const translations = {
     chatTipTitle: '챗봇을 더 잘 쓰는 방법',
     chatTip1: '목적, 현재 상황, 기한을 함께 적어주시면 더 정확합니다.',
     chatTip2: '한 번에 한 가지 질문만 보내면 답변이 더 짧고 명확해집니다.',
-    chatTip3: '정확한 판단이 필요하면 마지막에 상담폼으로 이어가면 좋습니다.',
+    chatTip3: '전문가의 상담이 필요하면 상담폼을 접수해 주시기 바랍니다.',
     chatWelcome: '안녕하세요. Question Singapore AI 스마트 안내 서비스입니다. 문의 내용을 바탕으로 요약 정보를 제공하고, 필요하면 세부 안내로 이어질 수 있습니다.',
     chatStep1Title: '핵심 정보부터 빠르게 정리합니다.',
     chatStep1Text: 'FAQ와 등록 문서를 기준으로 실무에 필요한 포인트를 먼저 보여드립니다.',
@@ -158,6 +176,21 @@ const translations = {
     topHeaderTitle: 'Singapore Information and Expert Network Guide',
     heroTitle: 'A trusted Singapore guide<br />with expert networks',
     heroText: 'From employment to real estate and relocation, ask safely to licensed local experts.',
+    heroActionServices: 'View Recommended Services',
+    heroActionConsult: 'View Consultation Flow',
+    heroFlowCard1: 'General information can be checked first through the live inquiry guide.',
+    heroFlowCard2: 'If expert consultation is needed, enter your question and contact details to continue.',
+    heroFlowCard3: 'The admin continues follow-up consultation by email or WhatsApp.',
+    homeVideoEyebrow: 'Question Singapore Introduction',
+    homeVideoTitle: 'Watch how information guidance connects to consultation',
+    homeVideoDescription: 'This intro area helps first-time visitors quickly understand what to check first and when to move into consultation.',
+    homeVideoTag1: 'Information',
+    homeVideoTag2: 'Guide',
+    homeVideoTag3: 'Network',
+    heroSectionCaption: 'See service areas and connection points at a glance.',
+    adsEyebrow: 'Recommended Services',
+    adsTitle: 'Check recommended services across employment, property, and relocation',
+    adsGuideIntro: 'Guided with an easy-to-scan banner layout by category.',
     heroPoint1: '✔ All consultations are handled privately.',
     heroPoint2: '✔ Answers are delivered individually to your registered contact.',
     heroPoint3: '✔ When needed, we connect you with a verified local expert network.',
@@ -207,7 +240,7 @@ const translations = {
     chatTipTitle: 'How to get better answers',
     chatTip1: 'Add your goal, current situation, and timeline for a more precise reply.',
     chatTip2: 'Send one question at a time to keep the answer short and clear.',
-    chatTip3: 'If you need a precise decision, move to the consultation form at the end.',
+    chatTip3: 'If expert consultation is needed, please submit the inquiry form.',
     chatWelcome: 'Hello. This is the Question Singapore AI Smart Guide. We provide summary information based on your inquiry, and can continue with more detail if needed.',
     chatStep1Title: 'We quickly organize the key information first.',
     chatStep1Text: 'We surface practical points based on FAQs and registered documents.',
@@ -263,6 +296,21 @@ const translations = {
     topHeaderTitle: '新加坡信息与专家网络指南',
     heroTitle: '值得信赖的新加坡信息<br />与专家网络',
     heroText: '涵盖就业、房产与搬迁，安全地向持牌本地专家咨询。',
+    heroActionServices: '查看推荐服务',
+    heroActionConsult: '查看咨询流程',
+    heroFlowCard1: '可先通过实时咨询引导查看一般信息。',
+    heroFlowCard2: '如需专家咨询，可填写问题与联系方式继续沟通。',
+    heroFlowCard3: '管理员会通过电子邮件或 WhatsApp 继续跟进咨询。',
+    homeVideoEyebrow: 'Question Singapore Introduction',
+    homeVideoTitle: '通过视频了解信息引导与咨询衔接流程',
+    homeVideoDescription: '帮助首次访问的用户快速理解应先查看哪些信息，以及何时进入咨询流程。',
+    homeVideoTag1: 'Information',
+    homeVideoTag2: 'Guide',
+    homeVideoTag3: 'Network',
+    heroSectionCaption: '一眼查看本地信息与可连接的服务领域。',
+    adsEyebrow: 'Recommended Services',
+    adsTitle: '查看就业、房产与搬迁领域的推荐服务',
+    adsGuideIntro: '按类别采用更易浏览的推荐横幅布局。',
     heroPoint1: '✔ 所有咨询均为非公开私密进行。',
     heroPoint2: '✔ 回复将发送至您登记的联系方式。',
     heroPoint3: '✔ 如有需要，我们将为您连接经过验证的本地专家网络。',
@@ -312,7 +360,7 @@ const translations = {
     chatTipTitle: '更高效使用聊天机器人的方法',
     chatTip1: '把目标、当前情况和时间安排一起写上，会更准确。',
     chatTip2: '一次只问一个问题，答案会更短更清楚。',
-    chatTip3: '如果需要准确判断，最后可以转到咨询表单。',
+    chatTip3: '如果需要专家进一步判断，请提交咨询表单。',
     chatWelcome: '您好，这里是 Question Singapore AI 智能引导服务。我们会根据您的问题提供摘要信息，如有需要，也可继续提供更详细的说明。',
     chatStep1Title: '先快速整理核心信息。',
     chatStep1Text: '我们会根据 FAQ 和已登记文档优先展示实用要点。',
@@ -1059,6 +1107,64 @@ function appendChatMessage(role, text, meta = '') {
   return wrapper;
 }
 
+function pushChatHistory(role, text) {
+  const message = String(text || '').trim();
+  if (!message) {
+    return;
+  }
+
+  chatbotConversationHistory.push({
+    role: role === 'bot' ? 'assistant' : role,
+    text: message
+  });
+
+  if (chatbotConversationHistory.length > CHAT_HISTORY_LIMIT) {
+    chatbotConversationHistory.splice(0, chatbotConversationHistory.length - CHAT_HISTORY_LIMIT);
+  }
+}
+
+function buildChatSummaryForInquiry(language = 'ko') {
+  const history = chatbotConversationHistory.slice(-6);
+  if (!history.length) {
+    return '';
+  }
+
+  const userQuestions = history.filter((item) => item.role === 'user').map((item) => item.text);
+  const assistantReplies = history.filter((item) => item.role === 'assistant').map((item) => item.text);
+  const lastQuestion = userQuestions[userQuestions.length - 1] || '';
+  const priorQuestion = userQuestions.length > 1 ? userQuestions[userQuestions.length - 2] : '';
+  const lastReply = assistantReplies[assistantReplies.length - 1] || '';
+
+  if (language === 'zh') {
+    return [
+      '聊天摘要',
+      lastQuestion ? `- 最新问题: ${lastQuestion}` : '',
+      priorQuestion ? `- 之前补充: ${priorQuestion}` : '',
+      lastReply ? `- 已提供的重点: ${lastReply}` : ''
+    ].filter(Boolean).join('\n');
+  }
+
+  if (language === 'en') {
+    return [
+      'Chat Summary',
+      lastQuestion ? `- Latest question: ${lastQuestion}` : '',
+      priorQuestion ? `- Earlier context: ${priorQuestion}` : '',
+      lastReply ? `- Guidance already shown: ${lastReply}` : ''
+    ].filter(Boolean).join('\n');
+  }
+
+  return [
+    '챗봇 대화 요약',
+    lastQuestion ? `- 최근 질문: ${lastQuestion}` : '',
+    priorQuestion ? `- 추가 맥락: ${priorQuestion}` : '',
+    lastReply ? `- 안내된 핵심: ${lastReply}` : ''
+  ].filter(Boolean).join('\n');
+}
+
+function getChatHistorySnapshot() {
+  return chatbotConversationHistory.slice(-6).map((item) => ({ ...item }));
+}
+
 function normalizeDisplayedChatbotAnswer(text = '', language = 'ko') {
   let body = String(text || '').trim();
   if (!body) {
@@ -1138,6 +1244,7 @@ function initChatbot() {
   if (welcomeMessage) {
     welcomeMessage.setAttribute('data-chatbot-welcome', 'true');
   }
+  pushChatHistory('assistant', translation.chatWelcome);
   applyChatbotCtaVariant();
 
   chatbotForm.addEventListener('submit', async (event) => {
@@ -1157,6 +1264,7 @@ function initChatbot() {
     }
 
     appendChatMessage('user', question);
+    pushChatHistory('user', question);
     chatbotInput.value = '';
     appendChatMessage('bot', t.chatTyping);
 
@@ -1177,6 +1285,7 @@ function initChatbot() {
           question,
           language: lang,
           category,
+          history: getChatHistorySnapshot(),
           conversationMode: guidedCandidate ? 'guided' : 'normal',
           conversationStage: guidedCandidate ? guidedStage : 0
         })
@@ -1194,7 +1303,9 @@ function initChatbot() {
 
       const data = await response.json();
       const sourceKey = data && data.source ? String(data.source) : '';
-      appendChatMessage('bot', normalizeDisplayedChatbotAnswer(data.answer || t.chatError, lang), sourceKey);
+      const normalizedAnswer = normalizeDisplayedChatbotAnswer(data.answer || t.chatError, lang);
+      appendChatMessage('bot', normalizedAnswer, sourceKey);
+      pushChatHistory('assistant', normalizedAnswer);
 
       if (guidedCandidate && guidedStage >= 5) {
         resetChatFlowState();
@@ -1252,6 +1363,8 @@ if (form) {
     const countryCode = formData.get('countryCode')?.toString().trim() || '';
     const phoneNumber = formData.get('phoneNumber')?.toString().trim() || '';
     const language = languageSelect?.value || 'ko';
+    const chatSummary = buildChatSummaryForInquiry(language);
+    const chatHistory = getChatHistorySnapshot();
     const emailOnly = Boolean(emailContact);
     const phoneOnly = Boolean(phoneNumber.replace(/\D/g, ''));
     let resolvedContactType = contactType;
@@ -1278,7 +1391,7 @@ if (form) {
 
     let savedEntry = null;
     if (store) {
-      savedEntry = store.addQuestion({ name, category, question, contactType: resolvedContactType, contactValue, language });
+      savedEntry = store.addQuestion({ name, category, question, contactType: resolvedContactType, contactValue, language, chatSummary, chatHistory });
     }
 
     notifyAdminOfInquiry({
@@ -1288,6 +1401,8 @@ if (form) {
       question,
       contactType: resolvedContactType,
       contactValue,
+      chatSummary,
+      chatHistory,
       language,
       createdAt: savedEntry?.createdAt || new Date().toISOString()
     });
@@ -1317,3 +1432,19 @@ initHomeVideo();
 initChatbot();
 initFooterSocialLinks();
 initSponsors();
+
+if (homeInlineVideo) {
+  homeInlineVideo.muted = true;
+  homeInlineVideo.addEventListener('click', async () => {
+    if (homeInlineVideo.muted) {
+      homeInlineVideo.muted = false;
+    }
+    if (homeInlineVideo.paused) {
+      try {
+        await homeInlineVideo.play();
+      } catch (error) {
+        console.error('Inline video play failed:', error);
+      }
+    }
+  });
+}

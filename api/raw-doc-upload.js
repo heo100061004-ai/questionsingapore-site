@@ -2,7 +2,19 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { maybeAutoIngestRawDocs } = require('../tools/auto-ingest-raw-docs');
 
+const ROOT_DIR = path.resolve(__dirname, '..');
+const LOCAL_RAW_DOC_DIR = path.join(ROOT_DIR, 'knowledge-base', 'raw-docs');
+const CATEGORY_DIRS = {
+  employment: path.join(LOCAL_RAW_DOC_DIR, 'employment'),
+  property: path.join(LOCAL_RAW_DOC_DIR, 'property'),
+  relocation: path.join(LOCAL_RAW_DOC_DIR, 'relocation')
+};
 const RUNTIME_RAW_DOC_DIR = path.join('/tmp', 'question-singapore-raw-docs');
+const RUNTIME_CATEGORY_DIRS = {
+  employment: path.join(RUNTIME_RAW_DOC_DIR, 'employment'),
+  property: path.join(RUNTIME_RAW_DOC_DIR, 'property'),
+  relocation: path.join(RUNTIME_RAW_DOC_DIR, 'relocation')
+};
 const RUNTIME_MANIFEST_PATH = path.join(RUNTIME_RAW_DOC_DIR, 'manifest.json');
 
 function isAuthorized(req) {
@@ -54,6 +66,27 @@ function writeJson(filePath, value) {
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
 }
 
+function resolveCategoryDirectory(category) {
+  const normalized = normalizeCategory(category);
+  return {
+    category: normalized,
+    localDir: CATEGORY_DIRS[normalized],
+    runtimeDir: RUNTIME_CATEGORY_DIRS[normalized]
+  };
+}
+
+function writeFileToPreferredDirectory(filePath, buffer, runtimePath) {
+  try {
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.writeFileSync(filePath, buffer);
+    return filePath;
+  } catch (error) {
+    fs.mkdirSync(path.dirname(runtimePath), { recursive: true });
+    fs.writeFileSync(runtimePath, buffer);
+    return runtimePath;
+  }
+}
+
 function upsertManifest(files) {
   const current = readJson(RUNTIME_MANIFEST_PATH, { defaults: {}, files: [] });
   const defaults = current && current.defaults ? current.defaults : {};
@@ -96,6 +129,7 @@ module.exports = async function handler(req, res) {
 
   const manifestEntries = [];
   let savedCount = 0;
+  const targetFolders = new Set();
 
   try {
     for (const file of files) {
@@ -106,17 +140,23 @@ module.exports = async function handler(req, res) {
       }
 
       const buffer = Buffer.from(contentBase64, 'base64');
-      const fullPath = path.join(RUNTIME_RAW_DOC_DIR, safeName);
-      fs.writeFileSync(fullPath, buffer);
+      const { category, localDir, runtimeDir } = resolveCategoryDirectory(file.category);
+      const fullPath = writeFileToPreferredDirectory(
+        path.join(localDir, safeName),
+        buffer,
+        path.join(runtimeDir, safeName)
+      );
       savedCount += 1;
+      targetFolders.add(path.dirname(fullPath));
 
       manifestEntries.push({
         file: safeName,
         title: String(file.title || safeName),
         language: normalizeLanguage(file.language),
-        category: normalizeCategory(file.category),
+        category,
         source: String(file.source || 'Uploaded via Admin'),
         url: String(file.url || ''),
+        savedPath: fullPath,
         keywords: Array.isArray(file.keywords)
           ? file.keywords.map((item) => String(item).trim()).filter(Boolean)
           : []
@@ -142,6 +182,7 @@ module.exports = async function handler(req, res) {
     res.status(200).json({
       ok: true,
       savedCount,
+      targetFolders: Array.from(targetFolders),
       autoIngest,
       runtimeRawDocsPath: RUNTIME_RAW_DOC_DIR,
       warning: process.env.ADMIN_API_TOKEN ? null : 'ADMIN_API_TOKEN is not set. Configure token for production safety.'

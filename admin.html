@@ -82,7 +82,7 @@
       <div class="panel panel--soft sponsor-admin-panel">
         <p class="eyebrow">Recommended Services</p>
         <h2>카테고리별 추천 배너 슬롯 관리</h2>
-        <p class="home-media-settings__caption">홈페이지에는 샘플 배너 이미지가 고정 노출됩니다. 여기서는 배너 클릭 시 이동할 링크 URL만 입력하면 됩니다.</p>
+        <p class="home-media-settings__caption">배너 이미지 경로, 클릭 링크, 광고 기간, 노출 여부를 함께 관리합니다. 기간이 지나면 홈에서 자동으로 숨겨집니다.</p>
         <div class="sponsor-admin-guideline">
           <p><strong>권장 데스크톱:</strong> <span id="sponsor-size-desktop">1200x320</span></p>
           <p><strong>권장 모바일:</strong> <span id="sponsor-size-mobile">720x240</span></p>
@@ -101,7 +101,14 @@
       <div class="panel panel--soft">
         <p class="eyebrow">Raw Docs Upload</p>
         <h2>AI 스마트 서치 원본 문서 업로드</h2>
-        <p class="home-media-settings__caption">파일 업로드 후 바로 문서 제안을 갱신하고, 선택 항목을 원클릭으로 FAQ 메인 DB에 반영할 수 있습니다.</p>
+        <p class="home-media-settings__caption">선택한 카테고리에 맞춰 원본 문서를 각 DB 폴더로 저장하고 자동 인덱싱까지 이어집니다.</p>
+        <div class="admin-inline-guide">
+          <p><strong>직접 폴더 업로드 경로</strong></p>
+          <p>고용: knowledge-base/raw-docs/employment</p>
+          <p>부동산: knowledge-base/raw-docs/property</p>
+          <p>리로케이션: knowledge-base/raw-docs/relocation</p>
+          <p>Finder 또는 VS Code 탐색기에서 위 폴더를 열어 파일을 직접 넣어도 다음 자동 인덱싱 때 반영됩니다.</p>
+        </div>
         <form id="raw-doc-upload-form" class="raw-doc-upload-form">
           <label>
             <span>문서 파일 (다중 선택)</span>
@@ -164,7 +171,11 @@
       <div class="panel panel--soft">
         <p class="eyebrow">Directory</p>
         <h2>QuestionSingapore Expert Directory</h2>
-        <p class="home-media-settings__caption">검증된 전문가 정보를 카테고리별로 등록하고 최신 연락처를 유지합니다.</p>
+        <p class="home-media-settings__caption">검증된 전문가 정보를 카테고리별로 등록하고, 검색 후 클릭해서 세부 내용을 펼쳐 볼 수 있게 운영합니다.</p>
+        <label class="expert-search">
+          <span>전문가 검색</span>
+          <input id="expert-search" type="search" placeholder="이름, 카테고리, 서비스, 키워드 검색" />
+        </label>
         <form id="expert-form" class="expert-form">
           <label>
             <span>이름</span>
@@ -218,6 +229,36 @@
         <article class="panel panel--soft">
           <h3>최근 7일 문의 추이</h3>
           <div id="analytics-trend" class="analytics-list"></div>
+        </article>
+        <article class="panel panel--soft">
+          <h3>챗봇 유입 요약</h3>
+          <div id="analytics-chatbot-summary" class="analytics-list"></div>
+          <div id="analytics-chatbot-top" class="analytics-list"></div>
+        </article>
+      </div>
+
+      <div class="section__intro">
+        <p class="eyebrow">Operations</p>
+        <h2>커뮤니티 및 배포 흐름</h2>
+      </div>
+      <div class="admin-analytics-grid">
+        <article class="panel panel--soft">
+          <h3>Community</h3>
+          <p class="home-media-settings__caption">홈페이지와 동일한 LinkedIn, WhatsApp, KakaoTalk 커뮤니티 연결 흐름을 점검합니다.</p>
+          <div class="status-row">
+            <span class="chip">LinkedIn</span>
+            <span class="chip">WhatsApp</span>
+            <span class="chip">KakaoTalk</span>
+          </div>
+        </article>
+        <article class="panel panel--soft">
+          <h3>Publish Flow</h3>
+          <p class="home-media-settings__caption">관리자 수정 후 main push 시 자동 배포가 연결되도록 워크플로우를 구성하고, 필요시 수동 Vercel 배포를 백업 경로로 유지합니다.</p>
+          <div class="status-row">
+            <span class="pill pill-blue">GitHub main</span>
+            <span class="pill pill-green">Vercel Production</span>
+            <span class="pill pill-amber">Workflow Ready</span>
+          </div>
         </article>
       </div>
 
@@ -290,6 +331,11 @@
             </dl>
           </article>
         </div>
+        <article class="question-modal__panel question-modal__panel--soft">
+          <p class="question-modal__label">챗봇 대화 요약</p>
+          <p id="question-modal-chat-summary" class="question-modal__question">연결된 챗봇 대화가 없습니다.</p>
+          <div id="question-modal-chat-history" class="question-modal__history"></div>
+        </article>
         <article class="question-modal__panel question-modal__reply">
           <div class="question-modal__reply-head">
             <div>

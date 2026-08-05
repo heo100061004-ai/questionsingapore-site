@@ -119,7 +119,7 @@ function saveQuestions(questions, storage = getStorage()) {
   return normalized;
 }
 
-function addQuestion({ name, category, question, contactType, contactValue, language }, storage = getStorage()) {
+function addQuestion({ name, category, question, contactType, contactValue, language, chatSummary, chatHistory }, storage = getStorage()) {
   const entry = {
     id: `q-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     name: name || '방문자',
@@ -129,6 +129,8 @@ function addQuestion({ name, category, question, contactType, contactValue, lang
     contactType: contactType || 'email',
     contactValue: contactValue || '',
     language: language || 'ko',
+    chatSummary: (chatSummary || '').trim(),
+    chatHistory: Array.isArray(chatHistory) ? chatHistory.slice(0, 10) : [],
     status: '신규',
     createdAt: new Date().toISOString()
   };

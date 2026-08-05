@@ -10,6 +10,8 @@ const categoryContainer = document.getElementById('analytics-category');
 const channelContainer = document.getElementById('analytics-channel');
 const languageContainer = document.getElementById('analytics-language');
 const trendContainer = document.getElementById('analytics-trend');
+const chatbotSummaryContainer = document.getElementById('analytics-chatbot-summary');
+const chatbotTopContainer = document.getElementById('analytics-chatbot-top');
 const modal = document.getElementById('question-modal');
 const modalCategory = document.getElementById('question-modal-category');
 const modalStatus = document.getElementById('question-modal-status');
@@ -20,6 +22,8 @@ const modalContactType = document.getElementById('question-modal-contact-type');
 const modalContactValue = document.getElementById('question-modal-contact-value');
 const modalLanguage = document.getElementById('question-modal-language');
 const modalCreatedAt = document.getElementById('question-modal-created-at');
+const modalChatSummary = document.getElementById('question-modal-chat-summary');
+const modalChatHistory = document.getElementById('question-modal-chat-history');
 const modalReply = document.getElementById('question-modal-reply');
 const modalSendButton = document.getElementById('question-modal-send');
 const modalOpenChannelButton = document.getElementById('question-modal-open-channel');
@@ -59,6 +63,7 @@ const docSuggestCommand = document.getElementById('doc-suggest-command');
 const docSuggestList = document.getElementById('doc-suggest-list');
 const expertForm = document.getElementById('expert-form');
 const expertNameInput = document.getElementById('expert-name');
+const expertSearchInput = document.getElementById('expert-search');
 const expertContactInput = document.getElementById('expert-contact');
 const expertCategoryInput = document.getElementById('expert-category');
 const expertServicesInput = document.getElementById('expert-services');
@@ -101,6 +106,8 @@ let sortOrder = 'latest';
 let selectedQuestionId = null;
 let docSuggestions = [];
 let docArchiveOpen = false;
+let expertSearchTerm = '';
+const expandedExpertIds = new Set();
 
 const languageMap = {
   ko: '한국어',
@@ -253,6 +260,41 @@ function buildJsonSyncCommand(configPath, payload, commitMessage) {
   ].join('\n');
 }
 
+function formatDateInputValue(value) {
+  const raw = String(value || '').trim();
+  if (!raw) {
+    return '';
+  }
+  const date = new Date(raw);
+  if (Number.isNaN(date.getTime())) {
+    return raw.slice(0, 10);
+  }
+  return date.toISOString().slice(0, 10);
+}
+
+function estimateSponsorImageSize(card) {
+  if (!card) {
+    return;
+  }
+
+  const preview = card.querySelector('.sponsor-admin-card__preview img');
+  const meta = card.querySelector('[data-role="sponsor-image-meta"]');
+  if (!preview || !meta) {
+    return;
+  }
+
+  const update = () => {
+    if (preview.naturalWidth && preview.naturalHeight) {
+      meta.textContent = `이미지 크기 ${preview.naturalWidth} x ${preview.naturalHeight}px`;
+    } else {
+      meta.textContent = '이미지 크기 확인 중';
+    }
+  };
+
+  preview.addEventListener('load', update, { once: true });
+  update();
+}
+
 function showSponsorSyncGuide(message, payload) {
   if (!sponsorSyncGuide || !sponsorSyncMessage || !sponsorSyncCommand) {
     return;
@@ -264,12 +306,19 @@ function showSponsorSyncGuide(message, payload) {
 }
 
 function parseSponsorFormData(container, item) {
+  const imageUrl = container.querySelector('[data-field="imageUrl"]')?.value.trim() || item.imageUrl || '';
   const rawLink = container.querySelector('[data-field="linkUrl"]')?.value.trim() || '';
+  const startDate = container.querySelector('[data-field="startDate"]')?.value || '';
+  const endDate = container.querySelector('[data-field="endDate"]')?.value || '';
+  const active = container.querySelector('[data-field="active"]')?.checked !== false;
   const linkUrl = rawLink || '#';
   return {
     ...item,
+    imageUrl,
     linkUrl,
-    active: true
+    startDate: startDate || '',
+    endDate: endDate || '',
+    active
   };
 }
 
@@ -293,7 +342,15 @@ function renderSponsorAdmin() {
       <article class="sponsor-admin-card" data-category-id="${escapeHtml(category.id || '')}" data-item-id="${escapeHtml(item.id || '')}">
         <div class="sponsor-admin-card__preview"><img src="${escapeHtml(item.imageUrl || '')}" alt="${escapeHtml(category.label || '배너')} 샘플" /></div>
         <div class="sponsor-admin-card__fields">
+          <label><span>배너 이미지 경로 또는 Data URL</span><input data-field="imageUrl" type="text" placeholder="assets/sponsors/sample.svg" value="${escapeHtml(item.imageUrl || '')}" /></label>
+          <label><span>배너 이미지 파일 업로드</span><input data-action="upload-sponsor-image" type="file" accept="image/*" /></label>
           <label><span>클릭 이동 링크 URL</span><input data-field="linkUrl" type="url" placeholder="https://advertiser.example" value="${escapeHtml(item.linkUrl || '')}" /></label>
+          <div class="sponsor-admin-card__meta">
+            <label><span>광고 시작일</span><input data-field="startDate" type="date" value="${escapeHtml(formatDateInputValue(item.startDate || ''))}" /></label>
+            <label><span>광고 종료일</span><input data-field="endDate" type="date" value="${escapeHtml(formatDateInputValue(item.endDate || ''))}" /></label>
+          </div>
+          <label><span><input data-field="active" type="checkbox" ${item.active === false ? '' : 'checked'} /> 현재 슬롯 활성화</span></label>
+          <p class="home-media-box__meta" data-role="sponsor-image-meta">이미지 크기 확인 중</p>
         </div>
         <div class="sponsor-admin-card__actions">
           <button class="button button--secondary" type="button" data-action="save-sponsor">슬롯 저장</button>
@@ -311,6 +368,8 @@ function renderSponsorAdmin() {
       </section>
     `;
   }).join('');
+
+  Array.from(sponsorAdminList.querySelectorAll('.sponsor-admin-card')).forEach(estimateSponsorImageSize);
 }
 
 function saveSponsorSlot(categoryId, itemId, card) {
@@ -768,7 +827,17 @@ function renderExperts() {
     return;
   }
 
-  const experts = store.getExperts();
+  const experts = store.getExperts().filter((expert) => {
+    if (!expertSearchTerm) {
+      return true;
+    }
+
+    const haystack = [expert.name, expert.contact, expert.category, expert.services, expert.notes]
+      .map(normalizeText)
+      .join(' ');
+    return haystack.includes(expertSearchTerm);
+  });
+
   if (!experts.length) {
     expertList.innerHTML = '<p class="empty-state">등록된 전문가가 없습니다.</p>';
     return;
@@ -780,16 +849,35 @@ function renderExperts() {
         <article class="expert-item" data-expert-id="${escapeHtml(expert.id || '')}">
           <div class="expert-item__topline">
             <span class="chip">${escapeHtml(expert.category || '기타')}</span>
-            <button class="button button--secondary" type="button" data-action="remove-expert" data-expert-id="${escapeHtml(expert.id || '')}">삭제</button>
+            <div class="expert-item__actions">
+              <button class="button button--secondary" type="button" data-action="toggle-expert" data-expert-id="${escapeHtml(expert.id || '')}">${expandedExpertIds.has(expert.id) ? '접기' : '보기'}</button>
+              <button class="button button--secondary" type="button" data-action="remove-expert" data-expert-id="${escapeHtml(expert.id || '')}">삭제</button>
+            </div>
           </div>
           <h3>${escapeHtml(expert.name || '-')}</h3>
-          <p class="expert-item__line"><strong>연락처:</strong> ${escapeHtml(expert.contact || '-')}</p>
           <p class="expert-item__line"><strong>주요 서비스:</strong> ${escapeHtml(expert.services || '-')}</p>
-          <p class="expert-item__line"><strong>메모:</strong> ${escapeHtml(expert.notes || '-')}</p>
+          <div class="expert-item__details" ${expandedExpertIds.has(expert.id) ? '' : 'hidden'}>
+            <p class="expert-item__line"><strong>연락처:</strong> ${escapeHtml(expert.contact || '-')}</p>
+            <p class="expert-item__line"><strong>메모:</strong> ${escapeHtml(expert.notes || '-')}</p>
+            <p class="expert-item__line"><strong>등록일:</strong> ${escapeHtml(formatDateTime(expert.createdAt))}</p>
+          </div>
         </article>
       `;
     })
     .join('');
+}
+
+function toggleExpertDetails(expertId) {
+  if (!expertId) {
+    return;
+  }
+
+  if (expandedExpertIds.has(expertId)) {
+    expandedExpertIds.delete(expertId);
+  } else {
+    expandedExpertIds.add(expertId);
+  }
+  renderExperts();
 }
 
 function renderDocArchiveItems(items) {
@@ -806,8 +894,15 @@ function renderDocArchiveItems(items) {
   docArchiveList.innerHTML = list
     .map((item) => {
       const files = Array.isArray(item.files) ? item.files : [];
-      const filePreview = files.slice(0, 4).join(', ');
-      const fileTail = files.length > 4 ? ` 외 ${files.length - 4}개` : '';
+      const inserted = Array.isArray(item.inserted) ? item.inserted : [];
+      const titleCandidates = inserted
+        .map((entry) => entry && (entry.title || entry.question || entry.file || entry.sourceQuestion))
+        .filter(Boolean);
+      const previewItems = (titleCandidates.length ? titleCandidates : files).slice(0, 4);
+      const filePreview = previewItems.join(', ');
+      const fileTail = (titleCandidates.length ? titleCandidates.length : files.length) > 4
+        ? ` 외 ${(titleCandidates.length ? titleCandidates.length : files.length) - 4}개`
+        : '';
 
       return `
         <article class="doc-archive-item">
@@ -815,12 +910,63 @@ function renderDocArchiveItems(items) {
             <strong>${escapeHtml(formatDateTime(item.createdAt))}</strong>
             <span class="chip">${escapeHtml(item.trigger || 'system')}</span>
           </div>
-          <p class="doc-archive-item__meta">파일 ${Number(item.fileCount || files.length || 0)}개 · 신규 ${Number(item.insertedCount || 0)}개 · 중복 스킵 ${Number(item.skippedCount || 0)}개 · 다국어 ${Number(item.localizedCount || 0)}개</p>
+          <p class="doc-archive-item__meta">업데이트 문서 ${Number(item.fileCount || files.length || 0)}개 · 신규 ${Number(item.insertedCount || 0)}개 · 중복 스킵 ${Number(item.skippedCount || 0)}개 · 다국어 ${Number(item.localizedCount || 0)}개</p>
           <p class="doc-archive-item__files">${escapeHtml(filePreview || '-')} ${escapeHtml(fileTail)}</p>
         </article>
       `;
     })
     .join('');
+}
+
+async function renderChatbotAnalytics() {
+  if (!chatbotSummaryContainer || !chatbotTopContainer) {
+    return;
+  }
+
+  chatbotSummaryContainer.innerHTML = '<p class="empty-state">챗봇 통계를 불러오는 중...</p>';
+  chatbotTopContainer.innerHTML = '';
+
+  try {
+    const [logsResponse, keywordResponse] = await Promise.all([
+      fetch('/api/chatbot-logs?limit=120'),
+      fetch('/api/chatbot-keywords?limit=20')
+    ]);
+
+    const logsData = logsResponse.ok ? await logsResponse.json() : { items: [] };
+    const keywordData = keywordResponse.ok ? await keywordResponse.json() : { items: [] };
+    const logs = Array.isArray(logsData.items) ? logsData.items : [];
+    const keywords = Array.isArray(keywordData.items) ? keywordData.items.slice(0, 6) : [];
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayLogs = logs.filter((item) => new Date(item.createdAt) >= todayStart).length;
+    const formCount = store && typeof store.getQuestions === 'function' ? store.getQuestions().length : 0;
+    const conversionRate = logs.length ? Math.round((formCount / logs.length) * 100) : 0;
+
+    chatbotSummaryContainer.innerHTML = `
+      <div class="analytics-row analytics-row--chart">
+        <div class="analytics-row__head"><span>최근 챗봇 대화</span><strong>${logs.length}</strong></div>
+        <div class="analytics-bar" aria-hidden="true"><span style="width:${Math.max(12, Math.min(100, logs.length))}%"></span></div>
+      </div>
+      <div class="analytics-row analytics-row--chart">
+        <div class="analytics-row__head"><span>오늘 챗봇 유입</span><strong>${todayLogs}</strong></div>
+        <div class="analytics-bar" aria-hidden="true"><span style="width:${Math.max(12, Math.min(100, todayLogs * 10 || 12))}%"></span></div>
+      </div>
+      <div class="analytics-row analytics-row--chart">
+        <div class="analytics-row__head"><span>상담폼 전환률</span><strong>${conversionRate}%</strong></div>
+        <div class="analytics-bar" aria-hidden="true"><span style="width:${Math.max(12, conversionRate)}%"></span></div>
+      </div>
+    `;
+
+    if (!keywords.length) {
+      chatbotTopContainer.innerHTML = '<p class="empty-state">표시할 주요 질문 로그가 없습니다.</p>';
+      return;
+    }
+
+    chatbotTopContainer.innerHTML = `<h4>자주 들어온 챗봇 질문</h4>${formatMetricRows(keywords.map((item) => [item.question || 'Untitled', item.count || 0]))}`;
+  } catch (error) {
+    chatbotSummaryContainer.innerHTML = '<p class="empty-state">챗봇 통계를 불러오지 못했습니다.</p>';
+    chatbotTopContainer.innerHTML = '';
+  }
 }
 
 async function fetchDocArchive() {
@@ -973,8 +1119,9 @@ async function uploadRawDocs() {
     const inserted = ingest && Number.isFinite(Number(ingest.insertedCount)) ? Number(ingest.insertedCount) : 0;
     const skipped = ingest && Number.isFinite(Number(ingest.skippedCount)) ? Number(ingest.skippedCount) : 0;
     const localized = ingest && Number.isFinite(Number(ingest.localizedCount)) ? Number(ingest.localizedCount) : 0;
+    const targetFolders = Array.isArray(data.targetFolders) ? data.targetFolders.join(', ') : '';
 
-    rawDocUploadStatus.textContent = `업로드 완료: ${data.savedCount || encodedFiles.length}개 저장 / 자동반영 신규 ${inserted}개, 중복 스킵 ${skipped}개, 다국어 ${localized}개`;
+    rawDocUploadStatus.textContent = `업로드 완료: ${data.savedCount || encodedFiles.length}개 저장 / 자동반영 신규 ${inserted}개, 중복 스킵 ${skipped}개, 다국어 ${localized}개${targetFolders ? ` / 저장 폴더 ${targetFolders}` : ''}`;
     if (rawDocUploadForm) {
       rawDocUploadForm.reset();
     }
@@ -1177,6 +1324,8 @@ function renderDashboard() {
 
     trendContainer.innerHTML = `<h4>최근 7일 문의 추이</h4>${formatMetricRows(trendRows)}`;
   }
+
+  renderChatbotAnalytics();
 }
 
 function renderQuestions() {
@@ -1287,6 +1436,23 @@ function renderModal(question) {
 
   if (modalCreatedAt) {
     modalCreatedAt.textContent = formatDateTime(question.createdAt);
+  }
+
+  if (modalChatSummary) {
+    modalChatSummary.textContent = (question.chatSummary || '').trim() || '연결된 챗봇 대화가 없습니다.';
+  }
+
+  if (modalChatHistory) {
+    const history = Array.isArray(question.chatHistory) ? question.chatHistory.slice(-6) : [];
+    if (!history.length) {
+      modalChatHistory.innerHTML = '';
+    } else {
+      modalChatHistory.innerHTML = history.map((item) => {
+        const role = String(item && item.role ? item.role : '').toLowerCase() === 'assistant' ? 'AI' : 'User';
+        const text = escapeHtml(item && item.text ? item.text : '');
+        return `<p class="question-modal__history-item"><strong>${role}</strong> ${text}</p>`;
+      }).join('');
+    }
   }
 
   if (modalReply) {
@@ -1722,6 +1888,13 @@ if (expertForm) {
 
 if (expertList) {
   expertList.addEventListener('click', (event) => {
+    const toggleTrigger = event.target.closest('[data-action="toggle-expert"]');
+    if (toggleTrigger) {
+      const expertId = toggleTrigger.getAttribute('data-expert-id') || '';
+      toggleExpertDetails(expertId);
+      return;
+    }
+
     const trigger = event.target.closest('[data-action="remove-expert"]');
     if (!trigger) {
       return;
@@ -1731,7 +1904,51 @@ if (expertList) {
   });
 }
 
+if (expertSearchInput) {
+  expertSearchInput.addEventListener('input', () => {
+    expertSearchTerm = normalizeText(expertSearchInput.value);
+    renderExperts();
+  });
+}
+
 if (sponsorAdminList) {
+  sponsorAdminList.addEventListener('change', (event) => {
+    const trigger = event.target;
+    if (!(trigger instanceof HTMLInputElement) || trigger.getAttribute('data-action') !== 'upload-sponsor-image') {
+      return;
+    }
+
+    const card = trigger.closest('[data-item-id]');
+    const file = trigger.files && trigger.files[0];
+    if (!card || !file) {
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      window.alert('이미지 파일만 업로드할 수 있습니다.');
+      trigger.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result !== 'string') {
+        return;
+      }
+
+      const imageField = card.querySelector('[data-field="imageUrl"]');
+      const preview = card.querySelector('.sponsor-admin-card__preview img');
+      if (imageField) {
+        imageField.value = reader.result;
+      }
+      if (preview) {
+        preview.src = reader.result;
+      }
+      estimateSponsorImageSize(card);
+    };
+    reader.readAsDataURL(file);
+  });
+
   sponsorAdminList.addEventListener('click', (event) => {
     const trigger = event.target.closest('[data-action="save-sponsor"]');
     if (!trigger) {

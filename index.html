@@ -1317,23 +1317,23 @@
                 취업 · 부동산 · 리로케이션까지 현지 라이선스를 보유한 전문가에게 안전하게 문의하세요.
               </p>
               <div class="hero-actions">
-                <a class="button button-primary" href="#ads">추천 서비스 보기</a>
-                <a class="button button-secondary" href="#ask">상담 흐름 보기</a>
+                <a class="button button-primary" href="#ads" data-i18n="heroActionServices">추천 서비스 보기</a>
+                <a class="button button-secondary" href="#ask" data-i18n="heroActionConsult">상담 흐름 보기</a>
               </div>
             </div>
 
             <div class="hero-points">
               <div class="hero-point">
                 <span class="hero-point-icon icon-blue">1</span>
-                <span><strong>일반 정보는</strong> 실시간 문의 안내를 통해 먼저 확인할 수 있습니다.</span>
+                <span data-i18n="heroFlowCard1"><strong>일반 정보는</strong> 실시간 문의 안내를 통해 먼저 확인할 수 있습니다.</span>
               </div>
               <div class="hero-point">
                 <span class="hero-point-icon icon-green">2</span>
-                <span><strong>전문가 상담이 필요하면</strong> 질문과 연락처를 입력해 자세히 이어갈 수 있습니다.</span>
+                <span data-i18n="heroFlowCard2"><strong>전문가 상담이 필요하면</strong> 질문과 연락처를 입력해 자세히 이어갈 수 있습니다.</span>
               </div>
               <div class="hero-point">
                 <span class="hero-point-icon icon-orange">3</span>
-                <span><strong>관리자가</strong> 이메일 또는 WhatsApp으로 추가 상담을 진행합니다.</span>
+                <span data-i18n="heroFlowCard3"><strong>관리자가</strong> 이메일 또는 WhatsApp으로 추가 상담을 진행합니다.</span>
               </div>
             </div>
           </div>
@@ -1341,30 +1341,32 @@
           <div class="hero-media">
             <article class="media-card">
               <div class="media-card__inner">
-                <p class="eyebrow" style="color: rgba(255,255,255,0.72);">Question Singapore Introduction</p>
-                <h3 class="media-card__title">싱가포르 정보 안내와 상담 연결 흐름을 영상으로 확인하세요</h3>
-                <p class="media-card__desc">
+                <p class="eyebrow" style="color: rgba(255,255,255,0.72);" data-i18n="homeVideoEyebrow">Question Singapore Introduction</p>
+                <h3 class="media-card__title" data-i18n="homeVideoTitle">싱가포르 정보 안내와 상담 연결 흐름을 영상으로 확인하세요</h3>
+                <p class="media-card__desc" data-i18n="homeVideoDescription">
                   처음 방문한 사용자도 어떤 정보를 먼저 확인하고, 언제 상담으로 이어지면 되는지 빠르게 이해할 수 있도록 구성한 소개 영상 영역입니다.
                 </p>
                 <div style="border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.10); aspect-ratio: 16 / 9; display:flex; align-items:center; justify-content:center;">
                   <video
+                    id="home-inline-video"
                     src="https://res.cloudinary.com/l6aa0vbz/video/upload/v1783583360/Storyboard_1_3_nh6kh7.mp4"
                     playsinline
                     loop
                     controls
+                    muted
                     preload="metadata"
                     style="width: 100%; height: 100%; object-fit: cover; display: block;"
                   ></video>
                 </div>
                 <div class="mini-row">
-                  <span class="mini-pill">Information</span>
-                  <span class="mini-pill">Guide</span>
-                  <span class="mini-pill">Network</span>
+                  <span class="mini-pill" data-i18n="homeVideoTag1">Information</span>
+                  <span class="mini-pill" data-i18n="homeVideoTag2">Guide</span>
+                  <span class="mini-pill" data-i18n="homeVideoTag3">Network</span>
                 </div>
               </div>
             </article>
 
-            <div class="section-caption">
+            <div class="section-caption" data-i18n="heroSectionCaption">
               현지 정보와 연결 가능한 서비스 영역을 한눈에 확인할 수 있습니다.
             </div>
           </div>
@@ -1374,10 +1376,10 @@
       <section id="ads" aria-label="카테고리 광고 슬롯">
         <div class="label-row" style="margin-top: 20px;">
           <div>
-            <p class="eyebrow">Recommended Services</p>
-            <h2>고용, 부동산, 리로케이션 분야별 추천 서비스를 확인하세요</h2>
+            <p class="eyebrow" data-i18n="adsEyebrow">Recommended Services</p>
+            <h2 data-i18n="adsTitle">고용, 부동산, 리로케이션 분야별 추천 서비스를 확인하세요</h2>
           </div>
-          <p id="sponsor-guideline-text" class="note">분야별로 확인하기 쉬운 추천 배너 구성을 기준으로 안내합니다.</p>
+          <p id="sponsor-guideline-text" class="note" data-i18n="adsGuideIntro">분야별로 확인하기 쉬운 추천 배너 구성을 기준으로 안내합니다.</p>
         </div>
 
         <div class="banner-row-shell">

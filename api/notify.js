@@ -10,6 +10,8 @@ function safeText(value) {
 }
 
 function buildMailBody(payload) {
+  const chatSummary = safeText(payload.chatSummary);
+  const chatHistory = Array.isArray(payload.chatHistory) ? payload.chatHistory : [];
   const lines = [
     'Question Singapore 신규 문의가 접수되었습니다.',
     '',
@@ -24,6 +26,21 @@ function buildMailBody(payload) {
     '질문 내용:',
     safeText(payload.question) || '-'
   ];
+
+  if (chatSummary) {
+    lines.push('', '챗봇 대화 요약:', chatSummary);
+  }
+
+  if (chatHistory.length) {
+    lines.push('', '최근 챗봇 대화:');
+    chatHistory.slice(-6).forEach((item) => {
+      const role = String(item && item.role ? item.role : '').toLowerCase() === 'assistant' ? 'AI' : 'User';
+      const text = safeText(item && item.text ? item.text : '');
+      if (text) {
+        lines.push(`- ${role}: ${text}`);
+      }
+    });
+  }
 
   return lines.join('\n');
 }
